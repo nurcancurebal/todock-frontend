@@ -28,13 +28,26 @@
           :name="todoItem.name"
         />
 
-        <b-button variant="light" class="m-2 text-secondary hover-color">
+        <b-form-group class="mx-3 my-2 shadow" v-show="newColumnItemStatus">
+          <b-form-input v-model="items"></b-form-input>
+        </b-form-group>
+
+        <b-button
+          variant="light"
+          class="m-2 text-secondary hover-color"
+          @click="
+            createTodoItems({ name: items }).then(
+              () => (newColumnItemStatus = !newColumnItemStatus)
+            )
+          "
+          v-show="!newColumnItemStatus"
+        >
           <b-icon-plus /> Add a card
         </b-button>
       </div>
     </div>
 
-    <div v-show="!newColumnStatus">
+    <div v-show="newColumnStatus">
       <b-button
         variant="light"
         class="p-2 m-4 shadow"
@@ -99,8 +112,10 @@ export default {
   data() {
     return {
       newColumnStatus: false,
+      newColumnItemStatus: false,
       title: "",
       itemName: "",
+      items: "",
     };
   },
 
@@ -109,7 +124,12 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getTodos", "createTodos", "deleteTodos"]),
+    ...mapActions([
+      "getTodos",
+      "createTodos",
+      "deleteTodos",
+      "createTodoItems",
+    ]),
     afterCreateTitle() {
       this.title = "";
       this.newColumnStatus = false;

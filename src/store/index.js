@@ -86,6 +86,25 @@ const actions = {
     };
   },
 
+  async createTodoItems(context, payload) {
+
+    try {
+
+      const result = await axios.post("http://localhost:3000/todo-items", { todoId: payload._id, name: payload.name });
+
+      console.log("createTodos", result.data);
+
+      context.dispatch("getTodos");
+
+      return result;
+
+    } catch (error) {
+
+      console.error("createTodos", error);
+
+    };
+  },
+
 };
 
 export default new Vuex.Store({ state, getters, mutations, actions });

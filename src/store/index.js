@@ -90,9 +90,9 @@ const actions = {
 
     try {
 
-      const result = await axios.post("http://localhost:3000/todo-items", { todoId: payload._id, name: payload.name });
+      const result = await axios.post("http://localhost:3000/todo-items", payload);
 
-      console.log("createTodos", result.data);
+      console.log("createTodoItems", result.data);
 
       context.dispatch("getTodos");
 
@@ -100,7 +100,7 @@ const actions = {
 
     } catch (error) {
 
-      console.error("createTodos", error);
+      console.error("createTodoItems", error);
 
     };
   },

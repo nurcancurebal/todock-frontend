@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <div class="rounded shadow mx-3 my-2 p-2" style="border: 2px #dcdcdc solid">
+  <div
+    class="d-flex justify-content-between rounded shadow mx-3 my-2 p-2"
+    style="border: 2px #dcdcdc solid"
+  >
+    <div id="overflowEllipsis">
       {{ name }}
     </div>
   </div>
@@ -13,4 +16,9 @@ export default {
 </script>
 
 <style>
+#overflowEllipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 </style>

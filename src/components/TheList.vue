@@ -13,7 +13,7 @@
         <div class="d-flex justify-content-between">
           <span class="p-2 m-2 h6">{{ todo.title }}</span>
           <b-button
-            variant="light"
+            variant="none"
             style="font-weight: 700"
             class="m-2 text-secondary hover-color"
             @click="deleteTodos(todo._id)"
@@ -28,20 +28,37 @@
           :name="todoItem.name"
         />
 
-        <b-form-group
-          class="mx-3 my-2 shadow"
+        <div
+          class="mx-3 my-2 shadow rounded px-2"
           v-show="showTodoAddItem.includes(todo._id)"
+          @keydown.enter="
+            createTodoItems({ todoId: todo._id, name: items }).then(() =>
+              deleteTodoInput(todo._id)
+            )
+          "
+          id="hover-div"
+          style="
+            display: flex;
+            justify-content: space-between;
+            border: 2px #dcdcdc solid;
+          "
         >
-          <b-form-input
+          <input
+            type="text"
             v-model="items"
-            @blur="deleteTodoInput(todo._id)"
-            @keydown.enter="
+            style="border: none; outline: none; width: 100%"
+          />
+
+          <b-icon-check-lg
+            style="font-weight: 700"
+            class="my-3 text-secondary hover-color"
+            @click="
               createTodoItems({ todoId: todo._id, name: items }).then(() =>
                 deleteTodoInput(todo._id)
               )
             "
-          ></b-form-input>
-        </b-form-group>
+          />
+        </div>
 
         <b-button
           variant="light"
@@ -137,12 +154,15 @@ export default {
       "deleteTodos",
       "createTodoItems",
     ]),
+
     afterCreateTitle() {
       this.title = "";
       this.newColumnStatus = false;
     },
+
     deleteTodoInput(id) {
       this.showTodoAddItem = this.showTodoAddItem.filter((item) => item != id);
+      this.items = "";
     },
   },
 
@@ -155,5 +175,10 @@ export default {
 <style scoped>
 .hover-color:hover {
   color: black !important;
+}
+
+#hover-div:focus {
+  border-color: rgba(72, 69, 69, 0.344);
+  box-shadow: 0 0 0 0.25rem rgba(10, 0, 0, 0.079);
 }
 </style>

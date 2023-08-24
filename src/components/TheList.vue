@@ -14,11 +14,10 @@
           <span class="p-2 m-2 h6">{{ todo.title }}</span>
           <b-button
             variant="none"
-            style="font-weight: 700"
-            class="m-2 text-secondary hover-color"
+            class="text-secondary hover-color"
             @click="deleteTodos(todo._id)"
           >
-            X
+            <b-icon-x font-scale="2" />
           </b-button>
         </div>
 
@@ -28,45 +27,53 @@
           :name="todoItem.name"
         />
 
-        <div
-          class="mx-3 my-2 shadow rounded px-2"
+        <b-input-group
+          class="mx-3 my-2"
+          style="width: auto"
           v-show="showTodoAddItem.includes(todo._id)"
           @keydown.enter="
             createTodoItems({ todoId: todo._id, name: items }).then(() =>
               deleteTodoInput(todo._id)
             )
           "
-          id="hover-div"
-          style="
-            display: flex;
-            justify-content: space-between;
-            border: 2px #dcdcdc solid;
-          "
         >
-          <input
+          <b-form-input
             type="text"
             v-model="items"
-            style="border: none; outline: none; width: 100%"
-          />
+            class="focus-input"
+            @blur="deleteTodoInput(todo._id)"
+          ></b-form-input>
 
-          <b-icon-check-lg
-            style="font-weight: 700"
-            class="my-3 text-secondary hover-color"
-            @click="
-              createTodoItems({ todoId: todo._id, name: items }).then(() =>
-                deleteTodoInput(todo._id)
-              )
-            "
-          />
-        </div>
+          <b-input-group-append>
+            <b-input-group-text
+              style="border-radius: 0px 5px 5px 0px; height: 100%"
+            >
+              <b-icon
+                icon="check"
+                class="text-secondary hover-color"
+                @click="
+                  createTodoItems({ todoId: todo._id, name: items }).then(() =>
+                    deleteTodoInput(todo._id)
+                  )
+                "
+              />
+              <b-icon
+                icon="x"
+                class="text-secondary hover-color"
+                @click="deleteTodoInput(todo._id)"
+              />
+            </b-input-group-text>
+          </b-input-group-append>
+        </b-input-group>
 
         <b-button
           variant="light"
-          class="m-2 text-secondary hover-color"
+          class="mx-3 my-2 text-secondary hover-color justify-content-center align-items-center"
+          style="display: flex"
           @click="showTodoAddItem.push(todo._id)"
           v-show="!showTodoAddItem.includes(todo._id)"
         >
-          <b-icon-plus /> Add a card
+          <b-icon-plus font-scale="2" /> Add a card
         </b-button>
       </div>
     </div>
@@ -74,11 +81,11 @@
     <div v-show="!newColumnStatus">
       <b-button
         variant="light"
-        class="p-2 m-4 shadow"
-        style="display: flex; width: 100px"
+        class="p-2 m-4 text-secondary hover-color justify-content-center align-items-center"
+        style="display: flex; width: 120px"
         @click="newColumnStatus = true"
       >
-        <b-icon-plus /> New List
+        <b-icon-plus font-scale="2" /> New List
       </b-button>
     </div>
 
@@ -92,19 +99,21 @@
           align-items: flex-end;
           width: 275px;
         "
-        class="p-2 rounded m-4 shadow"
+        class="rounded m-4 p-2 shadow"
       >
         <input
           type="text"
           placeholder="Enter list title..."
-          class="p-2 rounded"
-          style="border-color: #dcdcdc; outline: none; width: 100%"
+          class="p-2 rounded focus-input"
+          style="border: 2px #dcdcdc solid; outline: none; width: 100%"
           v-model="title"
           @keydown.enter="createTodos(title).then(() => afterCreateTitle())"
         />
+
         <div class="mt-2">
           <b-button
             variant="light"
+            class="text-secondary hover-color"
             @click="createTodos(title).then(() => afterCreateTitle())"
           >
             Add list
@@ -112,6 +121,7 @@
           <button
             style="border: none; background-color: white"
             @click="afterCreateTitle"
+            class="text-secondary hover-color"
           >
             <b-icon-x-lg class="mx-2" />
           </button>
@@ -177,8 +187,8 @@ export default {
   color: black !important;
 }
 
-#hover-div:focus {
-  border-color: rgba(72, 69, 69, 0.344);
-  box-shadow: 0 0 0 0.25rem rgba(10, 0, 0, 0.079);
+.focus-input:focus {
+  border-color: rgba(32, 31, 31, 0.425) !important;
+  box-shadow: 0 0 0 0.25rem rgba(10, 0, 0, 0.045) !important;
 }
 </style>

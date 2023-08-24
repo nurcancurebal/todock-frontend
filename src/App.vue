@@ -1,5 +1,5 @@
 <template>
-  <div style="width: fit-content">
+  <div>
     <TheNavbar />
     <b-row>
       <b-col>

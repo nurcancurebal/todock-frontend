@@ -10,8 +10,39 @@
         "
         class="rounded m-4 shadow"
       >
-        <div class="d-flex justify-content-between">
-          <span class="p-2 m-2 h6">{{ todo.title }}</span>
+        <b-input-group
+          class="mx-3 my-2"
+          style="width: auto"
+          v-show="showTodoAddTitle.includes(todo._id)"
+        >
+          <b-form-input
+            type="text"
+            v-model="todo.title"
+            class="focus-input rounded"
+          />
+
+          <b-input-group-append>
+            <b-icon-check-lg class="m-2 text-secondary hover-color" />
+
+            <b-icon-x-lg
+              class="m-2 text-secondary hover-color"
+              @click="
+                showTodoAddTitle = showTodoAddTitle.filter(
+                  (item) => item != todo._id
+                )
+              "
+            />
+          </b-input-group-append>
+        </b-input-group>
+
+        <div
+          class="justify-content-between"
+          v-show="!showTodoAddTitle.includes(todo._id)"
+          style="display: flex"
+        >
+          <span class="p-2 m-2 h6" @click="showTodoAddTitle.push(todo._id)">
+            {{ todo.title }}
+          </span>
           <b-button
             variant="none"
             class="text-secondary hover-color"
@@ -40,29 +71,23 @@
           <b-form-input
             type="text"
             v-model="items"
-            class="focus-input"
-            @blur="deleteTodoInput(todo._id)"
+            class="focus-input rounded"
           ></b-form-input>
 
           <b-input-group-append>
-            <b-input-group-text
-              style="border-radius: 0px 5px 5px 0px; height: 100%"
-            >
-              <b-icon
-                icon="check"
-                class="text-secondary hover-color"
-                @click="
-                  createTodoItems({ todoId: todo._id, name: items }).then(() =>
-                    deleteTodoInput(todo._id)
-                  )
-                "
-              />
-              <b-icon
-                icon="x"
-                class="text-secondary hover-color"
-                @click="deleteTodoInput(todo._id)"
-              />
-            </b-input-group-text>
+            <b-icon-check-lg
+              class="m-2 text-secondary hover-color"
+              @click="
+                createTodoItems({ todoId: todo._id, name: items }).then(() =>
+                  deleteTodoInput(todo._id)
+                )
+              "
+            />
+
+            <b-icon-x-lg
+              class="m-2 text-secondary hover-color"
+              @click="deleteTodoInput(todo._id)"
+            />
           </b-input-group-append>
         </b-input-group>
 
@@ -150,6 +175,7 @@ export default {
       itemName: "",
       items: "",
       showTodoAddItem: [],
+      showTodoAddTitle: [],
     };
   },
 

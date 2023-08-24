@@ -90,6 +90,7 @@ const actions = {
 
     try {
 
+      console.log("asdas")
       const result = await axios.post("http://localhost:3000/todo-items", payload);
 
       console.log("createTodoItems", result.data);

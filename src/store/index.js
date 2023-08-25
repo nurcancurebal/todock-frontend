@@ -110,7 +110,6 @@ const actions = {
 
     try {
 
-      console.log("asdas")
       const result = await axios.post("http://localhost:3000/todo-items", payload);
 
       console.log("createTodoItems", result.data);
@@ -122,6 +121,44 @@ const actions = {
     } catch (error) {
 
       console.error("createTodoItems", error);
+
+    };
+  },
+
+  async updateTodoItems(context, payload) {
+
+    try {
+
+      const result = await axios.put(`http://localhost:3000/todo-items/${payload.id}`, { name: payload.name });
+
+      console.log("updateTodoItems", result.data);
+
+      context.dispatch("getTodos");
+
+      return result;
+
+    } catch (error) {
+
+      console.error("updateTodoItems", error);
+
+    };
+  },
+
+  async deleteTodoItems(context, payload) {
+
+    try {
+
+      const result = await axios.delete(`http://localhost:3000/todo-items/${payload}`);
+
+      console.log("deleteTodoItems", result.status);
+
+      context.dispatch("getTodos");
+
+      return result;
+
+    } catch (error) {
+
+      console.error("deleteTodoItems", error);
 
     };
   },

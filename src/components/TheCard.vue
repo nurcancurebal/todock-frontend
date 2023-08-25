@@ -4,11 +4,14 @@
       <b-form-input type="text" class="focus-input rounded" v-model="newItem" />
 
       <b-input-group-append>
-        <b-icon-check-lg class="m-2 text-secondary hover-color" />
+        <b-icon-check-lg
+          class="m-2 text-secondary hover-color"
+          @click="updateTodoItems({ id: id, name: newItem }).then(closeItem)"
+        />
 
         <b-icon-x-lg
           class="m-2 text-secondary hover-color"
-          @click="todoItemsShow = false"
+          @click="deleteTodoItems(id).then(closeItem)"
         />
       </b-input-group-append>
     </b-input-group>
@@ -27,9 +30,10 @@
 
 <script>
 // ? Node modules.
+import { mapActions } from "vuex";
 
 export default {
-  props: ["name"],
+  props: ["name", "id"],
   data() {
     return {
       todoItemsShow: false,
@@ -38,9 +42,16 @@ export default {
   },
 
   methods: {
+    ...mapActions(["updateTodoItems", "deleteTodoItems"]),
+
     setItem() {
       this.todoItemsShow = true;
-      this.todoItems = this.newItem;
+      this.newItem = this.name;
+    },
+
+    closeItem() {
+      this.todoItemsShow = false;
+      this.newItem = "";
     },
   },
 };

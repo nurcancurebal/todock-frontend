@@ -1,5 +1,13 @@
 <template>
-  <b-row style="background-color: #48d1cc">
+  <b-row
+    style="
+      background-color: #48d1cc;
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+    "
+  >
     <b-col>
       <b-navbar variant="faded">
         <b-navbar-brand

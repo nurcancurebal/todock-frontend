@@ -1,7 +1,7 @@
 <template>
   <div>
     <TheNavbar />
-    <b-row>
+    <b-row class="mt-5">
       <b-col>
         <router-view />
       </b-col>

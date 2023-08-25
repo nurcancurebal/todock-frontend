@@ -17,20 +17,23 @@
         >
           <b-form-input
             type="text"
-            v-model="todo.title"
+            v-model="newTitle"
             class="focus-input rounded"
           />
 
           <b-input-group-append>
-            <b-icon-check-lg class="m-2 text-secondary hover-color" />
+            <b-icon-check-lg
+              class="m-2 text-secondary hover-color"
+              @click="
+                updateTodos({ title: newTitle, _id: todo._id }).then(() =>
+                  deleteTodoTitle(todo._id)
+                )
+              "
+            />
 
             <b-icon-x-lg
               class="m-2 text-secondary hover-color"
-              @click="
-                showTodoAddTitle = showTodoAddTitle.filter(
-                  (item) => item != todo._id
-                )
-              "
+              @click="deleteTodoTitle(todo._id)"
             />
           </b-input-group-append>
         </b-input-group>
@@ -40,7 +43,7 @@
           v-show="!showTodoAddTitle.includes(todo._id)"
           style="display: flex"
         >
-          <span class="p-2 m-2 h6" @click="showTodoAddTitle.push(todo._id)">
+          <span class="p-2 m-2 h6" @click="addNewTitle(todo._id, todo.title)">
             {{ todo.title }}
           </span>
           <b-button
@@ -56,6 +59,7 @@
           v-for="todoItem in todo.items"
           :key="todoItem._id"
           :name="todoItem.name"
+          :id="todoItem._id"
         />
 
         <b-input-group
@@ -176,6 +180,7 @@ export default {
       items: "",
       showTodoAddItem: [],
       showTodoAddTitle: [],
+      newTitle: "",
     };
   },
 
@@ -187,6 +192,7 @@ export default {
     ...mapActions([
       "getTodos",
       "createTodos",
+      "updateTodos",
       "deleteTodos",
       "createTodoItems",
     ]),
@@ -199,6 +205,17 @@ export default {
     deleteTodoInput(id) {
       this.showTodoAddItem = this.showTodoAddItem.filter((item) => item != id);
       this.items = "";
+    },
+
+    deleteTodoTitle(id) {
+      this.showTodoAddTitle = this.showTodoAddTitle.filter(
+        (item) => item != id
+      );
+      this.newTitle = this.title;
+    },
+    addNewTitle(id, title) {
+      this.showTodoAddTitle.push(id);
+      this.newTitle = title;
     },
   },
 

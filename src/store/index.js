@@ -7,7 +7,8 @@ import axios from "axios";
 Vue.use(Vuex);
 
 const state = {
-  todos: []
+  todos: [],
+  todoItems: []
 };
 
 const getters = {
@@ -63,6 +64,25 @@ const actions = {
     } catch (error) {
 
       console.error("createTodos", error);
+
+    };
+  },
+
+  async updateTodos(context, payload) {
+
+    try {
+
+      const result = await axios.put(`http://localhost:3000/todos/${payload._id}`, { title: payload.title });
+
+      console.log("updateTodos", result.data);
+
+      context.dispatch("getTodos");
+
+      return result;
+
+    } catch (error) {
+
+      console.error("updateTodos", error);
 
     };
   },

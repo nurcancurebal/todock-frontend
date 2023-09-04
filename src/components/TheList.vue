@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; flex-wrap: nowrap">
+  <div style="display: flex; flex-wrap: nowrap" class="mt-4">
     <div v-for="todo in todos" :key="todo.id">
       <div
         style="

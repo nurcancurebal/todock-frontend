@@ -87,6 +87,20 @@ const actions = {
     };
   },
 
+  async changeTodos(context, payload) {
+
+    try {
+
+      const result = await axios.put(`http://localhost:3000/todos/move/${payload._id1}/${payload._id2}`);
+
+      return result;
+
+    } catch (error) {
+
+      console.error("changeTodos", error);
+    }
+  },
+
   async deleteTodos(context, payload) {
 
     try {

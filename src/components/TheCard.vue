@@ -1,7 +1,14 @@
 <template>
   <div>
     <b-input-group class="mx-3 my-2" style="width: auto" v-show="todoItemsShow">
-      <b-form-input type="text" class="focus-input rounded" v-model="newItem" />
+      <b-form-input
+        type="text"
+        class="focus-input rounded"
+        v-model="newItem"
+        @keydown.enter="
+          updateTodoItems({ id: id, name: newItem }).then(closeItem)
+        "
+      />
 
       <b-input-group-append>
         <b-icon-check-lg

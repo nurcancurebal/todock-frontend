@@ -19,6 +19,11 @@
             type="text"
             v-model="newTitle"
             class="focus-input rounded"
+            @keydown.enter="
+              updateTodos({ title: newTitle, _id: todo._id }).then(() =>
+                deleteTodoTitle(todo._id)
+              )
+            "
           />
 
           <b-input-group-append>
@@ -66,11 +71,6 @@
           class="mx-3 my-2"
           style="width: auto"
           v-show="showTodoAddItem.includes(todo._id)"
-          @keydown.enter="
-            createTodoItems({ todoId: todo._id, name: items }).then(() =>
-              deleteTodoInput(todo._id)
-            )
-          "
         >
           <b-form-input
             type="text"

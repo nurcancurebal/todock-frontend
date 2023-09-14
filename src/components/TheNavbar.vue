@@ -28,7 +28,7 @@
               <em>Profil</em>
             </template>
             <b-dropdown-item href="#">Hesabımı Düzenle</b-dropdown-item>
-            <b-dropdown-item href="#">Şifremi Düzenle</b-dropdown-item>
+            <b-dropdown-item href="#">Şifremi Değiştir</b-dropdown-item>
             <b-dropdown-item href="#"> Çıkış </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>

@@ -27,9 +27,8 @@
             <template #button-content>
               <em>Profil</em>
             </template>
-            <b-dropdown-item href="/editaccount">Hesabımı Düzenle</b-dropdown-item>
-            <b-dropdown-item href="/editpassword">Şifremi Düzenle</b-dropdown-item>
-            <b-dropdown-item href="/deleteaccount">Hesabımı Sil</b-dropdown-item>
+            <b-dropdown-item href="#">Hesabımı Düzenle</b-dropdown-item>
+            <b-dropdown-item href="#">Şifremi Düzenle</b-dropdown-item>
             <b-dropdown-item href="#"> Çıkış </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>

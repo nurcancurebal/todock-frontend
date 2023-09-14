@@ -162,63 +162,6 @@ const actions = {
 
     };
   },
-
-  async updateUser(context, payload) {
-
-    try {
-
-      const result = await axios.put(`http://localhost:3000/todos/editaccount/${payload._id}`, { name: payload.name, surname: payload.surname, username: payload.username, birthdate: payload.birthdate });
-
-      console.log("updateUser", result.data);
-
-      context.dispatch("getUsers");
-
-      return result;
-
-    } catch (error) {
-
-      console.error("updateUsers", error);
-
-    };
-  },
-
-  async updatePassword(context, payload) {
-
-    try {
-
-      const result = await axios.put(`http://localhost:3000/todos/editpassword/${payload._id}`, { password: payload.newPassword});
-
-      console.log("updatePassword", result.data);
-
-      context.dispatch("getUsers");
-
-      return result;
-
-    } catch (error) {
-
-      console.error("updatePassword", error);
-
-    };
-  },
-
-  async deleteUser(context, payload) {
-
-    try {
-
-      const result = await axios.delete(`http://localhost:3000/todo/deleteaccount/${payload}`);
-
-      console.log("deleteUser", result.status);
-
-      context.dispatch("getUsers");
-
-      return result;
-
-    } catch (error) {
-
-      console.error("deleteUser", error);
-
-    };
-  },
 };
 
 export default new Vuex.Store({ state, getters, mutations, actions });

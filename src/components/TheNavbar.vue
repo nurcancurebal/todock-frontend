@@ -25,16 +25,27 @@
         <b-navbar-nav>
           <b-nav-item-dropdown>
             <template #button-content>
-              <em>User</em>
+              <em>Profil</em>
             </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+            <b-dropdown-item href="/editaccount">Hesabımı Düzenle</b-dropdown-item>
+            <b-dropdown-item href="/editpassword">Şifremi Düzenle</b-dropdown-item>
+            <b-dropdown-item href="/deleteaccount">Hesabımı Sil</b-dropdown-item>
+            <b-dropdown-item href="#"> Çıkış </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-navbar>
     </b-col>
   </b-row>
 </template>
+
+<script>
+export default {
+  data() {
+    return {};
+  },
+};
+</script>
+
 
 <style>
 a:focus-visible {

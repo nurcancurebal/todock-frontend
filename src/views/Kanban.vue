@@ -76,7 +76,7 @@
             type="text"
             v-model="items"
             class="focus-input rounded"
-          ></b-form-input>
+          />
 
           <b-input-group-append>
             <b-icon-check-lg
@@ -165,7 +165,7 @@
 import { mapActions, mapGetters } from "vuex";
 
 // ? Components.
-import TheCard from "./TheCard.vue";
+import TheCard from "@/components/TheCard.vue";
 
 export default {
   components: {

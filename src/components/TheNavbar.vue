@@ -14,7 +14,9 @@
       <b-navbar>
         <b-navbar-nav>
           <b-navbar-brand>
-            <router-link to="/" tag="h2" class="mx-5 my-1 text-white">ToDock</router-link>
+            <router-link to="/" tag="h2" class="mx-5 my-1 text-white">
+              ToDock
+            </router-link>
           </b-navbar-brand>
         </b-navbar-nav>
       </b-navbar>

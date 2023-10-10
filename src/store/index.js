@@ -8,7 +8,8 @@ Vue.use(Vuex);
 
 const state = {
   todos: [],
-  todoItems: []
+  todoItems: [],
+  users: []
 };
 
 const getters = {
@@ -16,6 +17,10 @@ const getters = {
   todos(state) {
 
     return state.todos
+  },
+  users(state) {
+
+    return state.users
   }
 };
 
@@ -24,6 +29,10 @@ const mutations = {
   TODOS(state, context) {
 
     state.todos = context;
+  },
+  USERS(state, context) {
+
+    state.users = context;
   }
 };
 
@@ -159,6 +168,44 @@ const actions = {
     } catch (error) {
 
       console.error("deleteTodoItems", error);
+
+    };
+  },
+  async getUsers(context) {
+
+    try {
+
+      const result = await axios
+        .get("http://localhost:3000/auth");
+
+      console.log("getUsers", result.data);
+
+      context.commit("USERS", result.data);
+
+      return result;
+
+    } catch (error) {
+
+      console.error("getUsers", error);
+
+    };
+  },
+
+  async createUsers(context, payload) {
+
+    try {
+
+      const result = await axios.post("http://localhost:3000/auth/signup", { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate, password: payload.password });
+
+      console.log("createUsers", result.data);
+
+      context.dispatch("getUsers");
+
+      return result;
+
+    } catch (error) {
+
+      console.error("createUsers", error);
 
     };
   },

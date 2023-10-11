@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import TheList from "@/components/TheList"
-import EditAccount from "@/components/EditAccount"
-import SignIn from "@/components/SignIn"
-import SignUp from "@/components/SignUp"
-import UserHome from "@/views/UserHome"
+import EditAccount from "@/views/EditAccount"
+import SignIn from "@/views/SignIn"
+import SignUp from "@/views/SignUp"
+import Kanban from "@/views/Kanban"
 
 Vue.use(VueRouter)
 
@@ -20,19 +19,14 @@ const routes = [
     component: SignUp
   },
   {
-    path: '/userhome',
-    name: 'UserHome',
-    component: UserHome
-  },
-  {
     path: '/editaccount',
     name: 'EditAccount',
     component: EditAccount
   },
   {
-    path: '/thelist',
-    name: 'TheList',
-    component: TheList
+    path: '/kanban',
+    name: "Kanban",
+    component: Kanban
   }
 ]
 

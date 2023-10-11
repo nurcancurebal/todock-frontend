@@ -1,159 +1,166 @@
 <template>
-  <div style="display: flex; flex-wrap: nowrap" class="mt-4">
-    <div v-for="todo in todos" :key="todo.id">
-      <div
-        style="
-          display: flex;
-          flex-direction: column;
-          width: 225px;
-          border: 2px #dcdcdc solid;
-        "
-        class="rounded m-4 shadow"
-      >
-        <b-input-group
-          class="mx-3 my-2"
-          style="width: auto"
-          v-show="showTodoAddTitle.includes(todo._id)"
-        >
-          <b-form-input
-            type="text"
-            v-model="newTitle"
-            class="focus-input rounded"
-            @keydown.enter="
-              updateTodos({ title: newTitle, _id: todo._id }).then(() =>
-                deleteTodoTitle(todo._id)
-              )
-            "
-          />
+  <div>
+    <TheNavbar />
 
-          <b-input-group-append>
-            <b-icon-check-lg
-              class="m-2 text-secondary hover-color"
-              @click="
+    <div
+      style="display: flex; flex-wrap: nowrap; position: absolute; top: 75px"
+      class="mt-4"
+    >
+      <div v-for="todo in todos" :key="todo.id">
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            width: 225px;
+            border: 2px #dcdcdc solid;
+          "
+          class="rounded m-4 shadow"
+        >
+          <b-input-group
+            class="mx-3 my-2"
+            style="width: auto"
+            v-show="showTodoAddTitle.includes(todo._id)"
+          >
+            <b-form-input
+              type="text"
+              v-model="newTitle"
+              class="focus-input rounded"
+              @keydown.enter="
                 updateTodos({ title: newTitle, _id: todo._id }).then(() =>
                   deleteTodoTitle(todo._id)
                 )
               "
             />
 
-            <b-icon-x-lg
-              class="m-2 text-secondary hover-color"
-              @click="deleteTodoTitle(todo._id)"
-            />
-          </b-input-group-append>
-        </b-input-group>
+            <b-input-group-append>
+              <b-icon-check-lg
+                class="m-2 text-secondary hover-color"
+                @click="
+                  updateTodos({ title: newTitle, _id: todo._id }).then(() =>
+                    deleteTodoTitle(todo._id)
+                  )
+                "
+              />
 
-        <div
-          class="justify-content-between"
-          v-show="!showTodoAddTitle.includes(todo._id)"
-          style="display: flex"
-        >
-          <span class="p-2 m-2 h6" @click="addNewTitle(todo._id, todo.title)">
-            {{ todo.title }}
-          </span>
-          <b-button
-            variant="none"
-            class="text-secondary hover-color"
-            @click="deleteTodos(todo._id)"
+              <b-icon-x-lg
+                class="m-2 text-secondary hover-color"
+                @click="deleteTodoTitle(todo._id)"
+              />
+            </b-input-group-append>
+          </b-input-group>
+
+          <div
+            class="justify-content-between"
+            v-show="!showTodoAddTitle.includes(todo._id)"
+            style="display: flex"
           >
-            <b-icon-x font-scale="2" />
-          </b-button>
-        </div>
+            <span class="p-2 m-2 h6" @click="addNewTitle(todo._id, todo.title)">
+              {{ todo.title }}
+            </span>
+            <b-button
+              variant="none"
+              class="text-secondary hover-color"
+              @click="deleteTodos(todo._id)"
+            >
+              <b-icon-x font-scale="2" />
+            </b-button>
+          </div>
 
-        <TheCard
-          v-for="todoItem in todo.items"
-          :key="todoItem._id"
-          :name="todoItem.name"
-          :id="todoItem._id"
-        />
-
-        <b-input-group
-          class="mx-3 my-2"
-          style="width: auto"
-          v-show="showTodoAddItem.includes(todo._id)"
-        >
-          <b-form-input
-            type="text"
-            v-model="items"
-            class="focus-input rounded"
+          <EditTodoItems
+            v-for="todoItem in todo.items"
+            :key="todoItem._id"
+            :name="todoItem.name"
+            :id="todoItem._id"
           />
 
-          <b-input-group-append>
-            <b-icon-check-lg
-              class="m-2 text-secondary hover-color"
-              @click="
-                createTodoItems({ todoId: todo._id, name: items }).then(() =>
-                  deleteTodoInput(todo._id)
-                )
-              "
+          <b-input-group
+            class="mx-3 my-2"
+            style="width: auto"
+            v-show="showTodoAddItem.includes(todo._id)"
+          >
+            <b-form-input
+              type="text"
+              v-model="items"
+              class="focus-input rounded"
             />
 
-            <b-icon-x-lg
-              class="m-2 text-secondary hover-color"
-              @click="deleteTodoInput(todo._id)"
-            />
-          </b-input-group-append>
-        </b-input-group>
+            <b-input-group-append>
+              <b-icon-check-lg
+                class="m-2 text-secondary hover-color"
+                @click="
+                  createTodoItems({ todoId: todo._id, name: items }).then(() =>
+                    deleteTodoInput(todo._id)
+                  )
+                "
+              />
 
-        <b-button
-          variant="light"
-          class="mx-3 my-2 text-secondary hover-color justify-content-center align-items-center"
-          style="display: flex"
-          @click="showTodoAddItem.push(todo._id)"
-          v-show="!showTodoAddItem.includes(todo._id)"
-        >
-          <b-icon-plus font-scale="2" /> Add a card
-        </b-button>
-      </div>
-    </div>
+              <b-icon-x-lg
+                class="m-2 text-secondary hover-color"
+                @click="deleteTodoInput(todo._id)"
+              />
+            </b-input-group-append>
+          </b-input-group>
 
-    <div v-show="!newColumnStatus">
-      <b-button
-        variant="light"
-        class="p-2 m-4 text-secondary hover-color justify-content-center align-items-center"
-        style="display: flex; width: 120px"
-        @click="newColumnStatus = true"
-      >
-        <b-icon-plus font-scale="2" /> New List
-      </b-button>
-    </div>
-
-    <div v-show="newColumnStatus">
-      <div
-        style="
-          display: flex;
-          justify-content: center;
-          flex-direction: column;
-          border: 2px #dcdcdc solid;
-          align-items: flex-end;
-          width: 275px;
-        "
-        class="rounded m-4 p-2 shadow"
-      >
-        <input
-          type="text"
-          placeholder="Enter list title..."
-          class="p-2 rounded focus-input"
-          style="border: 2px #dcdcdc solid; outline: none; width: 100%"
-          v-model="title"
-          @keydown.enter="createTodos(title).then(() => afterCreateTitle())"
-        />
-
-        <div class="mt-2">
           <b-button
             variant="light"
-            class="text-secondary hover-color"
-            @click="createTodos(title).then(() => afterCreateTitle())"
+            class="mx-3 my-2 text-secondary hover-color justify-content-center align-items-center"
+            style="display: flex"
+            @click="showTodoAddItem.push(todo._id)"
+            v-show="!showTodoAddItem.includes(todo._id)"
           >
-            Add list
+            <b-icon-plus font-scale="2" /> Add a card
           </b-button>
-          <button
-            style="border: none; background-color: white"
-            @click="afterCreateTitle"
-            class="text-secondary hover-color"
-          >
-            <b-icon-x-lg class="mx-2" />
-          </button>
+        </div>
+      </div>
+
+      <div v-show="!newColumnStatus">
+        <b-button
+          variant="light"
+          class="p-2 m-4 text-secondary hover-color justify-content-center align-items-center"
+          style="display: flex; width: 120px"
+          @click="newColumnStatus = true"
+        >
+          <b-icon-plus font-scale="2" /> New List
+        </b-button>
+      </div>
+
+      <div v-show="newColumnStatus">
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            border: 2px #dcdcdc solid;
+            align-items: flex-end;
+            width: 275px;
+          "
+          class="rounded m-4 p-2 shadow"
+        >
+          <input
+            type="text"
+            placeholder="Enter list title..."
+            class="p-2 rounded focus-input"
+            style="border: 2px #dcdcdc solid; outline: none; width: 100%"
+            v-model="title"
+            @keydown.enter="createTodos(title).then(() => afterCreateTitle())"
+          />
+
+          <div class="mt-2">
+            <b-button
+              variant="light"
+              class="text-secondary hover-color"
+              @click="createTodos(title).then(() => afterCreateTitle())"
+            >
+              Add list
+            </b-button>
+            <button
+              style="border: none; background-color: white"
+              @click="afterCreateTitle"
+              class="text-secondary hover-color"
+            >
+              <b-icon-x-lg class="mx-2" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -165,11 +172,13 @@
 import { mapActions, mapGetters } from "vuex";
 
 // ? Components.
-import TheCard from "@/components/TheCard.vue";
+import EditTodoItems from "@/components/EditTodoItems.vue";
+import TheNavbar from "@/components/TheNavbar.vue";
 
 export default {
   components: {
-    TheCard,
+    EditTodoItems,
+    TheNavbar,
   },
 
   data() {

@@ -195,7 +195,7 @@ const actions = {
 
     try {
 
-      const result = await axios.post("http://localhost:3000/auth/signup", { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate, password: payload.password });
+      const result = await axios.post("http://localhost:3000/auth", { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate, password: payload.password });
 
       console.log("createUsers", result.data);
 
@@ -206,6 +206,24 @@ const actions = {
     } catch (error) {
 
       console.error("createUsers", error);
+
+    };
+  },
+  async updateUsers(context, payload) {
+
+    try {
+
+      const result = await axios.put(`http://localhost:3000/auth/${payload.id}`, { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate});
+
+      console.log("updateUsers", result.data);
+
+      context.dispatch("getUsers");
+
+      return result;
+
+    } catch (error) {
+
+      console.error("updateUsers", error);
 
     };
   },

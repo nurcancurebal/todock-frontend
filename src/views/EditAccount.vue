@@ -75,6 +75,7 @@
 
 <script>
 import TheNavbar from "@/components/TheNavbar.vue";
+import { mapActions } from "vuex";
 
 export default {
   components: {
@@ -89,7 +90,101 @@ export default {
         birthdate: "",
         password: "",
       },
+      errors: new Set(),
+      formError: null,
     };
+  },
+  methods: {
+    ...mapActions(["updateUsers"]),
+
+    patternVerification() {
+      if (this.formError === false) {
+        this.createUsers(this.form).then(this.createUsersAfter());
+      }
+    },
+
+    createUsersAfter() {
+      this.form.firstname = "";
+      this.form.lastname = "";
+      this.form.username = "";
+      this.form.birthdate = "";
+      this.form.password = "";
+    },
+
+    checkForm() {
+      const pattern = /[ğĞçÇüÜöÖıİşŞ]/g;
+
+      const matchesusername = this.form.username.match(pattern);
+      const matchespassword = this.form.password.match(pattern);
+
+      if (!this.form.firstname) {
+        // hata varsa içerisine yazıyı gönderiyor
+        this.errors.add("firstname");
+      } else {
+        this.errors.delete("firstname");
+      }
+
+      if (!this.form.lastname) {
+        this.errors.add("lastname");
+      } else {
+        this.errors.delete("lastname");
+      }
+
+      if (
+        !this.form.username ||
+        matchesusername != null ||
+        this.form.username.length < 6 ||
+        this.form.username.length > 18
+      ) {
+        this.errors.add("username");
+      } else {
+        this.errors.delete("username");
+      }
+
+      if (!this.form.birthdate) {
+        this.errors.add("birthdate");
+      } else {
+        this.errors.delete("birthdate");
+      }
+
+      if (
+        !this.form.password ||
+        matchespassword != null ||
+        this.form.password.length < 6 ||
+        this.form.password.length > 18
+      ) {
+        this.errors.add("password");
+      } else {
+        this.errors.delete("password");
+      }
+
+      if (this.errors.size === 0) {
+        this.formError = false;
+      } else {
+        this.formError = true;
+      }
+    },
+
+    checkFormError(slug) {
+      return Array.from(this.errors).includes(slug);
+    },
+  },
+  watch: {
+    ["form.firstname"]: function () {
+      this.checkForm();
+    },
+    ["form.lastname"]: function () {
+      this.checkForm();
+    },
+    ["form.username"]: function () {
+      this.checkForm();
+    },
+    ["form.password"]: function () {
+      this.checkForm();
+    },
+    ["form.birthdate"]: function () {
+      this.checkForm();
+    },
   },
 };
 </script>

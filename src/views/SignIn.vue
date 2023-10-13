@@ -14,22 +14,38 @@
                 v-model="form.username"
                 type="text"
                 placeholder="Kullanıcı adı"
-                class="mb-3 form-control-lg focus-input"
+                class="form-control-lg focus-input"
                 required
               />
+
+              <b-form-text
+                class="mx-3"
+                v-show="userNameError"
+                style="color: red !important"
+              >
+                Bu kullanıcı adı mevcut değil.
+              </b-form-text>
 
               <b-form-input
                 v-model="form.password"
                 type="password"
                 placeholder="Şifre"
-                class="mb-3 form-control-lg focus-input"
+                class="form-control-lg focus-input mt-3"
                 required
               />
+
+              <b-form-text
+                class="mx-3"
+                v-show="passwordError"
+                style="color: red !important"
+              >
+                Bu şifre geçersiz.
+              </b-form-text>
 
               <b-button
                 style="width: 100%"
                 variant="light"
-                class="btn-lg mb-3 text-dark"
+                class="btn-lg mb-3 text-dark mt-3"
                 @click="logIn"
               >
                 Giriş Yap
@@ -78,6 +94,8 @@ export default {
         username: "",
         password: "",
       },
+      userNameError: false,
+      passwordError: false,
     };
   },
 
@@ -93,7 +111,29 @@ export default {
     },
 
     logIn() {
-      console.log(this.form);
+      const username = this.form.username;
+      const password = this.form.password;
+
+      const usernameresult = this.users.filter(
+        (item) => item.username == username
+      );
+
+      if (usernameresult.length != 0) {
+        const passwordresult = this.users.filter(
+          (item) => item.password == password
+        );
+
+        if (passwordresult.length != 0) {
+          this.userNameError = false;
+          this.passwordError = false;
+          this.$router.push({ name: "Kanban" });
+        } else {
+          this.userNameError = false;
+          this.passwordError = true;
+        }
+      } else {
+        this.userNameError = true;
+      }
     },
   },
 

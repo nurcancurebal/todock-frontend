@@ -213,7 +213,7 @@ const actions = {
 
     try {
 
-      const result = await axios.put(`http://localhost:3000/auth/${payload.id}`, { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate});
+      const result = await axios.put(`http://localhost:3000/auth/${payload.id}`, { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate });
 
       console.log("updateUsers", result.data);
 

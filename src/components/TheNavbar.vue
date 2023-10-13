@@ -40,15 +40,6 @@
   </b-row>
 </template>
 
-<script>
-export default {
-  data() {
-    return {};
-  },
-};
-</script>
-
-
 <style>
 a:focus-visible {
   box-shadow: none !important;

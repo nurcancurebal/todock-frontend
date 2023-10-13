@@ -75,7 +75,7 @@
 
 <script>
 import TheNavbar from "@/components/TheNavbar.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -94,21 +94,24 @@ export default {
       formError: null,
     };
   },
+  computed: {
+    ...mapGetters(["users"]),
+  },
   methods: {
     ...mapActions(["updateUsers"]),
 
     patternVerification() {
       if (this.formError === false) {
-        this.createUsers(this.form).then(this.createUsersAfter());
+        this.updateUsers(this.form).then(this.updateUsersAfter());
       }
     },
 
-    createUsersAfter() {
-      this.form.firstname = "";
-      this.form.lastname = "";
-      this.form.username = "";
-      this.form.birthdate = "";
-      this.form.password = "";
+    users(){
+      console.log(users)
+    },
+
+    updateUsersAfter() {
+      this.$router.push({ name: "Kanban" });
     },
 
     checkForm() {

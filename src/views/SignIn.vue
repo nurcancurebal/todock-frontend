@@ -119,13 +119,12 @@ export default {
       );
 
       if (usernameresult.length != 0) {
-        const passwordresult = this.users.filter(
-          (item) => item.password == password
-        );
+        const passwordresult =usernameresult.filter((item) => item.password == password);
 
         if (passwordresult.length != 0) {
           this.userNameError = false;
           this.passwordError = false;
+
           this.$router.push({ name: "Kanban" });
         } else {
           this.userNameError = false;

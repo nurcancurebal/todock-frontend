@@ -156,6 +156,8 @@ export default {
     },
 
     createUsersAfter() {
+      this.$router.push({ name: "SignIn" });
+
       this.form.firstname = "";
       this.form.lastname = "";
       this.form.username = "";

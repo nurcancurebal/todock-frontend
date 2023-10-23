@@ -62,7 +62,9 @@ const actions = {
 
     try {
 
-      const result = await axios.post("http://localhost:3000/todos", { title: payload });
+      console.log(payload)
+
+      const result = await axios.post(`http://localhost:3000/todos/${payload.userId}`, { title: payload.title });
 
       console.log("createTodos", result.data);
 
@@ -119,7 +121,7 @@ const actions = {
 
     try {
 
-      const result = await axios.post("http://localhost:3000/todo-items", payload);
+      const result = await axios.post(`http://localhost:3000/todo-items/${payload}`);
 
       console.log("createTodoItems", result.data);
 

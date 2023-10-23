@@ -142,14 +142,22 @@
             class="p-2 rounded focus-input"
             style="border: 2px #dcdcdc solid; outline: none; width: 100%"
             v-model="title"
-            @keydown.enter="createTodos(title).then(() => afterCreateTitle())"
+            @keydown.enter="
+              createTodos({ userId: users._id, title: title }).then(() =>
+                afterCreateTitle()
+              )
+            "
           />
 
           <div class="mt-2">
             <b-button
               variant="light"
               class="text-secondary hover-color"
-              @click="createTodos(title).then(() => afterCreateTitle())"
+              @click="
+                createTodos({ userId: users._id, title: title }).then(() =>
+                  afterCreateTitle()
+                )
+              "
             >
               Add list
             </b-button>
@@ -194,11 +202,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["todos"]),
+    ...mapGetters(["todos", "users"]),
   },
 
   methods: {
     ...mapActions([
+      "getUsers",
       "getTodos",
       "createTodos",
       "updateTodos",
@@ -229,6 +238,7 @@ export default {
   },
 
   created() {
+
     this.getTodos();
   },
 };

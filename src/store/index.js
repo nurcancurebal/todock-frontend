@@ -9,7 +9,6 @@ Vue.use(Vuex);
 const state = {
   todos: [],
   todoItems: [],
-  users: []
 };
 
 const getters = {
@@ -17,10 +16,6 @@ const getters = {
   todos(state) {
 
     return state.todos
-  },
-  users(state) {
-
-    return state.users
   }
 };
 
@@ -29,10 +24,6 @@ const mutations = {
   TODOS(state, context) {
 
     state.todos = context;
-  },
-  USERS(state, context) {
-
-    state.users = context;
   }
 };
 
@@ -64,7 +55,7 @@ const actions = {
 
       console.log(payload)
 
-      const result = await axios.post(`http://localhost:3000/todos/${payload.userId}`, { title: payload.title });
+      const result = await axios.post("http://localhost:3000/todos", { title: payload.title });
 
       console.log("createTodos", result.data);
 
@@ -121,7 +112,7 @@ const actions = {
 
     try {
 
-      const result = await axios.post(`http://localhost:3000/todo-items/${payload}`);
+      const result = await axios.post("http://localhost:3000/todo-items");
 
       console.log("createTodoItems", result.data);
 
@@ -173,59 +164,37 @@ const actions = {
 
     };
   },
-  async getUsers(context) {
+
+  async createAuth(context, payload) {
 
     try {
 
-      const result = await axios
-        .get("http://localhost:3000/auth");
+      const result = await axios.post("http://localhost:3000/auth/signup", { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate, password: payload.password });
 
-      console.log("getUsers", result.data);
-
-      context.commit("USERS", result.data);
+      console.log("createAuth", result.data);
 
       return result;
 
     } catch (error) {
 
-      console.error("getUsers", error);
+      console.error("createAuth", error);
 
     };
   },
 
-  async createUsers(context, payload) {
+  async updateOne(context, payload) {
 
     try {
 
-      const result = await axios.post("http://localhost:3000/auth", { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate, password: payload.password });
+      const result = await axios.put(`http://localhost:3000/user/${payload.id}`, { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate });
 
-      console.log("createUsers", result.data);
-
-      context.dispatch("getUsers");
+      console.log("updateOne", result.data);
 
       return result;
 
     } catch (error) {
 
-      console.error("createUsers", error);
-
-    };
-  },
-  async updateUsers(context, payload) {
-
-    try {
-
-      const result = await axios.put(`http://localhost:3000/auth/${payload.id}`, { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate });
-
-      console.log("updateUsers", result.data);
-
-      context.dispatch("getUsers");
-
-      return result;
-
-    } catch (error) {
-
-      console.error("updateUsers", error);
+      console.error("updateOne", error);
 
     };
   },

@@ -94,23 +94,17 @@ export default {
       formError: null,
     };
   },
-  computed: {
-    ...mapGetters(["users"]),
-  },
+
   methods: {
-    ...mapActions(["updateUsers"]),
+    ...mapActions(["updateUser"]),
 
     patternVerification() {
       if (this.formError === false) {
-        this.updateUsers(this.form).then(this.updateUsersAfter());
+        this.updateUser(this.form).then(this.updateUserAfter());
       }
     },
 
-    users(){
-      console.log(users)
-    },
-
-    updateUsersAfter() {
+    updateUserAfter() {
       this.$router.push({ name: "Kanban" });
     },
 

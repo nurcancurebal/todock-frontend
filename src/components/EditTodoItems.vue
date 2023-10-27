@@ -1,24 +1,24 @@
 <template>
   <div>
-    <b-input-group class="mx-3 my-2" style="width: auto" v-show="todoItemsShow">
+    <b-input-group class="mx-3 my-2" style="width: auto" v-show="todoItemShow">
       <b-form-input
         type="text"
         class="focus-input rounded"
         v-model="newItem"
         @keydown.enter="
-          updateTodoItems({ id: id, name: newItem }).then(closeItem)
+          updateTodoItem({ id: id, name: newItem }).then(closeItem)
         "
       />
 
       <b-input-group-append>
         <b-icon-check-lg
           class="m-2 text-secondary hover-color"
-          @click="updateTodoItems({ id: id, name: newItem }).then(closeItem)"
+          @click="updateTodoItem({ id: id, name: newItem }).then(closeItem)"
         />
 
         <b-icon-x-lg
           class="m-2 text-secondary hover-color"
-          @click="deleteTodoItems(id).then(closeItem)"
+          @click="deleteTodoItem(id).then(closeItem)"
         />
       </b-input-group-append>
     </b-input-group>
@@ -26,7 +26,7 @@
     <div
       class="justify-content-between rounded shadow mx-3 my-2 p-2"
       style="border: 2px #dcdcdc solid; display: flex"
-      v-show="!todoItemsShow"
+      v-show="!todoItemShow"
     >
       <div id="overflowEllipsis" @click="setItem">
         {{ name }}
@@ -43,21 +43,21 @@ export default {
   props: ["name", "id"],
   data() {
     return {
-      todoItemsShow: false,
+      todoItemShow: false,
       newItem: "",
     };
   },
 
   methods: {
-    ...mapActions(["updateTodoItems", "deleteTodoItems"]),
+    ...mapActions(["updateTodoItem", "deleteTodoItem"]),
 
     setItem() {
-      this.todoItemsShow = true;
+      this.todoItemShow = true;
       this.newItem = this.name;
     },
 
     closeItem() {
-      this.todoItemsShow = false;
+      this.todoItemShow = false;
       this.newItem = "";
     },
   },

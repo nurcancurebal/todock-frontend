@@ -147,15 +147,15 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["createAuth"]),
+    ...mapActions(["signUp"]),
 
     patternVerification() {
       if (this.formError === false) {
-        this.createAuth(this.form).then(this.createAuthAfter());
+        this.signUp(this.form).then(this.signUpAfter());
       }
     },
 
-    createAuthAfter() {
+    signUpAfter() {
       this.$router.push({ name: "SignIn" });
 
       this.form.firstname = "";

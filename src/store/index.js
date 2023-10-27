@@ -7,194 +7,212 @@ import axios from "axios";
 Vue.use(Vuex);
 
 const state = {
-  todos: [],
-  todoItems: [],
+  todo: [],
+  todoItem: [],
 };
 
 const getters = {
 
-  todos(state) {
+  todo(state) {
 
-    return state.todos
+    return state.todo
   }
 };
 
 const mutations = {
 
-  TODOS(state, context) {
+  TODO(state, context) {
 
-    state.todos = context;
+    state.todo = context;
   }
 };
 
 const actions = {
 
-  async getTodos(context) {
+  async getTodo(context) {
 
     try {
 
       const result = await axios
-        .get("http://localhost:3000/todos");
+        .get("http://localhost:3000/todo");
 
-      console.log("getTodos", result.data);
+      console.log("getTodo", result.data);
 
-      context.commit("TODOS", result.data);
+      context.commit("TODO", result.data);
 
       return result;
 
     } catch (error) {
 
-      console.error("getTodos", error);
+      console.error("getTodo", error);
 
     };
   },
 
-  async createTodos(context, payload) {
+  async createTodo(context, payload) {
 
     try {
 
       console.log(payload)
 
-      const result = await axios.post("http://localhost:3000/todos", { title: payload.title });
+      const result = await axios.post("http://localhost:3000/todo", { title: payload.title });
 
-      console.log("createTodos", result.data);
+      console.log("createTodo", result.data);
 
-      context.dispatch("getTodos");
+      context.dispatch("getTodo");
 
       return result;
 
     } catch (error) {
 
-      console.error("createTodos", error);
+      console.error("createTodo", error);
 
     };
   },
 
-  async updateTodos(context, payload) {
+  async updateTodo(context, payload) {
 
     try {
 
-      const result = await axios.put(`http://localhost:3000/todos/${payload._id}`, { title: payload.title });
+      const result = await axios.put(`http://localhost:3000/todo/${payload._id}`, { title: payload.title });
 
-      console.log("updateTodos", result.data);
+      console.log("updateTodo", result.data);
 
-      context.dispatch("getTodos");
+      context.dispatch("getTodo");
 
       return result;
 
     } catch (error) {
 
-      console.error("updateTodos", error);
+      console.error("updateTodo", error);
 
     };
   },
 
-  async deleteTodos(context, payload) {
+  async deleteTodo(context, payload) {
 
     try {
 
-      const result = await axios.delete(`http://localhost:3000/todos/${payload}`);
+      const result = await axios.delete(`http://localhost:3000/todo/${payload}`);
 
-      console.log("deleteTodos", result.status);
+      console.log("deleteTodo", result.status);
 
-      context.dispatch("getTodos");
+      context.dispatch("getTodo");
 
       return result;
 
     } catch (error) {
 
-      console.error("deleteTodos", error);
+      console.error("deleteTodo", error);
 
     };
   },
 
-  async createTodoItems(context, payload) {
+  async createTodoItem(context, payload) {
 
     try {
 
-      const result = await axios.post("http://localhost:3000/todo-items");
+      const result = await axios.post(`http://localhost:3000/todo-item/${payload._id}`, { name: payload.name });
 
-      console.log("createTodoItems", result.data);
+      console.log("createTodoItem", result.data);
 
-      context.dispatch("getTodos");
+      context.dispatch("getTodo");
 
       return result;
 
     } catch (error) {
 
-      console.error("createTodoItems", error);
+      console.error("createTodoItem", error);
 
     };
   },
 
-  async updateTodoItems(context, payload) {
+  async updateTodoItem(context, payload) {
 
     try {
 
-      const result = await axios.put(`http://localhost:3000/todo-items/${payload.id}`, { name: payload.name });
+      const result = await axios.put(`http://localhost:3000/todo-items/${payload.todoId}/${payload.itemId}`, { name: payload.name });
 
-      console.log("updateTodoItems", result.data);
+      console.log("updateTodoItem", result.data);
 
-      context.dispatch("getTodos");
+      context.dispatch("getTodo");
 
       return result;
 
     } catch (error) {
 
-      console.error("updateTodoItems", error);
+      console.error("updateTodoItem", error);
 
     };
   },
 
-  async deleteTodoItems(context, payload) {
+  async deleteTodoItem(context, payload) {
 
     try {
 
-      const result = await axios.delete(`http://localhost:3000/todo-items/${payload}`);
+      const result = await axios.delete(`http://localhost:3000/todo-items/${payload.todoId}/${payload.itemId}`);
 
-      console.log("deleteTodoItems", result.status);
+      console.log("deleteTodoItem", result.status);
 
-      context.dispatch("getTodos");
+      context.dispatch("getTodo");
 
       return result;
 
     } catch (error) {
 
-      console.error("deleteTodoItems", error);
+      console.error("deleteTodoItem", error);
 
     };
   },
 
-  async createAuth(context, payload) {
+  async signUp(context, payload) {
 
     try {
 
       const result = await axios.post("http://localhost:3000/auth/signup", { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate, password: payload.password });
 
-      console.log("createAuth", result.data);
+      console.log("signUp", result.data);
 
       return result;
 
     } catch (error) {
 
-      console.error("createAuth", error);
+      console.error("signUp", error);
 
     };
   },
 
-  async updateOne(context, payload) {
+
+  async signIn(context, payload) {
+
+    try {
+
+      const result = await axios.post("http://localhost:3000/auth/signin", { username: payload.username, password: payload.password });
+
+      console.log("signIn", result.data);
+
+      return result;
+
+    } catch (error) {
+
+      console.error("signIn", error);
+
+    };
+  },
+
+  async updateUser(context, payload) {
 
     try {
 
       const result = await axios.put(`http://localhost:3000/user/${payload.id}`, { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate });
 
-      console.log("updateOne", result.data);
+      console.log("updateUser", result.data);
 
       return result;
 
     } catch (error) {
 
-      console.error("updateOne", error);
+      console.error("updateUser", error);
 
     };
   },

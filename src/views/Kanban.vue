@@ -6,7 +6,7 @@
       style="display: flex; flex-wrap: nowrap; position: absolute; top: 75px"
       class="mt-4"
     >
-      <div v-for="todo in todos" :key="todo.id">
+      <div v-for="todo in todo" :key="todo.id">
         <div
           style="
             display: flex;
@@ -26,7 +26,7 @@
               v-model="newTitle"
               class="focus-input rounded"
               @keydown.enter="
-                updateTodos({ title: newTitle, _id: todo._id }).then(() =>
+                updateTodo({ title: newTitle, _id: todo._id }).then(() =>
                   deleteTodoTitle(todo._id)
                 )
               "
@@ -36,7 +36,7 @@
               <b-icon-check-lg
                 class="m-2 text-secondary hover-color"
                 @click="
-                  updateTodos({ title: newTitle, _id: todo._id }).then(() =>
+                  updateTodo({ title: newTitle, _id: todo._id }).then(() =>
                     deleteTodoTitle(todo._id)
                   )
                 "
@@ -60,7 +60,7 @@
             <b-button
               variant="none"
               class="text-secondary hover-color"
-              @click="deleteTodos(todo._id)"
+              @click="deleteTodo(todo._id)"
             >
               <b-icon-x font-scale="2" />
             </b-button>
@@ -88,7 +88,7 @@
               <b-icon-check-lg
                 class="m-2 text-secondary hover-color"
                 @click="
-                  createTodoItems({ todoId: todo._id, name: items }).then(() =>
+                  createTodoItem({ todoId: todo._id, name: items }).then(() =>
                     deleteTodoInput(todo._id)
                   )
                 "
@@ -143,7 +143,7 @@
             style="border: 2px #dcdcdc solid; outline: none; width: 100%"
             v-model="title"
             @keydown.enter="
-              createTodos({ userId: users._id, title: title }).then(() =>
+              createTodo({ userId: user._id, title: title }).then(() =>
                 afterCreateTitle()
               )
             "
@@ -154,7 +154,7 @@
               variant="light"
               class="text-secondary hover-color"
               @click="
-                createTodos({ userId: users._id, title: title }).then(() =>
+                createTodo({ userId: user._id, title: title }).then(() =>
                   afterCreateTitle()
                 )
               "
@@ -202,17 +202,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["todos", "users"]),
+    ...mapGetters(["todo"]),
   },
 
   methods: {
     ...mapActions([
-      "getUsers",
-      "getTodos",
-      "createTodos",
-      "updateTodos",
-      "deleteTodos",
-      "createTodoItems",
+      "getTodo",
+      "createTodo",
+      "updateTodo",
+      "deleteTodo",
+      "createTodoItem",
     ]),
 
     afterCreateTitle() {
@@ -239,7 +238,7 @@ export default {
 
   created() {
 
-    this.getTodos();
+    this.getTodo();
   },
 };
 </script>

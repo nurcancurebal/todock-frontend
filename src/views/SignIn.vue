@@ -100,11 +100,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["users"]),
+    ...mapGetters(["user"]),
   },
 
   methods: {
-    ...mapActions(["getUsers"]),
+    ...mapActions(["signIn"]),
 
     signUp() {
       this.$router.push({ name: "SignUp" });
@@ -114,16 +114,20 @@ export default {
       const username = this.form.username;
       const password = this.form.password;
 
-      const usernameresult = this.users.filter(
+      const usernameresult = this.user.filter(
         (item) => item.username == username
       );
 
       if (usernameresult.length != 0) {
-        const passwordresult =usernameresult.filter((item) => item.password == password);
+        const passwordresult = usernameresult.filter(
+          (item) => item.password == password
+        );
 
         if (passwordresult.length != 0) {
           this.userNameError = false;
           this.passwordError = false;
+
+          this.signIn({ username, password });
 
           this.$router.push({ name: "Kanban" });
         } else {

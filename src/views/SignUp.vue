@@ -156,13 +156,13 @@ export default {
     },
 
     signUpAfter() {
-      this.$router.push({ name: "SignIn" });
-
       this.form.firstname = "";
       this.form.lastname = "";
       this.form.username = "";
       this.form.birthdate = "";
       this.form.password = "";
+
+      this.$router.push({ name: "Home" });
     },
 
     checkForm() {
@@ -242,4 +242,3 @@ export default {
   },
 };
 </script>
-

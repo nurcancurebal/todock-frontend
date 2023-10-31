@@ -1,6 +1,22 @@
 <template>
   <div class="d-flex vh-100 vw-100">
-    <b-row align-h="center" class="vh-100 vw-100">
+    <div
+      class="alert alert-success"
+      role="alert"
+      style="
+        z-index: 1;
+        position: fixed;
+        top: 87px;
+        left: 23px;
+        right: 65px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <b-icon-check-lg style="margin-right: 5px" /> Tebrikler. Kayıt oldunuz!
+    </div>
+    <b-row align-h="center" class="vh-100 vw-100" style="z-index: auto">
       <b-col cols="12" md="6" style="font-family: Georgia" class="text-center">
         <AuthMessage />
       </b-col>
@@ -97,10 +113,6 @@ export default {
       userNameError: false,
       passwordError: false,
     };
-  },
-
-  computed: {
-    ...mapGetters(["user"]),
   },
 
   methods: {

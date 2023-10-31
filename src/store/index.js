@@ -169,11 +169,7 @@ const actions = {
 
     try {
 
-      const result = await axios.post("http://localhost:3000/auth/signup", { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate, password: payload.password });
-
-      console.log("signUp", result.data);
-
-      return result;
+      return await axios.post("http://localhost:3000/auth/signup", { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate, password: payload.password });
 
     } catch (error) {
 
@@ -189,7 +185,7 @@ const actions = {
 
       const result = await axios.post("http://localhost:3000/auth/signin", { username: payload.username, password: payload.password });
 
-      console.log("signIn", result.data);
+      console.log("signIn", result);
 
       return result;
 

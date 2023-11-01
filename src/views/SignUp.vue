@@ -106,17 +106,19 @@
 
               <hr />
 
-              <b-link
-                href="/"
-                class="card-link hover-link"
-                style="
-                  text-decoration: none;
-                  font-size: 23px;
-                  color: rgb(72, 209, 204);
-                  float: right;
-                "
-              >
-                Giriş Yap
+              <b-link>
+                <router-link
+                  class="card-link hover-link"
+                  style="
+                    text-decoration: none;
+                    font-size: 23px;
+                    color: rgb(72, 209, 204);
+                    float: right;
+                  "
+                  to="/signin"
+                >
+                  Giriş Yap
+                </router-link>
               </b-link>
             </b-form>
           </b-card>
@@ -162,7 +164,7 @@ export default {
       this.form.birthdate = "";
       this.form.password = "";
 
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "SignIn", query: { success: 1 } });
     },
 
     checkForm() {

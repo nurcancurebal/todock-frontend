@@ -8,6 +8,7 @@
       left: 0px;
       right: 0px;
       font-family: Georgia;
+      z-index: 1;
     "
   >
     <b-col cols="10">
@@ -29,10 +30,22 @@
             <template #button-content>
               <em class="h5">Profil</em>
             </template>
-            <b-dropdown-item href="/editaccount">
-              Hesabımı Düzenle
+            <b-dropdown-item>
+              <router-link
+                style="text-decoration: none; color: black"
+                to="/editaccount"
+              >
+                Hesabımı Düzenle
+              </router-link>
             </b-dropdown-item>
-            <b-dropdown-item href="/"> Çıkış </b-dropdown-item>
+            <b-dropdown-item>
+              <router-link
+                style="text-decoration: none; color: black"
+                to="/signin"
+              >
+                Çıkış
+              </router-link>
+            </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-navbar>

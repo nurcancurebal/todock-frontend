@@ -1,7 +1,10 @@
 <template>
   <div>
     <TheNavbar />
-    <b-card style="max-width: 35rem; margin: auto; top: 75px" class="p-2 my-5">
+    <b-card
+      style="max-width: 35rem; margin: auto; top: 75px; z-index: auto"
+      class="p-2 my-5"
+    >
       <b-form>
         <b-form-input
           v-model="form.name"
@@ -56,17 +59,19 @@
 
         <hr />
 
-        <b-link
-          href="/kanban"
-          class="card-link hover-link"
-          style="
-            text-decoration: none;
-            font-size: 23px;
-            color: rgb(72, 209, 204);
-            float: right;
-          "
-        >
-          Ana Sayfa
+        <b-link>
+          <router-link
+            class="card-link hover-link"
+            style="
+              text-decoration: none;
+              font-size: 23px;
+              color: rgb(72, 209, 204);
+              float: right;
+            "
+            to="/kanban"
+          >
+            Ana Sayfa
+          </router-link>
         </b-link>
       </b-form>
     </b-card>
@@ -105,7 +110,7 @@ export default {
     },
 
     updateUserAfter() {
-      this.$router.push({ name: "Kanban" });
+      this.$router.push("kanban");
     },
 
     checkForm() {

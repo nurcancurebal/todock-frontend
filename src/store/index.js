@@ -3,6 +3,31 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from "axios";
 
+axios.interceptors.request.use(config => {
+
+  const authToken = localStorage.getItem('token');
+
+  if (authToken) {
+
+    config.headers.Authorization = `Bearer ${authToken}`;
+  };
+  return config;
+});
+
+axios.interceptors.response.use(function (response) {
+
+  return response;
+
+}, function (error) {
+
+  if (error?.response?.status == 401) {
+
+    localStorage.removeItem("token");
+    router.push("signin");
+  };
+  return Promise.reject(error);
+});
+
 // ? Inits.
 Vue.use(Vuex);
 
@@ -183,11 +208,7 @@ const actions = {
 
     try {
 
-      const result = await axios.post("http://localhost:3000/auth/signin", { username: payload.username, password: payload.password });
-
-      console.log("signIn", result);
-
-      return result;
+      return await axios.post("http://localhost:3000/auth/signin", { username: payload.username, password: payload.password });
 
     } catch (error) {
 

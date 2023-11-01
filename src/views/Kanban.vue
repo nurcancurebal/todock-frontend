@@ -237,7 +237,6 @@ export default {
   },
 
   created() {
-
     this.getTodo();
   },
 };

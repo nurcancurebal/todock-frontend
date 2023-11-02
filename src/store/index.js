@@ -23,7 +23,7 @@ axios.interceptors.response.use(function (response) {
   if (error?.response?.status == 401) {
 
     localStorage.removeItem("token");
-    router.push("signin");
+    this.$router.push("SignIn");
   };
   return Promise.reject(error);
 });
@@ -32,6 +32,7 @@ axios.interceptors.response.use(function (response) {
 Vue.use(Vuex);
 
 const state = {
+  user: [],
   todo: [],
   todoItem: [],
 };
@@ -41,6 +42,10 @@ const getters = {
   todo(state) {
 
     return state.todo
+  },
+
+  user(state) {
+    return state.user
   }
 };
 
@@ -49,6 +54,10 @@ const mutations = {
   TODO(state, context) {
 
     state.todo = context;
+  },
+
+  USER(state, context) {
+    state.user = context
   }
 };
 
@@ -156,7 +165,7 @@ const actions = {
 
     try {
 
-      const result = await axios.put(`http://localhost:3000/todo-items/${payload.todoId}/${payload.itemId}`, { name: payload.name });
+      const result = await axios.put(`http://localhost:3000/todo-item/${payload.todoId}/${payload.itemId}`, { name: payload.name });
 
       console.log("updateTodoItem", result.data);
 
@@ -212,7 +221,7 @@ const actions = {
 
     } catch (error) {
 
-      console.error("signIn", error);
+      console.error(error);
 
     };
   },
@@ -230,6 +239,26 @@ const actions = {
     } catch (error) {
 
       console.error("updateUser", error);
+
+    };
+  },
+
+  async getUser(context) {
+
+    try {
+
+      const result = await axios
+        .get("http://localhost:3000/user");
+
+      console.log("getUser", result.data);
+
+      context.commit("USER", result.data);
+
+      return result;
+
+    } catch (error) {
+
+      console.error("getUser", error);
 
     };
   },

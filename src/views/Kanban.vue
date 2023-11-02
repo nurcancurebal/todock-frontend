@@ -70,7 +70,8 @@
             v-for="todoItem in todo.items"
             :key="todoItem._id"
             :name="todoItem.name"
-            :id="todoItem._id"
+            :_id="todoItem._id"
+            :todo_id="todoItem.todoId"
           />
 
           <b-input-group
@@ -88,7 +89,7 @@
               <b-icon-check-lg
                 class="m-2 text-secondary hover-color"
                 @click="
-                  createTodoItem({ todoId: todo._id, name: items }).then(() =>
+                  createTodoItem({ _id: todo._id, name: items }).then(() =>
                     deleteTodoInput(todo._id)
                   )
                 "
@@ -143,9 +144,7 @@
             style="border: 2px #dcdcdc solid; outline: none; width: 100%"
             v-model="title"
             @keydown.enter="
-              createTodo({ userId: user._id, title: title }).then(() =>
-                afterCreateTitle()
-              )
+              createTodo({ title: title }).then(() => afterCreateTitle())
             "
           />
 
@@ -154,9 +153,7 @@
               variant="light"
               class="text-secondary hover-color"
               @click="
-                createTodo({ userId: user._id, title: title }).then(() =>
-                  afterCreateTitle()
-                )
+                createTodo({ title: title }).then(() => afterCreateTitle())
               "
             >
               Add list

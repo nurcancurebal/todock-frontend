@@ -100,17 +100,21 @@ export default {
     };
   },
 
+  mounted() {
+    this.getUser().then();
+  },
+
+  computed: {
+    ...mapGetters(["user"]),
+  },
+
   methods: {
-    ...mapActions(["updateUser"]),
+    ...mapActions(["updateUser", "getUser"]),
 
     patternVerification() {
       if (this.formError === false) {
-        this.updateUser(this.form).then(this.updateUserAfter());
+        this.updateUser(this.form).then(this.$router.push("kanban"));
       }
-    },
-
-    updateUserAfter() {
-      this.$router.push("kanban");
     },
 
     checkForm() {

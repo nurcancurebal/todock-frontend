@@ -13,7 +13,13 @@
       <b-input-group-append>
         <b-icon-check-lg
           class="m-2 text-secondary hover-color"
-          @click="updateTodoItem({ id: id, name: newItem }).then(closeItem)"
+          @click="
+            updateTodoItem({
+              itemId: _id,
+              todoId: todo_id,
+              name: newItem,
+            }).then(closeItem)
+          "
         />
 
         <b-icon-x-lg
@@ -40,7 +46,7 @@
 import { mapActions } from "vuex";
 
 export default {
-  props: ["name", "id"],
+  props: ["name", "_id", "todo_id"],
   data() {
     return {
       todoItemShow: false,

@@ -5,7 +5,13 @@
         <div
           class="alert alert-success"
           role="alert"
-          style="margin: 10px 60px 0 60px; display: flex; align-items: center"
+          v-show="successfulRegistration"
+          style="
+            margin: 10px 60px 0 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
         >
           <b-icon-check-lg style="margin-right: 5px" /> Tebrikler. Kayıt
           oldunuz!
@@ -36,34 +42,26 @@
                   required
                 />
 
-                <b-form-text
-                  class="mx-3"
-                  v-show="usernameError"
-                  style="color: red !important"
-                >
-                  Bu kullanıcı adı mevcut değil.
-                </b-form-text>
-
                 <b-form-input
                   v-model="form.password"
                   type="password"
                   placeholder="Şifre"
-                  class="form-control-lg focus-input mt-3"
+                  class="form-control-lg focus-input my-3"
                   required
                 />
 
                 <b-form-text
                   class="mx-3"
-                  v-show="passwordError"
+                  v-show="userError"
                   style="color: red !important"
                 >
-                  Bu şifre geçersiz.
+                  Kullanıcı mevcut değil.
                 </b-form-text>
 
                 <b-button
                   style="width: 100%"
                   variant="light"
-                  class="btn-lg mb-3 text-dark mt-3"
+                  class="btn-lg mb-3 text-dark"
                   @click="logIn"
                 >
                   Giriş Yap
@@ -112,8 +110,8 @@ export default {
         username: "",
         password: "",
       },
-      usernameError: false,
-      passwordError: false,
+      userError: false,
+      successfulRegistration: false,
     };
   },
 
@@ -125,16 +123,23 @@ export default {
       const password = this.form.password;
 
       this.signIn({ username, password })
-        .then((reponse) => {
-          localStorage.setItem("token", reponse.data.token);
+        .then((response) => {
+          localStorage.setItem("token", response.data.token);
         })
         .then(() => {
           this.$router.push("kanban");
+        })
+        .catch((error) => {
+          this.userError = true;
+          console.error("error", error);
         });
     },
   },
   created() {
-    console.log(this.$route);
+    if (this.$route.query.success == 1) {
+      return (this.successfulRegistration = true);
+    }
+    return (this.successfulRegistration = false);
   },
 };
 </script>

@@ -13,8 +13,8 @@
             justify-content: center;
           "
         >
-          <b-icon-check-lg style="margin-right: 5px" /> Tebrikler. Kayıt
-          oldunuz!
+          <b-icon-check-lg style="margin-right: 5px" />
+          Tebrikler. Kayıt oldunuz!
         </div>
       </b-col>
     </b-row>

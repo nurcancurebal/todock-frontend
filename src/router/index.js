@@ -24,7 +24,7 @@ const routes = [
     component: EditAccount
   },
   {
-    path: '/kanban',
+    path: '/',
     name: "Kanban",
     component: Kanban
   }

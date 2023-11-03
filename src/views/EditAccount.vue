@@ -118,7 +118,7 @@
             color: rgb(72, 209, 204);
             float: right;
           "
-          to="/kanban"
+          to="/"
         >
           Ana Sayfa
         </router-link>
@@ -167,7 +167,7 @@ export default {
 
     patternVerification() {
       if (this.formError === false) {
-        this.updateUser(this.form).then(this.$router.push("kanban"));
+        this.updateUser(this.form).then(this.$router.push("/"));
       }
     },
 

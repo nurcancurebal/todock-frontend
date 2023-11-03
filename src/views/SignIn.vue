@@ -121,7 +121,7 @@ export default {
           localStorage.setItem("token", response.data.token);
         })
         .then(() => {
-          this.$router.push("kanban");
+          this.$router.push("/");
         })
         .catch((error) => {
           this.userError = true;

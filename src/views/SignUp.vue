@@ -63,14 +63,19 @@
 
             <b-form-group>
               <label
-                for="datepicker"
+                for="datepicker-dateformat2"
                 style="font-size: large; margin-left: 10px; display: block"
                 class="mt-3"
               >
                 Doğum Tarihi?
               </label>
               <b-form-datepicker
-                id="datepicker"
+                id="datepicker-dateformat2"
+                :date-format-options="{
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric',
+                }"
                 v-model="form.birthdate"
                 size="lg"
                 style="text-align: left"

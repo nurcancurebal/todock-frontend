@@ -184,7 +184,7 @@ const actions = {
 
     try {
 
-      const result = await axios.delete(`http://localhost:3000/todo-items/${payload.todoId}/${payload.itemId}`);
+      const result = await axios.delete(`http://localhost:3000/todo-item/${payload.todoId}/${payload.itemId}`);
 
       console.log("deleteTodoItem", result.status);
 

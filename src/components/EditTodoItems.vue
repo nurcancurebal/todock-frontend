@@ -24,7 +24,9 @@
 
         <b-icon-x-lg
           class="m-2 text-secondary hover-color"
-          @click="deleteTodoItem(id).then(closeItem)"
+          @click="
+            deleteTodoItem({ itemId: _id, todoId: todo_id }).then(closeItem)
+          "
         />
       </b-input-group-append>
     </b-input-group>

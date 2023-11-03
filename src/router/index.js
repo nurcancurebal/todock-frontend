@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import EditAccount from "@/views/EditAccount"
+import UpdateAccount from "@/views/UpdateAccount"
 import SignIn from "@/views/SignIn"
 import SignUp from "@/views/SignUp"
 import Kanban from "@/views/Kanban"
@@ -19,9 +19,9 @@ const routes = [
     component: SignUp
   },
   {
-    path: '/editaccount',
-    name: 'EditAccount',
-    component: EditAccount
+    path: '/updateaccount',
+    name: 'UpdateAccount',
+    component: UpdateAccount
   },
   {
     path: '/',

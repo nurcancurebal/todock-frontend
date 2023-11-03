@@ -66,7 +66,7 @@
             </b-button>
           </div>
 
-          <EditTodoItems
+          <UpdateTodoItem
             v-for="todoItem in todo.items"
             :key="todoItem._id"
             :name="todoItem.name"
@@ -177,12 +177,12 @@
 import { mapActions, mapGetters } from "vuex";
 
 // ? Components.
-import EditTodoItems from "@/components/EditTodoItems.vue";
+import UpdateTodoItem from "@/components/UpdateTodoItem.vue";
 import TheNavbar from "@/components/TheNavbar.vue";
 
 export default {
   components: {
-    EditTodoItems,
+    UpdateTodoItem,
     TheNavbar,
   },
 

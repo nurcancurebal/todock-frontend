@@ -33,7 +33,7 @@
             <b-dropdown-item>
               <router-link
                 style="text-decoration: none; color: black"
-                to="/editaccount"
+                to="/updateaccount"
               >
                 Hesabımı Düzenle
               </router-link>

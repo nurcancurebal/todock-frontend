@@ -6,7 +6,11 @@
         class="focus-input rounded"
         v-model="newItem"
         @keydown.enter="
-          updateTodoItem({ id: id, name: newItem }).then(closeItem)
+          updateTodoItem({
+            itemId: _id,
+            todoId: todo_id,
+            name: newItem,
+          }).then(closeItem)
         "
       />
 

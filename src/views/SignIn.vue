@@ -33,40 +33,34 @@
             class="d-flex flex-column justify-content-center align-items-center h-100 w-100"
           >
             <b-card class="p-2 m-2 text-center w-75">
-              <b-form>
-                <b-form-input
-                  v-model="form.username"
-                  type="text"
-                  placeholder="Kullanıcı adı"
-                  class="form-control-lg focus-input"
-                  required
-                />
+              <b-form-input
+                v-model="form.username"
+                type="text"
+                placeholder="Kullanıcı adı"
+                class="form-control-lg focus-input"
+                required
+              />
 
-                <b-form-input
-                  v-model="form.password"
-                  type="password"
-                  placeholder="Şifre"
-                  class="form-control-lg focus-input my-3"
-                  required
-                />
+              <b-form-input
+                v-model="form.password"
+                type="password"
+                placeholder="Şifre"
+                class="form-control-lg focus-input my-3"
+                required
+              />
 
-                <b-form-text
-                  class="mx-3"
-                  v-show="userError"
-                  style="color: red !important"
-                >
-                  Kullanıcı mevcut değil.
-                </b-form-text>
+              <b-card-text v-show="userError" style="color: red !important">
+                Kullanıcı mevcut değil.
+              </b-card-text>
 
-                <b-button
-                  style="width: 100%"
-                  variant="light"
-                  class="btn-lg mb-3 text-dark"
-                  @click="logIn"
-                >
-                  Giriş Yap
-                </b-button>
-              </b-form>
+              <b-button
+                style="width: 100%"
+                variant="light"
+                class="btn-lg mb-3 text-dark"
+                @click="logIn"
+              >
+                Giriş Yap
+              </b-button>
 
               <b-link
                 class="card-link hover-link"

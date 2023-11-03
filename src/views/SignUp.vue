@@ -9,7 +9,7 @@
           class="d-flex flex-column justify-content-center align-items-center h-100 w-100"
         >
           <b-card class="p-2 w-75 m-2">
-            <b-form>
+            <b-form-group>
               <b-form-input
                 v-model="form.firstname"
                 type="text"
@@ -24,7 +24,9 @@
               >
                 Adın boş geçilemez.
               </b-form-text>
+            </b-form-group>
 
+            <b-form-group>
               <b-form-input
                 v-model="form.lastname"
                 type="text"
@@ -32,7 +34,6 @@
                 class="form-control-lg focus-input mt-3"
                 required
               />
-
               <b-form-text
                 v-show="checkFormError('lastname')"
                 class="mx-3"
@@ -40,7 +41,9 @@
               >
                 Soy adın boş geçilemez.
               </b-form-text>
+            </b-form-group>
 
+            <b-form-group>
               <b-form-input
                 v-model="form.username"
                 type="text"
@@ -48,7 +51,6 @@
                 class="form-control-lg focus-input mt-3"
                 required
               />
-
               <b-form-text
                 v-show="checkFormError('username')"
                 class="mx-3"
@@ -57,7 +59,9 @@
                 Kullanıcı adı boş geçilemez, türkçe karakter kullanılamaz ve 6
                 ile 18 karakter arasında olmak zorundadır.
               </b-form-text>
+            </b-form-group>
 
+            <b-form-group>
               <label
                 for="datepicker"
                 style="font-size: large; margin-left: 10px; display: block"
@@ -78,7 +82,9 @@
               >
                 Doğum tarihi boş geçilemez.
               </b-form-text>
+            </b-form-group>
 
+            <b-form-group>
               <b-form-input
                 v-model="form.password"
                 type="password"
@@ -94,33 +100,33 @@
                 Şifre boş geçilemez, türkçe karakter kullanılamaz ve 6 ile 18
                 karakter arasında olmak zorundadır.
               </b-form-text>
+            </b-form-group>
 
-              <b-button
-                style="width: 100%"
-                variant="light"
-                class="btn-lg my-3 text-dark"
-                @click="patternVerification"
+            <b-button
+              style="width: 100%"
+              variant="light"
+              class="btn-lg my-3 text-dark"
+              @click="patternVerification"
+            >
+              Kayıt Ol
+            </b-button>
+
+            <hr />
+
+            <b-link>
+              <router-link
+                class="card-link hover-link"
+                style="
+                  text-decoration: none;
+                  font-size: 23px;
+                  color: rgb(72, 209, 204);
+                  float: right;
+                "
+                to="/signin"
               >
-                Kayıt Ol
-              </b-button>
-
-              <hr />
-
-              <b-link>
-                <router-link
-                  class="card-link hover-link"
-                  style="
-                    text-decoration: none;
-                    font-size: 23px;
-                    color: rgb(72, 209, 204);
-                    float: right;
-                  "
-                  to="/signin"
-                >
-                  Giriş Yap
-                </router-link>
-              </b-link>
-            </b-form>
+                Giriş Yap
+              </router-link>
+            </b-link>
           </b-card>
         </div>
       </b-col>

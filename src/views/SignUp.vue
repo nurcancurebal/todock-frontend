@@ -146,6 +146,7 @@ export default {
   components: {
     AuthMessage,
   },
+
   data() {
     return {
       form: {
@@ -159,6 +160,25 @@ export default {
       formError: null,
     };
   },
+
+  watch: {
+    ["form.firstname"]: function () {
+      this.checkForm();
+    },
+    ["form.lastname"]: function () {
+      this.checkForm();
+    },
+    ["form.username"]: function () {
+      this.checkForm();
+    },
+    ["form.password"]: function () {
+      this.checkForm();
+    },
+    ["form.birthdate"]: function () {
+      this.checkForm();
+    },
+  },
+
   methods: {
     ...mapActions(["signUp"]),
 
@@ -234,23 +254,6 @@ export default {
 
     checkFormError(slug) {
       return Array.from(this.errors).includes(slug);
-    },
-  },
-  watch: {
-    ["form.firstname"]: function () {
-      this.checkForm();
-    },
-    ["form.lastname"]: function () {
-      this.checkForm();
-    },
-    ["form.username"]: function () {
-      this.checkForm();
-    },
-    ["form.password"]: function () {
-      this.checkForm();
-    },
-    ["form.birthdate"]: function () {
-      this.checkForm();
     },
   },
 };

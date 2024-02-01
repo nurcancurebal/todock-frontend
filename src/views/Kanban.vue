@@ -202,6 +202,10 @@ export default {
     ...mapGetters(["todo"]),
   },
 
+  created() {
+    this.getTodo();
+  },
+
   methods: {
     ...mapActions([
       "getTodo",
@@ -231,10 +235,6 @@ export default {
       this.showTodoAddTitle.push(id);
       this.newTitle = title;
     },
-  },
-
-  created() {
-    this.getTodo();
   },
 };
 </script>

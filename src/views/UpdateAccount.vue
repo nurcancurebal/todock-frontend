@@ -137,9 +137,11 @@ import TheNavbar from "@/components/TheNavbar.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
+  
   components: {
     TheNavbar,
   },
+
   data() {
     return {
       form: {
@@ -154,6 +156,28 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters(["user"]),
+  },
+
+  watch: {
+    ["form.firstname"]: function () {
+      this.checkForm();
+    },
+    ["form.lastname"]: function () {
+      this.checkForm();
+    },
+    ["form.username"]: function () {
+      this.checkForm();
+    },
+    ["form.password"]: function () {
+      this.checkForm();
+    },
+    ["form.birthdate"]: function () {
+      this.checkForm();
+    },
+  },
+
   created() {
     this.getUser().then((response) => {
       this.form.firstname = response.data.firstname;
@@ -161,10 +185,6 @@ export default {
       this.form.username = response.data.username;
       this.form.birthdate = response.data.birthdate;
     });
-  },
-
-  computed: {
-    ...mapGetters(["user"]),
   },
 
   methods: {
@@ -232,23 +252,6 @@ export default {
 
     checkFormError(slug) {
       return Array.from(this.errors).includes(slug);
-    },
-  },
-  watch: {
-    ["form.firstname"]: function () {
-      this.checkForm();
-    },
-    ["form.lastname"]: function () {
-      this.checkForm();
-    },
-    ["form.username"]: function () {
-      this.checkForm();
-    },
-    ["form.password"]: function () {
-      this.checkForm();
-    },
-    ["form.birthdate"]: function () {
-      this.checkForm();
     },
   },
 };

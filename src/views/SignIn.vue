@@ -98,6 +98,7 @@ export default {
   components: {
     AuthMessage,
   },
+
   data() {
     return {
       form: {
@@ -107,6 +108,13 @@ export default {
       userError: false,
       successfulRegistration: false,
     };
+  },
+
+  created() {
+    if (this.$route.query.success == 1) {
+      return (this.successfulRegistration = true);
+    }
+    return (this.successfulRegistration = false);
   },
 
   methods: {
@@ -128,12 +136,6 @@ export default {
           console.error("error", error);
         });
     },
-  },
-  created() {
-    if (this.$route.query.success == 1) {
-      return (this.successfulRegistration = true);
-    }
-    return (this.successfulRegistration = false);
   },
 };
 </script>

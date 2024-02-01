@@ -53,6 +53,7 @@ import { mapActions } from "vuex";
 
 export default {
   props: ["name", "_id", "todo_id"],
+
   data() {
     return {
       todoItemShow: false,

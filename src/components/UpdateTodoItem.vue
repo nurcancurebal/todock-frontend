@@ -48,7 +48,6 @@
 </template>
 
 <script>
-// ? Node modules.
 import { mapActions } from "vuex";
 
 export default {

@@ -137,7 +137,6 @@ import TheNavbar from "@/components/TheNavbar.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
-  
   components: {
     TheNavbar,
   },

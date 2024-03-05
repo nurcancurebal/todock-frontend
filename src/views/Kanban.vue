@@ -173,10 +173,7 @@
 </template>
 
 <script>
-// ? Node modules.
 import { mapActions, mapGetters } from "vuex";
-
-// ? Components.
 import UpdateTodoItem from "@/components/UpdateTodoItem.vue";
 import TheNavbar from "@/components/TheNavbar.vue";
 

@@ -7,7 +7,7 @@
     >
       <b-form-group>
         <b-form-input
-          v-model="form.firstname"
+          v-model="cacheForm.firstname"
           type="text"
           placeholder="Adın"
           class="form-control-lg focus-input"
@@ -24,7 +24,7 @@
 
       <b-form-group>
         <b-form-input
-          v-model="form.lastname"
+          v-model="cacheForm.lastname"
           type="text"
           placeholder="Soy Adın"
           class="form-control-lg focus-input mt-3"
@@ -41,7 +41,7 @@
 
       <b-form-group>
         <b-form-input
-          v-model="form.username"
+          v-model="cacheForm.username"
           type="text"
           placeholder="Kullanıcı adı"
           class="form-control-lg focus-input mt-3"
@@ -72,7 +72,7 @@
             month: 'numeric',
             day: 'numeric',
           }"
-          v-model="form.birthdate"
+          v-model="cacheForm.birthdate"
           size="lg"
           style="text-align: left"
         />
@@ -82,24 +82,6 @@
           style="color: red !important"
         >
           Doğum tarihi boş geçilemez.
-        </b-form-text>
-      </b-form-group>
-
-      <b-form-group>
-        <b-form-input
-          v-model="form.password"
-          type="password"
-          placeholder="Yeni Şifre"
-          class="form-control-lg focus-input mt-3"
-          required
-        />
-        <b-form-text
-          class="mx-3"
-          v-show="checkFormError('password')"
-          style="color: red !important"
-        >
-          Şifre boş geçilemez, türkçe karakter kullanılamaz ve 6 ile 18 karakter
-          arasında olmak zorundadır.
         </b-form-text>
       </b-form-group>
 
@@ -143,12 +125,11 @@ export default {
 
   data() {
     return {
-      form: {
+      cacheForm: {
         firstname: "",
         lastname: "",
         username: "",
-        birthdate: "",
-        password: "",
+        birthdate: null,
       },
       errors: new Set(),
       formError: null,
@@ -160,29 +141,25 @@ export default {
   },
 
   watch: {
-    ["form.firstname"]: function () {
+    ["cacheForm.firstname"]: function () {
       this.checkForm();
     },
-    ["form.lastname"]: function () {
+    ["cacheForm.lastname"]: function () {
       this.checkForm();
     },
-    ["form.username"]: function () {
+    ["cacheForm.username"]: function () {
       this.checkForm();
     },
-    ["form.password"]: function () {
-      this.checkForm();
-    },
-    ["form.birthdate"]: function () {
+    ["cacheForm.birthdate"]: function () {
       this.checkForm();
     },
   },
 
   created() {
-    this.getUser().then((response) => {
-      this.form.firstname = response.data.firstname;
-      this.form.lastname = response.data.lastname;
-      this.form.username = response.data.username;
-      this.form.birthdate = response.data.birthdate;
+    this.getUser().then(() => {
+      Object.keys(this.user).forEach((key) => {
+        this.cacheForm[key] = this.user[key];
+      });
     });
   },
 
@@ -191,55 +168,48 @@ export default {
 
     patternVerification() {
       if (this.formError === false) {
-        this.updateUser(this.form).then(this.$router.push("/"));
+        this.cacheForm.birthdate = new Date(
+          this.cacheForm.birthdate
+        ).toISOString();
+        this.updateUser(this.cacheForm).then(() => {
+          this.$router.push("/");
+        });
       }
     },
 
     checkForm() {
       const pattern = /[ğĞçÇüÜöÖıİşŞ]/g;
 
-      const matchesusername = this.form.username.match(pattern);
-      const matchespassword = this.form.password.match(pattern);
+      const matchesusername = this.cacheForm.username.match(pattern);
 
-      if (!this.form.firstname) {
+      if (!this.cacheForm.firstname) {
         // hata varsa içerisine yazıyı gönderiyor
         this.errors.add("firstname");
       } else {
         this.errors.delete("firstname");
       }
 
-      if (!this.form.lastname) {
+      if (!this.cacheForm.lastname) {
         this.errors.add("lastname");
       } else {
         this.errors.delete("lastname");
       }
 
       if (
-        !this.form.username ||
+        !this.cacheForm.username ||
         matchesusername != null ||
-        this.form.username.length < 6 ||
-        this.form.username.length > 18
+        this.cacheForm.username.length < 6 ||
+        this.cacheForm.username.length > 18
       ) {
         this.errors.add("username");
       } else {
         this.errors.delete("username");
       }
 
-      if (!this.form.birthdate) {
+      if (!this.cacheForm.birthdate) {
         this.errors.add("birthdate");
       } else {
         this.errors.delete("birthdate");
-      }
-
-      if (
-        !this.form.password ||
-        matchespassword != null ||
-        this.form.password.length < 6 ||
-        this.form.password.length > 18
-      ) {
-        this.errors.add("password");
-      } else {
-        this.errors.delete("password");
       }
 
       if (this.errors.size === 0) {

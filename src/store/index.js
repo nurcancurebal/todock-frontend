@@ -32,7 +32,7 @@ axios.interceptors.response.use(function (response) {
 Vue.use(Vuex);
 
 const state = {
-  user: [],
+  user: {},
   todo: [],
   todoItem: [],
 };
@@ -87,9 +87,7 @@ const actions = {
 
     try {
 
-      console.log(payload)
-
-      const result = await axios.post("http://localhost:3000/todo", { title: payload.title });
+      const result = await axios.post("http://localhost:3000/todo", payload);
 
       console.log("createTodo", result.data);
 
@@ -108,7 +106,7 @@ const actions = {
 
     try {
 
-      const result = await axios.put(`http://localhost:3000/todo/${payload._id}`, { title: payload.title });
+      const result = await axios.put(`http://localhost:3000/todo/${payload._id}`, payload);
 
       console.log("updateTodo", result.data);
 
@@ -146,7 +144,7 @@ const actions = {
 
     try {
 
-      const result = await axios.post(`http://localhost:3000/todo-item/${payload._id}`, { name: payload.name });
+      const result = await axios.post(`http://localhost:3000/todo-item/${payload._id}`, payload);
 
       console.log("createTodoItem", result.data);
 
@@ -165,7 +163,7 @@ const actions = {
 
     try {
 
-      const result = await axios.put(`http://localhost:3000/todo-item/${payload.todoId}/${payload.itemId}`, { name: payload.name });
+      const result = await axios.put(`http://localhost:3000/todo-item/${payload.todoId}/${payload.itemId}`, payload.name);
 
       console.log("updateTodoItem", result.data);
 
@@ -203,7 +201,7 @@ const actions = {
 
     try {
 
-      return await axios.post("http://localhost:3000/auth/signup", { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate, password: payload.password });
+      return await axios.post("http://localhost:3000/auth/signup", payload);
 
     } catch (error) {
 
@@ -217,7 +215,7 @@ const actions = {
 
     try {
 
-      return await axios.post("http://localhost:3000/auth/signin", { username: payload.username, password: payload.password });
+      return await axios.post("http://localhost:3000/auth/signin", payload);
 
     } catch (error) {
 
@@ -230,9 +228,11 @@ const actions = {
 
     try {
 
-      const result = await axios.put(`http://localhost:3000/user`, { firstname: payload.firstname, lastname: payload.lastname, username: payload.username, birthdate: payload.birthdate, password: payload.password });
+      const result = await axios.put(`http://localhost:3000/user`, payload);
 
       console.log("updateUser", result.data);
+
+      context.dispatch("getUser");
 
       return result;
 

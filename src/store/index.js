@@ -35,7 +35,7 @@ const mutations = {
 const actions = {
   async getTodo(context) {
     try {
-      const result = await instance.get("http://localhost:3000/todo");
+      const result = await instance.get("/todo");
 
       console.log("getTodo", result.data);
 
@@ -49,7 +49,7 @@ const actions = {
 
   async createTodo(context, payload) {
     try {
-      const result = await instance.post("http://localhost:3000/todo", payload);
+      const result = await instance.post("/todo", payload);
 
       console.log("createTodo", result.data);
 
@@ -63,10 +63,7 @@ const actions = {
 
   async updateTodo(context, payload) {
     try {
-      const result = await instance.put(
-        `http://localhost:3000/todo/${payload._id}`,
-        payload
-      );
+      const result = await instance.put(`/todo/${payload._id}`, payload);
 
       console.log("updateTodo", result.data);
 
@@ -80,9 +77,7 @@ const actions = {
 
   async deleteTodo(context, payload) {
     try {
-      const result = await instance.delete(
-        `http://localhost:3000/todo/${payload}`
-      );
+      const result = await instance.delete(`/todo/${payload}`);
 
       console.log("deleteTodo", result.status);
 
@@ -96,10 +91,7 @@ const actions = {
 
   async createTodoItem(context, payload) {
     try {
-      const result = await instance.post(
-        `http://localhost:3000/todo-item/${payload._id}`,
-        payload
-      );
+      const result = await instance.post(`/todo-item/${payload._id}`, payload);
 
       console.log("createTodoItem", result.data);
 
@@ -114,7 +106,7 @@ const actions = {
   async updateTodoItem(context, payload) {
     try {
       const result = await instance.put(
-        `http://localhost:3000/todo-item/${payload.todoId}/${payload.itemId}`,
+        `/todo-item/${payload.todoId}/${payload.itemId}`,
         payload.name
       );
 
@@ -131,7 +123,7 @@ const actions = {
   async deleteTodoItem(context, payload) {
     try {
       const result = await instance.delete(
-        `http://localhost:3000/todo-item/${payload.todoId}/${payload.itemId}`
+        `/todo-item/${payload.todoId}/${payload.itemId}`
       );
 
       console.log("deleteTodoItem", result.status);
@@ -146,7 +138,7 @@ const actions = {
 
   async signUp(context, payload) {
     try {
-      return await instance.post("http://localhost:3000/auth/signup", payload);
+      return await instance.post("/auth/signup", payload);
     } catch (error) {
       console.error("signUp", error);
     }
@@ -154,7 +146,7 @@ const actions = {
 
   async signIn(context, payload) {
     try {
-      return await instance.post("http://localhost:3000/auth/signin", payload);
+      return await instance.post("/auth/signin", payload);
     } catch (error) {
       console.error(error);
     }
@@ -162,7 +154,7 @@ const actions = {
 
   async updateUser(context, payload) {
     try {
-      const result = await instance.put(`http://localhost:3000/user`, payload);
+      const result = await instance.put(`/user`, payload);
 
       console.log("updateUser", result.data);
 
@@ -176,7 +168,7 @@ const actions = {
 
   async getUser(context) {
     try {
-      const result = await instance.get("http://localhost:3000/user");
+      const result = await instance.get("/user");
 
       console.log("getUser", result.data);
 

@@ -63,4 +63,8 @@ a[role="button"] {
 a[role="button"]:focus {
   color: white;
 }
+
+.dropdown-item:active {
+  background-color: #48d1cc !important;
+}
 </style>

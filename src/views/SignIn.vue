@@ -61,28 +61,22 @@
               >
                 Giriş Yap
               </b-button>
-
-              <b-link
-                class="card-link hover-link"
-                style="
-                  text-decoration: none;
-                  font-size: 23px;
-                  color: rgb(72, 209, 204);
-                "
-              >
-                Şifreni mi unuttun?
-              </b-link>
-
               <hr />
 
-              <b-button
-                style="width: 50%; margin: auto"
-                variant="light"
-                class="btn-lg text-dark d-block mb-3"
-                @click="$router.push('signup')"
-              >
-                Yeni Hesap Oluştur
-              </b-button>
+              <b-link>
+                <router-link
+                  class="card-link hover-link"
+                  style="
+                    text-decoration: none;
+                    font-size: 23px;
+                    color: rgb(72, 209, 204);
+                    float: right;
+                  "
+                  to="/signup"
+                >
+                  Yeni Hesap Oluştur
+                </router-link>
+              </b-link>
             </b-card>
           </div>
         </b-col>

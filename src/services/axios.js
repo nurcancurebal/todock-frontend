@@ -23,7 +23,10 @@ instance.interceptors.response.use(
   function (error) {
     if (error?.response?.status == 401) {
       localStorage.removeItem("token");
-      router.push("SignIn");
+
+      if (router.currentRoute.path !== "/signin") {
+        router.push("/signin");
+      }
     }
     return Promise.reject(error);
   }

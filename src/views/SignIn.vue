@@ -39,6 +39,7 @@
                 placeholder="Kullanıcı adı"
                 class="form-control-lg focus-input"
                 required
+                @keyup.enter="logIn"
               />
 
               <b-form-input
@@ -47,6 +48,7 @@
                 placeholder="Şifre"
                 class="form-control-lg focus-input my-3"
                 required
+                @keyup.enter="logIn"
               />
 
               <b-card-text v-show="userError" style="color: red !important">
@@ -119,8 +121,8 @@ export default {
       const password = this.form.password;
 
       this.signIn({ username, password })
-        .then((response) => {
-          localStorage.setItem("token", response.data.token);
+        .then(() => {
+          this.userError = false;
         })
         .then(() => {
           this.$router.push("/");

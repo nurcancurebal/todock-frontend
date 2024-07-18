@@ -5,11 +5,11 @@
         type="text"
         class="focus-input rounded"
         v-model="newItem"
-        @keydown.enter="
+        @keyup.enter="
           updateTodoItem({
+            name: newItem,
             itemId: _id,
             todoId: todo_id,
-            name: newItem,
           }).then(closeItem)
         "
       />
@@ -19,9 +19,9 @@
           class="m-2 text-secondary hover-color"
           @click="
             updateTodoItem({
+              name: newItem,
               itemId: _id,
               todoId: todo_id,
-              name: newItem,
             }).then(closeItem)
           "
         />

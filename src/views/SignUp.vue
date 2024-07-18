@@ -16,6 +16,7 @@
                 placeholder="Adın"
                 class="form-control-lg focus-input"
                 required
+                @keyup.enter="patternVerification"
               />
               <b-form-text
                 class="mx-3"
@@ -33,6 +34,7 @@
                 placeholder="Soy Adın"
                 class="form-control-lg focus-input mt-3"
                 required
+                @keyup.enter="patternVerification"
               />
               <b-form-text
                 v-show="checkFormError('lastname')"
@@ -50,6 +52,7 @@
                 placeholder="Kullanıcı adı"
                 class="form-control-lg focus-input mt-3"
                 required
+                @keyup.enter="patternVerification"
               />
               <b-form-text
                 v-show="checkFormError('username')"
@@ -79,6 +82,7 @@
                 v-model="info.birthdate"
                 size="lg"
                 style="text-align: left"
+                @keyup.enter="patternVerification"
               />
               <b-form-text
                 class="mx-3"
@@ -96,6 +100,7 @@
                 placeholder="Şifre"
                 class="form-control-lg focus-input mt-3"
                 required
+                @keyup.enter="patternVerification"
               />
               <b-form-text
                 class="mx-3"

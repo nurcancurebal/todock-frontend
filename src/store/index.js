@@ -1,7 +1,7 @@
 // ? Node modules.
 import Vue from "vue";
 import Vuex from "vuex";
-import instance from "@/services/axios";
+import instance from "../services/axios";
 
 // ? Inits.
 Vue.use(Vuex);
@@ -107,10 +107,10 @@ const actions = {
     try {
       const result = await instance.put(
         `/todo-item/${payload.todoId}/${payload.itemId}`,
-        payload.name
+        { name: payload.name }
       );
 
-      console.log("updateTodoItem", result.data);
+      console.log("updateTodoItem", result.status);
 
       context.dispatch("getTodo");
 
@@ -136,7 +136,7 @@ const actions = {
     }
   },
 
-  async signUp(context, payload) {
+  async signUp(_context, payload) {
     try {
       return await instance.post("/auth/signup", payload);
     } catch (error) {
@@ -144,11 +144,14 @@ const actions = {
     }
   },
 
-  async signIn(context, payload) {
+  async signIn(_context, payload) {
     try {
-      return await instance.post("/auth/signin", payload);
+      const result = await instance.post("/auth/signin", payload);
+      localStorage.setItem("token", result.data.token);
+
+      return result;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   },
 

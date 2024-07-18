@@ -83,6 +83,11 @@
               type="text"
               v-model="items"
               class="focus-input rounded"
+              @keyup.enter="
+                createTodoItem({ _id: todo._id, name: items }).then(() =>
+                  deleteTodoInput(todo._id)
+                )
+              "
             />
 
             <b-input-group-append>
@@ -109,7 +114,7 @@
             @click="showTodoAddItem.push(todo._id)"
             v-show="!showTodoAddItem.includes(todo._id)"
           >
-            <b-icon-plus font-scale="2" /> Add a card
+            <b-icon-plus font-scale="2" /> Bir kart ekle
           </b-button>
         </div>
       </div>
@@ -121,7 +126,7 @@
           style="display: flex; width: 120px"
           @click="newColumnStatus = true"
         >
-          <b-icon-plus font-scale="2" /> New List
+          <b-icon-plus font-scale="2" /> Yeni Liste Ekle
         </b-button>
       </div>
 
@@ -139,7 +144,7 @@
         >
           <input
             type="text"
-            placeholder="Enter list title..."
+            placeholder="Liste Başlığını Girin ..."
             class="p-2 rounded focus-input"
             style="border: 2px #dcdcdc solid; outline: none; width: 100%"
             v-model="title"
@@ -156,7 +161,7 @@
                 createTodo({ title: title }).then(() => afterCreateTitle())
               "
             >
-              Add list
+              Liste Ekle
             </b-button>
             <button
               style="border: none; background-color: white"

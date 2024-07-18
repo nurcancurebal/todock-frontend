@@ -1,40 +1,40 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import UpdateAccount from "@/views/UpdateAccount"
-import SignIn from "@/views/SignIn"
-import SignUp from "@/views/SignUp"
-import Kanban from "@/views/Kanban"
+import Vue from "vue";
+import VueRouter from "vue-router";
+import UpdateAccount from "@/views/UpdateAccount";
+import SignIn from "@/views/SignIn";
+import SignUp from "@/views/SignUp";
+import Kanban from "@/views/Kanban";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/signin',
-    name: 'SignIn',
-    component: SignIn
+    path: "/signin",
+    name: "SignIn",
+    component: SignIn,
   },
   {
-    path: '/signup',
-    name: 'SignUp',
-    component: SignUp
+    path: "/signup",
+    name: "SignUp",
+    component: SignUp,
   },
   {
-    path: '/updateaccount',
-    name: 'UpdateAccount',
-    component: UpdateAccount
+    path: "/updateaccount",
+    name: "UpdateAccount",
+    component: UpdateAccount,
   },
   {
-    path: '/',
+    path: "/",
     name: "Kanban",
-    component: Kanban
-  }
-]
+    component: Kanban,
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
 const token = localStorage.getItem("token");
 const navPathName = location.pathname;
@@ -42,11 +42,11 @@ const navPathName = location.pathname;
 const WHITE_NONTOKEN_PATH_NAMES = ["/signin", "/signup"];
 
 if (!WHITE_NONTOKEN_PATH_NAMES.includes(navPathName) && !token) {
-  router.push("signin");
-};
+  router.push("/signin");
+}
 
 if (WHITE_NONTOKEN_PATH_NAMES.includes(navPathName) && token) {
   localStorage.removeItem("token");
-};
+}
 
-export default router
+export default router;

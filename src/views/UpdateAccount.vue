@@ -99,19 +99,17 @@
 
       <hr />
 
-      <b-link>
-        <router-link
-          class="card-link hover-link"
-          style="
-            text-decoration: none;
-            font-size: 23px;
-            color: rgb(72, 209, 204);
-            float: right;
-          "
-          to="/"
-        >
-          Ana Sayfa
-        </router-link>
+      <b-link
+        class="card-link hover-link"
+        style="
+          text-decoration: none;
+          font-size: 23px;
+          color: rgb(72, 209, 204);
+          float: right;
+        "
+        @click="redirectToHome"
+      >
+        Ana Sayfa
       </b-link>
     </b-card>
   </div>
@@ -168,6 +166,18 @@ export default {
 
   methods: {
     ...mapActions(["updateUser", "getUser"]),
+
+    redirectToHome() {
+      this.$toast.open({
+        message: "Ana sayfaya yönlendiriliyorsunuz...",
+        type: "info",
+        duration: 2000,
+      });
+
+      setTimeout(() => {
+        this.$router.push("/");
+      }, 2000);
+    },
 
     patternVerification() {
       if (this.formError === false) {

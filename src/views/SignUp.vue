@@ -190,14 +190,41 @@ export default {
     patternVerification() {
       if (this.infoError === false) {
         this.info.birthdate = new Date(this.info.birthdate).toISOString();
-        this.signUp(this.info).then(() => {
-          this.info.firstname = "";
-          this.info.lastname = "";
-          this.info.username = "";
-          this.info.birthdate = "";
-          this.info.password = "";
+        this.signUp(this.info)
+          .then(async () => {
+            this.$toast.success(
+              "Kayıt işlemi başarılı. Giriş yapabilirsiniz.",
+              {
+                position: "bottom",
+                duration: 2000,
+              }
+            );
 
-          this.$router.push({ name: "SignIn", query: { success: 1 } });
+            await new Promise(() =>
+              setTimeout(() => {
+                this.info.firstname = "";
+                this.info.lastname = "";
+                this.info.username = "";
+                this.info.birthdate = "";
+                this.info.password = "";
+
+                this.$router.push("/signin");
+              }, 2000)
+            );
+          })
+          .catch(() => {
+            this.$toast.error(
+              "Kayıt işlemi başarısız. Lütfen tekrar deneyiniz.",
+              {
+                position: "bottom",
+                duration: 2000,
+              }
+            );
+          });
+      } else {
+        this.$toast.error("Lütfen tüm alanları doğru bir şekilde doldurunuz.", {
+          position: "bottom",
+          duration: 2000,
         });
       }
     },

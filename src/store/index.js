@@ -57,7 +57,7 @@ const actions = {
 
       return result;
     } catch (error) {
-      console.error("createTodo", error);
+      throw error;
     }
   },
 
@@ -71,7 +71,7 @@ const actions = {
 
       return result;
     } catch (error) {
-      console.error("updateTodo", error);
+      throw error;
     }
   },
 
@@ -85,7 +85,7 @@ const actions = {
 
       return result;
     } catch (error) {
-      console.error("deleteTodo", error);
+      throw error;
     }
   },
 
@@ -99,7 +99,7 @@ const actions = {
 
       return result;
     } catch (error) {
-      console.error("createTodoItem", error);
+      throw error;
     }
   },
 
@@ -140,7 +140,7 @@ const actions = {
     try {
       return await instance.post("/auth/signup", payload);
     } catch (error) {
-      console.error("signUp", error);
+      throw error;
     }
   },
 
@@ -165,7 +165,7 @@ const actions = {
 
       return result;
     } catch (error) {
-      console.error("updateUser", error);
+      throw error;
     }
   },
 

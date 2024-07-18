@@ -5,32 +5,18 @@
         type="text"
         class="focus-input rounded"
         v-model="newItem"
-        @keyup.enter="
-          updateTodoItem({
-            name: newItem,
-            itemId: _id,
-            todoId: todo_id,
-          }).then(closeItem)
-        "
+        @keyup.enter="updateCard"
       />
 
       <b-input-group-append>
         <b-icon-check-lg
           class="m-2 text-secondary hover-color"
-          @click="
-            updateTodoItem({
-              name: newItem,
-              itemId: _id,
-              todoId: todo_id,
-            }).then(closeItem)
-          "
+          @click="updateCard"
         />
 
         <b-icon-x-lg
           class="m-2 text-secondary hover-color"
-          @click="
-            deleteTodoItem({ itemId: _id, todoId: todo_id }).then(closeItem)
-          "
+          @click="deleteCard"
         />
       </b-input-group-append>
     </b-input-group>
@@ -63,14 +49,37 @@ export default {
   methods: {
     ...mapActions(["updateTodoItem", "deleteTodoItem"]),
 
+    updateCard() {
+      this.updateTodoItem({
+        name: this.newItem,
+        itemId: this._id,
+        todoId: this.todo_id,
+      }).then(() => {
+        this.todoItemShow = false;
+        this.newItem = "";
+        this.$toast.success("Kart güncellendi.", {
+          position: "bottom",
+          duration: 2000,
+        });
+      });
+    },
+
+    deleteCard() {
+      this.deleteTodoItem({ itemId: this._id, todoId: this.todo_id }).then(
+        () => {
+          this.$toast.success("Kart silindi.", {
+            position: "bottom",
+            duration: 2000,
+          });
+          this.todoItemShow = false;
+          this.newItem = "";
+        }
+      );
+    },
+
     setItem() {
       this.todoItemShow = true;
       this.newItem = this.name;
-    },
-
-    closeItem() {
-      this.todoItemShow = false;
-      this.newItem = "";
     },
   },
 };

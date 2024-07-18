@@ -25,21 +25,13 @@
               type="text"
               v-model="newTitle"
               class="focus-input rounded"
-              @keydown.enter="
-                updateTodo({ title: newTitle, _id: todo._id }).then(() =>
-                  deleteTodoTitle(todo._id)
-                )
-              "
+              @keydown.enter="updateListTitle(todo._id)"
             />
 
             <b-input-group-append>
               <b-icon-check-lg
                 class="m-2 text-secondary hover-color"
-                @click="
-                  updateTodo({ title: newTitle, _id: todo._id }).then(() =>
-                    deleteTodoTitle(todo._id)
-                  )
-                "
+                @click="updateListTitle(todo._id)"
               />
 
               <b-icon-x-lg
@@ -54,13 +46,35 @@
             v-show="!showTodoAddTitle.includes(todo._id)"
             style="display: flex"
           >
-            <span class="p-2 m-2 h6" @click="addNewTitle(todo._id, todo.title)">
+            <span
+              class="p-2 m-2 h6"
+              @click="
+                () => {
+                  showTodoAddTitle.push(todo._id);
+                  newTitle = todo.title;
+                }
+              "
+            >
               {{ todo.title }}
             </span>
             <b-button
               variant="none"
               class="text-secondary hover-color"
-              @click="deleteTodo(todo._id)"
+              @click="
+                deleteTodo(todo._id)
+                  .then(() =>
+                    $toast.success('Liste silindi.', {
+                      position: 'bottom',
+                      duration: 2000,
+                    })
+                  )
+                  .catch(() =>
+                    $toast.error('Liste silinemedi.', {
+                      position: 'bottom',
+                      duration: 2000,
+                    })
+                  )
+              "
             >
               <b-icon-x font-scale="2" />
             </b-button>
@@ -83,21 +97,13 @@
               type="text"
               v-model="items"
               class="focus-input rounded"
-              @keyup.enter="
-                createTodoItem({ _id: todo._id, name: items }).then(() =>
-                  deleteTodoInput(todo._id)
-                )
-              "
+              @keyup.enter="createTodoCard(todo._id)"
             />
 
             <b-input-group-append>
               <b-icon-check-lg
                 class="m-2 text-secondary hover-color"
-                @click="
-                  createTodoItem({ _id: todo._id, name: items }).then(() =>
-                    deleteTodoInput(todo._id)
-                  )
-                "
+                @click="createTodoCard(todo._id)"
               />
 
               <b-icon-x-lg
@@ -148,24 +154,25 @@
             class="p-2 rounded focus-input"
             style="border: 2px #dcdcdc solid; outline: none; width: 100%"
             v-model="title"
-            @keydown.enter="
-              createTodo({ title: title }).then(() => afterCreateTitle())
-            "
+            @keydown.enter="addNewList"
           />
 
           <div class="mt-2">
             <b-button
               variant="light"
               class="text-secondary hover-color"
-              @click="
-                createTodo({ title: title }).then(() => afterCreateTitle())
-              "
+              @click="addNewList"
             >
               Liste Ekle
             </b-button>
             <button
               style="border: none; background-color: white"
-              @click="afterCreateTitle"
+              @click="
+                () => {
+                  title = '';
+                  newColumnStatus = false;
+                }
+              "
               class="text-secondary hover-color"
             >
               <b-icon-x-lg class="mx-2" />
@@ -217,9 +224,57 @@ export default {
       "createTodoItem",
     ]),
 
-    afterCreateTitle() {
-      this.title = "";
-      this.newColumnStatus = false;
+    createTodoCard(id) {
+      this.createTodoItem({ _id: id, name: this.items })
+        .then(() => this.deleteTodoInput(id))
+        .then(
+          this.$toast.success("Yeni kart eklendi.", {
+            position: "bottom",
+            duration: 2000,
+          })
+        )
+        .catch(() => {
+          this.$toast.error("Yeni kart eklenemedi.", {
+            position: "bottom",
+            duration: 2000,
+          });
+        });
+    },
+
+    addNewList() {
+      this.createTodo({ title: this.title })
+        .then(() => {
+          this.$toast.success("Yeni liste eklendi.", {
+            position: "bottom",
+            duration: 2000,
+          });
+          this.title = "";
+          this.newColumnStatus = false;
+        })
+        .catch(() => {
+          this.$toast.error("Yeni liste eklenemedi.", {
+            position: "bottom",
+            duration: 2000,
+          });
+        });
+    },
+
+    updateListTitle(id) {
+      console.log("hey", id);
+      this.updateTodo({ title: this.newTitle, _id: id })
+        .then(this.deleteTodoTitle(id))
+        .then(
+          this.$toast.success("Liste başlığı güncellendi.", {
+            position: "bottom",
+            duration: 2000,
+          })
+        )
+        .catch(() => {
+          this.$toast.error("Liste başlığı güncellenemedi.", {
+            position: "bottom",
+            duration: 2000,
+          });
+        });
     },
 
     deleteTodoInput(id) {
@@ -227,16 +282,13 @@ export default {
       this.items = "";
     },
 
-    deleteTodoTitle(id) {
+    deleteTodoTitle(_id) {
       this.showTodoAddTitle = this.showTodoAddTitle.filter(
-        (item) => item != id
+        (item) => item != _id
       );
       this.newTitle = this.title;
     },
-    addNewTitle(id, title) {
-      this.showTodoAddTitle.push(id);
-      this.newTitle = title;
-    },
+    addNewTitle(id, title) {},
   },
 };
 </script>

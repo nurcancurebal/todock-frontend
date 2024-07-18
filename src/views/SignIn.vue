@@ -1,23 +1,5 @@
 <template>
   <div>
-    <b-row>
-      <b-col>
-        <div
-          class="alert alert-success"
-          role="alert"
-          v-show="successfulRegistration"
-          style="
-            margin: 10px 60px 0 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          "
-        >
-          <b-icon-check-lg style="margin-right: 5px" />
-          Tebrikler. Kayıt oldunuz!
-        </div>
-      </b-col>
-    </b-row>
     <div class="d-flex vh-100 vw-100">
       <b-row align-h="center" class="vh-100 vw-100" style="z-index: auto">
         <b-col
@@ -102,15 +84,7 @@ export default {
         password: "",
       },
       userError: false,
-      successfulRegistration: false,
     };
-  },
-
-  created() {
-    if (this.$route.query.success == 1) {
-      return (this.successfulRegistration = true);
-    }
-    return (this.successfulRegistration = false);
   },
 
   methods: {
@@ -120,17 +94,36 @@ export default {
       const username = this.form.username;
       const password = this.form.password;
 
-      this.signIn({ username, password })
-        .then(() => {
-          this.userError = false;
-        })
-        .then(() => {
-          this.$router.push("/");
-        })
-        .catch((error) => {
-          this.userError = true;
-          console.error("error", error);
+      if (username && password) {
+        this.signIn({ username, password })
+          .then(async () => {
+            this.userError = false;
+            this.$toast.success(
+              "Giriş başarılı ana sayfaya yönlendiriliyorsunuz.",
+              {
+                position: "bottom",
+                duration: 2000,
+              }
+            );
+            await new Promise(() =>
+              setTimeout(() => {
+                this.$router.push("/");
+              }, 2000)
+            );
+          })
+          .catch(() => {
+            this.userError = true;
+            this.$toast.error("Kullanıcı bilgileri bulunamadı.", {
+              position: "bottom",
+              duration: 2000,
+            });
+          });
+      } else {
+        this.$toast.error("Lütfen tüm alanları doldurunuz.", {
+          position: "bottom",
+          duration: 2000,
         });
+      }
     },
   },
 };

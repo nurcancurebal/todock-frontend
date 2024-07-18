@@ -174,9 +174,20 @@ export default {
         this.cacheForm.birthdate = new Date(
           this.cacheForm.birthdate
         ).toISOString();
-        this.updateUser(this.cacheForm).then(() => {
-          this.$router.push("/");
-        });
+        this.updateUser(this.cacheForm)
+          .then(() => {
+            this.$toast.success("Kullanıcı bilgileri güncellendi.", {
+              position: "bottom",
+              duration: 2000,
+            });
+            this.$router.push("/");
+          })
+          .catch(() => {
+            this.$toast.error("Kullanıcı bilgileri güncellenemedi.", {
+              position: "bottom",
+              duration: 2000,
+            });
+          });
       }
     },
 

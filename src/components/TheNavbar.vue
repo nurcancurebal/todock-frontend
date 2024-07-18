@@ -15,8 +15,8 @@
       <b-navbar>
         <b-navbar-nav>
           <b-navbar-brand>
-            <router-link to="/" tag="h2" class="mx-5 my-1 text-white">
-              ToDock
+            <router-link to="/" v-slot="{ navigate }" custom>
+              <h2 class="mx-5 my-1 text-white" @click="navigate">ToDock</h2>
             </router-link>
           </b-navbar-brand>
         </b-navbar-nav>
@@ -38,13 +38,8 @@
                 Hesabımı Düzenle
               </router-link>
             </b-dropdown-item>
-            <b-dropdown-item>
-              <router-link
-                style="text-decoration: none; color: black"
-                to="/signin"
-              >
-                Çıkış
-              </router-link>
+            <b-dropdown-item @click="showToastAndRedirect">
+              Çıkış
             </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -52,6 +47,22 @@
     </b-col>
   </b-row>
 </template>
+
+<script>
+export default {
+  methods: {
+    showToastAndRedirect() {
+      this.$toast.success("Çıkış yapılıyor.", {
+        position: "bottom",
+        duration: 2000,
+      });
+      setTimeout(() => {
+        this.$router.push("/signin");
+      }, 2000);
+    },
+  },
+};
+</script>
 
 <style>
 a:focus-visible {

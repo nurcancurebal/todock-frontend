@@ -287,7 +287,6 @@ export default {
       );
       this.newTitle = this.title;
     },
-    addNewTitle(id, title) {},
   },
 };
 </script>

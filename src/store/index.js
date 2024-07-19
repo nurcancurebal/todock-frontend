@@ -117,6 +117,7 @@ const actions = {
       return result;
     } catch (error) {
       console.error("updateTodoItem", error);
+      throw error;
     }
   },
 
@@ -133,6 +134,7 @@ const actions = {
       return result;
     } catch (error) {
       console.error("deleteTodoItem", error);
+      throw error;
     }
   },
 

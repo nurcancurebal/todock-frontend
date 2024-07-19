@@ -260,7 +260,6 @@ export default {
     },
 
     updateListTitle(id) {
-      console.log("hey", id);
       this.updateTodo({ title: this.newTitle, _id: id })
         .then(this.deleteTodoTitle(id))
         .then(

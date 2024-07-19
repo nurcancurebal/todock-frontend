@@ -54,27 +54,39 @@ export default {
         name: this.newItem,
         itemId: this._id,
         todoId: this.todo_id,
-      }).then(() => {
-        this.todoItemShow = false;
-        this.newItem = "";
-        this.$toast.success("Kart güncellendi.", {
-          position: "bottom",
-          duration: 2000,
+      })
+        .then(() => {
+          this.todoItemShow = false;
+          this.newItem = "";
+          this.$toast.success("Kart güncellendi.", {
+            position: "bottom",
+            duration: 2000,
+          });
+        })
+        .catch(() => {
+          this.$toast.error("Kart güncellenemedi.", {
+            position: "bottom",
+            duration: 2000,
+          });
         });
-      });
     },
 
     deleteCard() {
-      this.deleteTodoItem({ itemId: this._id, todoId: this.todo_id }).then(
-        () => {
+      this.deleteTodoItem({ itemId: this._id, todoId: this.todo_id })
+        .then(() => {
           this.$toast.success("Kart silindi.", {
             position: "bottom",
             duration: 2000,
           });
           this.todoItemShow = false;
           this.newItem = "";
-        }
-      );
+        })
+        .catch(() => {
+          this.$toast.error("Kart silinemedi.", {
+            position: "bottom",
+            duration: 2000,
+          });
+        });
     },
 
     setItem() {

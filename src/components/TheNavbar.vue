@@ -52,7 +52,7 @@
 export default {
   methods: {
     showToastAndRedirect() {
-      this.$toast.success("Çıkış yapılıyor.", {
+      this.$toast.info("Çıkış yapılıyor.", {
         position: "bottom",
         duration: 2000,
       });

@@ -168,10 +168,9 @@ export default {
     ...mapActions(["updateUser", "getUser"]),
 
     redirectToHome() {
-      this.$toast.open({
-        message: "Ana sayfaya yönlendiriliyorsunuz...",
-        type: "info",
+      this.$toast.info("Ana sayfaya yönlendiriliyorsunuz...", {
         duration: 2000,
+        position: "bottom",
       });
 
       setTimeout(() => {

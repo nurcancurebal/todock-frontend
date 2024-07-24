@@ -107,7 +107,7 @@ const actions = {
     try {
       const result = await instance.put(
         `/todo-item/${payload.todoId}/${payload.itemId}`,
-        { name: payload.name }
+        { item: payload.item }
       );
 
       console.log("updateTodoItem", result.status);

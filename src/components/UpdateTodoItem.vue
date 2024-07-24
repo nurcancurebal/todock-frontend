@@ -33,7 +33,7 @@
       v-show="!todoItemShow"
     >
       <div id="overflowEllipsis" @click="setItem">
-        {{ name }}
+        {{ item }}
       </div>
     </div>
   </div>
@@ -43,7 +43,7 @@
 import { mapActions } from "vuex";
 
 export default {
-  props: ["name", "_id", "todo_id"],
+  props: ["item", "_id", "todo_id"],
 
   data() {
     return {
@@ -57,7 +57,7 @@ export default {
 
     updateCard() {
       this.updateTodoItem({
-        name: this.newItem,
+        item: this.newItem,
         itemId: this._id,
         todoId: this.todo_id,
       })
@@ -97,7 +97,7 @@ export default {
 
     setItem() {
       this.todoItemShow = true;
-      this.newItem = this.name;
+      this.newItem = this.item;
     },
   },
 };

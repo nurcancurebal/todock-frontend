@@ -15,8 +15,6 @@
             border: 2px #dcdcdc solid;
           "
           class="rounded m-4 shadow"
-          @click="heyyo(todo)"
-          draggable="true"
         >
           <b-input-group
             class="mx-3 my-2"
@@ -91,7 +89,7 @@
           <UpdateTodoItem
             v-for="todoItem in todo.items"
             :key="todoItem._id"
-            :name="todoItem.name"
+            :item="todoItem.item"
             :_id="todoItem._id"
             :todo_id="todoItem.todoId"
           />
@@ -210,18 +208,20 @@
 import { mapActions, mapGetters } from "vuex";
 import UpdateTodoItem from "@/components/UpdateTodoItem.vue";
 import TheNavbar from "@/components/TheNavbar.vue";
+import { Drag, Drop } from "vue-drag-drop";
 
 export default {
   components: {
     UpdateTodoItem,
     TheNavbar,
+    Drag,
+    Drop,
   },
 
   data() {
     return {
       newColumnStatus: false,
       title: "",
-      itemName: "",
       items: "",
       showTodoAddItem: [],
       showTodoAddTitle: [],
@@ -246,19 +246,15 @@ export default {
       "createTodoItem",
     ]),
 
-    heyyo(todo) {
-      console.log(todo);
-    },
-
     createTodoCard(id) {
-      this.createTodoItem({ _id: id, name: this.items })
-        .then(() => this.deleteTodoInput(id))
-        .then(
+      this.createTodoItem({ _id: id, item: this.items })
+        .then(() => {
+          this.deleteTodoInput(id);
           this.$toast.success("Yeni kart eklendi.", {
             position: "bottom",
             duration: 2000,
-          })
-        )
+          });
+        })
         .catch(() => {
           this.$toast.error("Yeni kart eklenemedi.", {
             position: "bottom",

@@ -15,6 +15,8 @@
             border: 2px #dcdcdc solid;
           "
           class="rounded m-4 shadow"
+          @click="heyyo(todo)"
+          draggable="true"
         >
           <b-input-group
             class="mx-3 my-2"
@@ -26,6 +28,12 @@
               v-model="newTitle"
               class="focus-input rounded"
               @keydown.enter="updateListTitle(todo._id)"
+              @blur="
+                () => {
+                  deleteTodoTitle(todo._id);
+                  newTitle = '';
+                }
+              "
             />
 
             <b-input-group-append>
@@ -98,6 +106,12 @@
               v-model="items"
               class="focus-input rounded"
               @keyup.enter="createTodoCard(todo._id)"
+              @blur="
+                () => {
+                  deleteTodoInput(todo._id);
+                  items = '';
+                }
+              "
             />
 
             <b-input-group-append>
@@ -125,58 +139,66 @@
         </div>
       </div>
 
-      <div v-show="!newColumnStatus">
-        <b-button
-          variant="light"
-          class="p-2 m-4 text-secondary hover-color justify-content-center align-items-center"
-          style="display: flex; width: 120px"
-          @click="newColumnStatus = true"
-        >
-          <b-icon-plus font-scale="2" /> Yeni Liste Ekle
-        </b-button>
-      </div>
+      <div>
+        <div v-show="!newColumnStatus">
+          <b-button
+            variant="light"
+            class="p-2 m-4 text-secondary hover-color justify-content-center align-items-center"
+            style="display: flex; width: 120px"
+            @click="newColumnStatus = true"
+          >
+            <b-icon-plus font-scale="2" /> Yeni Liste Ekle
+          </b-button>
+        </div>
 
-      <div v-show="newColumnStatus">
-        <div
-          style="
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            border: 2px #dcdcdc solid;
-            align-items: flex-end;
-            width: 275px;
-          "
-          class="rounded m-4 p-2 shadow"
-        >
-          <input
-            type="text"
-            placeholder="Liste Başlığını Girin ..."
-            class="p-2 rounded focus-input"
-            style="border: 2px #dcdcdc solid; outline: none; width: 100%"
-            v-model="title"
-            @keydown.enter="addNewList"
-          />
-
-          <div class="mt-2">
-            <b-button
-              variant="light"
-              class="text-secondary hover-color"
-              @click="addNewList"
-            >
-              Liste Ekle
-            </b-button>
-            <button
-              style="border: none; background-color: white"
-              @click="
+        <div v-show="newColumnStatus">
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              flex-direction: column;
+              border: 2px #dcdcdc solid;
+              align-items: flex-end;
+              width: 275px;
+            "
+            class="rounded m-4 p-2 shadow"
+          >
+            <input
+              type="text"
+              placeholder="Liste Başlığını Girin ..."
+              class="p-2 rounded focus-input"
+              style="border: 2px #dcdcdc solid; outline: none; width: 100%"
+              v-model="title"
+              @keydown.enter="addNewList"
+              @blur="
                 () => {
-                  title = '';
                   newColumnStatus = false;
+                  title = '';
                 }
               "
-              class="text-secondary hover-color"
-            >
-              <b-icon-x-lg class="mx-2" />
-            </button>
+            />
+
+            <div class="mt-2">
+              <b-button
+                variant="light"
+                class="text-secondary hover-color"
+                @click="addNewList"
+              >
+                Liste Ekle
+              </b-button>
+              <button
+                style="border: none; background-color: white"
+                @click="
+                  () => {
+                    title = '';
+                    newColumnStatus = false;
+                  }
+                "
+                class="text-secondary hover-color"
+              >
+                <b-icon-x-lg class="mx-2" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -223,6 +245,10 @@ export default {
       "deleteTodo",
       "createTodoItem",
     ]),
+
+    heyyo(todo) {
+      console.log(todo);
+    },
 
     createTodoCard(id) {
       this.createTodoItem({ _id: id, name: this.items })

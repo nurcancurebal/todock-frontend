@@ -6,6 +6,12 @@
         class="focus-input rounded"
         v-model="newItem"
         @keyup.enter="updateCard"
+        @blur="
+          () => {
+            newItem = '';
+            todoItemShow = false;
+          }
+        "
       />
 
       <b-input-group-append>

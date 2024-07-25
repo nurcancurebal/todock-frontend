@@ -7,134 +7,137 @@
       class="mt-4"
     >
       <div v-for="todo in todo" :key="todo.id">
-        <div
-          style="
-            display: flex;
-            flex-direction: column;
-            width: 225px;
-            border: 2px #dcdcdc solid;
-          "
-          class="rounded m-4 shadow"
-        >
-          <b-input-group
-            class="mx-3 my-2"
-            style="width: auto"
-            v-show="showTodoAddTitle.includes(todo._id)"
-          >
-            <b-form-input
-              type="text"
-              v-model="newTitle"
-              class="focus-input rounded"
-              @keydown.enter="updateListTitle(todo._id)"
-              @blur="
-                () => {
-                  deleteTodoTitle(todo._id);
-                  newTitle = '';
-                }
+        <drag @dragstart="onDragStart(todo)">
+          <drop @drop="onDrop(todo)">
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                width: 225px;
+                border: 2px #dcdcdc solid;
               "
-            />
-
-            <b-input-group-append>
-              <b-icon-check-lg
-                class="m-2 text-secondary hover-color"
-                @click="updateListTitle(todo._id)"
-              />
-
-              <b-icon-x-lg
-                class="m-2 text-secondary hover-color"
-                @click="deleteTodoTitle(todo._id)"
-              />
-            </b-input-group-append>
-          </b-input-group>
-
-          <div
-            class="justify-content-between"
-            v-show="!showTodoAddTitle.includes(todo._id)"
-            style="display: flex"
-          >
-            <span
-              class="p-2 m-2 h6"
-              @click="
-                () => {
-                  showTodoAddTitle.push(todo._id);
-                  newTitle = todo.title;
-                }
-              "
+              class="rounded m-4 shadow"
             >
-              {{ todo.title }}
-            </span>
-            <b-button
-              variant="none"
-              class="text-secondary hover-color"
-              @click="
-                deleteTodo(todo._id)
-                  .then(() =>
-                    $toast.success('Liste silindi.', {
-                      position: 'bottom',
-                      duration: 2000,
-                    })
-                  )
-                  .catch(() =>
-                    $toast.error('Liste silinemedi.', {
-                      position: 'bottom',
-                      duration: 2000,
-                    })
-                  )
-              "
-            >
-              <b-icon-x font-scale="2" />
-            </b-button>
-          </div>
+              <b-input-group
+                class="mx-3 my-2"
+                style="width: auto"
+                v-show="showTodoAddTitle.includes(todo._id)"
+              >
+                <b-form-input
+                  type="text"
+                  v-model="newTitle"
+                  class="focus-input rounded"
+                  @keydown.enter="updateListTitle(todo._id)"
+                  @blur="
+                    () => {
+                      deleteTodoTitle(todo._id);
+                      newTitle = '';
+                    }
+                  "
+                />
 
-          <UpdateTodoItem
-            v-for="todoItem in todo.items"
-            :key="todoItem._id"
-            :item="todoItem.item"
-            :_id="todoItem._id"
-            :todo_id="todoItem.todoId"
-          />
+                <b-input-group-append>
+                  <b-icon-check-lg
+                    class="m-2 text-secondary hover-color"
+                    @click="updateListTitle(todo._id)"
+                  />
 
-          <b-input-group
-            class="mx-3 my-2"
-            style="width: auto"
-            v-show="showTodoAddItem.includes(todo._id)"
-          >
-            <b-form-input
-              type="text"
-              v-model="items"
-              class="focus-input rounded"
-              @keyup.enter="createTodoCard(todo._id)"
-              @blur="
-                () => {
-                  deleteTodoInput(todo._id);
-                  items = '';
-                }
-              "
-            />
+                  <b-icon-x-lg
+                    class="m-2 text-secondary hover-color"
+                    @click="deleteTodoTitle(todo._id)"
+                  />
+                </b-input-group-append>
+              </b-input-group>
 
-            <b-input-group-append>
-              <b-icon-check-lg
-                class="m-2 text-secondary hover-color"
-                @click="createTodoCard(todo._id)"
+              <div
+                class="justify-content-between"
+                v-show="!showTodoAddTitle.includes(todo._id)"
+                style="display: flex"
+              >
+                <span
+                  class="p-2 m-2 h6"
+                  @click="
+                    () => {
+                      showTodoAddTitle.push(todo._id);
+                      newTitle = todo.title;
+                    }
+                  "
+                >
+                  {{ todo.title }}
+                </span>
+                <b-button
+                  variant="none"
+                  class="text-secondary hover-color"
+                  @click="
+                    deleteTodo(todo._id)
+                      .then(() =>
+                        $toast.success('Liste silindi.', {
+                          position: 'bottom',
+                          duration: 2000,
+                        })
+                      )
+                      .catch(() =>
+                        $toast.error('Liste silinemedi.', {
+                          position: 'bottom',
+                          duration: 2000,
+                        })
+                      )
+                  "
+                >
+                  <b-icon-x font-scale="2" />
+                </b-button>
+              </div>
+
+              <UpdateTodoItem
+                v-for="todoItem in todo.items"
+                :key="todoItem._id"
+                :item="todoItem.item"
+                :_id="todoItem._id"
+                :todo_id="todoItem.todoId"
               />
+              <b-input-group
+                class="mx-3 my-2"
+                style="width: auto"
+                v-show="showTodoAddItem.includes(todo._id)"
+              >
+                <b-form-input
+                  type="text"
+                  v-model="items"
+                  class="focus-input rounded"
+                  @keyup.enter="createTodoCard(todo._id)"
+                  @blur="
+                    () => {
+                      deleteTodoInput(todo._id);
+                      items = '';
+                    }
+                  "
+                />
 
-              <b-icon-x-lg
-                class="m-2 text-secondary hover-color"
-                @click="deleteTodoInput(todo._id)"
-              />
-            </b-input-group-append>
-          </b-input-group>
+                <b-input-group-append>
+                  <b-icon-check-lg
+                    class="m-2 text-secondary hover-color"
+                    @click="createTodoCard(todo._id)"
+                  />
 
-          <b-button
-            variant="light"
-            class="mx-3 my-2 text-secondary hover-color justify-content-center align-items-center"
-            style="display: flex"
-            @click="showTodoAddItem.push(todo._id)"
-            v-show="!showTodoAddItem.includes(todo._id)"
-          >
-            <b-icon-plus font-scale="2" /> Bir kart ekle
-          </b-button>
-        </div>
+                  <b-icon-x-lg
+                    class="m-2 text-secondary hover-color"
+                    @click="deleteTodoInput(todo._id)"
+                  />
+                </b-input-group-append>
+              </b-input-group>
+
+              <b-button
+                variant="light"
+                class="mx-3 my-2 text-secondary hover-color justify-content-center align-items-center"
+                style="display: flex"
+                @click="showTodoAddItem.push(todo._id)"
+                v-show="!showTodoAddItem.includes(todo._id)"
+              >
+                <b-icon-plus font-scale="2" /> Bir kart ekle
+              </b-button>
+            </div>
+          </drop>
+        </drag>
       </div>
 
       <div>
@@ -226,6 +229,7 @@ export default {
       showTodoAddItem: [],
       showTodoAddTitle: [],
       newTitle: "",
+      dragTodo: "",
     };
   },
 
@@ -244,7 +248,21 @@ export default {
       "updateTodo",
       "deleteTodo",
       "createTodoItem",
+      "titleChangeOrder",
     ]),
+
+    onDragStart(todo) {
+      this.dragTodo = todo;
+    },
+
+    onDrop(todo) {
+      this.titleChangeOrder({
+        dragId: this.dragTodo._id,
+        dropId: todo._id,
+        dragOrder: this.dragTodo.order,
+        dropOrder: todo.order,
+      });
+    },
 
     createTodoCard(id) {
       this.createTodoItem({ _id: id, item: this.items })
@@ -283,13 +301,13 @@ export default {
 
     updateListTitle(id) {
       this.updateTodo({ title: this.newTitle, _id: id })
-        .then(this.deleteTodoTitle(id))
-        .then(
+        .then(() => {
+          this.deleteTodoTitle(id);
           this.$toast.success("Liste başlığı güncellendi.", {
             position: "bottom",
             duration: 2000,
-          })
-        )
+          });
+        })
         .catch(() => {
           this.$toast.error("Liste başlığı güncellenemedi.", {
             position: "bottom",

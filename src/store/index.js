@@ -184,6 +184,42 @@ const actions = {
       console.error("getUser", error);
     }
   },
+
+  async titleChangeOrder(context, payload) {
+    try {
+      const result = await instance.put(
+        `/drag-drop/title/change/order/${payload.dragId}/${payload.dropId}`,
+        { dragOrder: payload.dragOrder, dropOrder: payload.dropOrder }
+      );
+
+      console.log("titleChangeOrder", result.data);
+
+      context.dispatch("getTodo");
+
+      return result;
+    } catch (error) {
+      console.log("titleChangeOrder", error);
+      return error;
+    }
+  },
+
+  async itemChange(context, payload) {
+    try {
+      const result = await instance.put(
+        `/drag-drop/item/change/${payload.dragTodoId}/${payload.dropTodoId}/${payload.dragId}/${payload.dropId}`,
+        payload
+      );
+
+      console.log("itemChange", result.data);
+
+      context.dispatch("getTodo");
+
+      return result;
+    } catch (error) {
+      console.log("itemChange", error);
+      return error;
+    }
+  },
 };
 
 export default new Vuex.Store({ state, getters, mutations, actions });

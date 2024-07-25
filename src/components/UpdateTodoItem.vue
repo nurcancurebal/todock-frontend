@@ -1,59 +1,76 @@
 <template>
-  <div>
-    <b-input-group class="mx-3 my-2" style="width: auto" v-show="todoItemShow">
-      <b-form-input
-        type="text"
-        class="focus-input rounded"
-        v-model="newItem"
-        @keyup.enter="updateCard"
-        @blur="
-          () => {
-            newItem = '';
-            todoItemShow = false;
-          }
-        "
-      />
+  <drag @dragstart="onDragStart(item)">
+    <drop @drop="onDrop(item)">
+      <div>
+        <b-input-group
+          class="mx-3 my-2"
+          style="width: auto"
+          v-show="todoItemShow"
+        >
+          <b-form-input
+            type="text"
+            class="focus-input rounded"
+            v-model="newItem"
+            @keyup.enter="updateCard"
+            @blur="
+              () => {
+                newItem = '';
+                todoItemShow = false;
+              }
+            "
+          />
 
-      <b-input-group-append>
-        <b-icon-check-lg
-          class="m-2 text-secondary hover-color"
-          @click="updateCard"
-        />
+          <b-input-group-append>
+            <b-icon-check-lg
+              class="m-2 text-secondary hover-color"
+              @click="updateCard"
+            />
 
-        <b-icon-x-lg
-          class="m-2 text-secondary hover-color"
-          @click="deleteCard"
-        />
-      </b-input-group-append>
-    </b-input-group>
+            <b-icon-x-lg
+              class="m-2 text-secondary hover-color"
+              @click="deleteCard"
+            />
+          </b-input-group-append>
+        </b-input-group>
 
-    <div
-      class="justify-content-between rounded shadow mx-3 my-2 p-2"
-      style="border: 2px #dcdcdc solid; display: flex"
-      v-show="!todoItemShow"
-    >
-      <div id="overflowEllipsis" @click="setItem">
-        {{ item }}
+        <div
+          class="justify-content-between rounded shadow mx-3 my-2 p-2"
+          style="border: 2px #dcdcdc solid; display: flex"
+          v-show="!todoItemShow"
+        >
+          <div id="overflowEllipsis" @click="setItem">
+            {{ item }}
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </drop>
+  </drag>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import { Drag, Drop } from "vue-drag-drop";
 
 export default {
   props: ["item", "_id", "todo_id"],
+
+  components: {
+    Drag,
+    Drop,
+  },
 
   data() {
     return {
       todoItemShow: false,
       newItem: "",
+      dragItem: "",
+      dragTodoId: "",
+      dragId: "",
     };
   },
 
   methods: {
-    ...mapActions(["updateTodoItem", "deleteTodoItem"]),
+    ...mapActions(["updateTodoItem", "deleteTodoItem", "itemChange"]),
 
     updateCard() {
       this.updateTodoItem({
@@ -98,6 +115,39 @@ export default {
     setItem() {
       this.todoItemShow = true;
       this.newItem = this.item;
+    },
+
+    onDragStart(item) {
+      console.log(
+        "dragItem",
+        item,
+        "dragTodoId",
+        this.todo_id,
+        "dragId",
+        this._id
+      );
+      this.dragItem = item;
+      this.dragTodoId = this.todo_id;
+      this.dragId = this._id;
+    },
+
+    onDrop(item) {
+      console.log(
+        "dropItem",
+        item,
+        "dropTodoId",
+        this.todo_id,
+        "dropId",
+        this._id
+      );
+      this.itemChange({
+        dragTodoId: this.dragTodoId,
+        dropTodoId: this.todo_id,
+        dragId: this.dragId,
+        dropId: this._id,
+        dragItem: this.dragItem,
+        dropItem: item,
+      });
     },
   },
 };

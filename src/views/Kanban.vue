@@ -7,8 +7,8 @@
       class="mt-4"
     >
       <div v-for="todo in todo" :key="todo.id">
-        <drag @dragstart="onDragStart(todo)">
-          <drop @drop="onDrop(todo)">
+        <drop @drop="onDrop(todo)">
+          <drag @dragstart="onDragStart(todo)">
             <div
               style="
                 display: flex;
@@ -30,7 +30,7 @@
                   @keydown.enter="updateListTitle(todo._id)"
                   @blur="
                     () => {
-                      deleteTodoTitle(todo._id);
+                      closeNewTitle(todo._id);
                       newTitle = '';
                     }
                   "
@@ -44,7 +44,7 @@
 
                   <b-icon-x-lg
                     class="m-2 text-secondary hover-color"
-                    @click="deleteTodoTitle(todo._id)"
+                    @click="closeNewTitle(todo._id)"
                   />
                 </b-input-group-append>
               </b-input-group>
@@ -94,6 +94,7 @@
                 :item="todoItem.item"
                 :_id="todoItem._id"
                 :todo_id="todoItem.todoId"
+                :order="todoItem.order"
               />
               <b-input-group
                 class="mx-3 my-2"
@@ -107,7 +108,7 @@
                   @keyup.enter="createTodoCard(todo._id)"
                   @blur="
                     () => {
-                      deleteTodoInput(todo._id);
+                      closeItemInput(todo._id);
                       items = '';
                     }
                   "
@@ -121,7 +122,7 @@
 
                   <b-icon-x-lg
                     class="m-2 text-secondary hover-color"
-                    @click="deleteTodoInput(todo._id)"
+                    @click="closeItemInput(todo._id)"
                   />
                 </b-input-group-append>
               </b-input-group>
@@ -136,8 +137,8 @@
                 <b-icon-plus font-scale="2" /> Bir kart ekle
               </b-button>
             </div>
-          </drop>
-        </drag>
+          </drag>
+        </drop>
       </div>
 
       <div>
@@ -256,18 +257,19 @@ export default {
     },
 
     onDrop(todo) {
-      this.titleChangeOrder({
-        dragId: this.dragTodo._id,
-        dropId: todo._id,
-        dragOrder: this.dragTodo.order,
-        dropOrder: todo.order,
-      });
+      if (this.dragTodo._id) {
+        this.titleChangeOrder({
+          dragId: this.dragTodo._id,
+          dragOrder: this.dragTodo.order,
+          dropOrder: todo.order,
+        });
+      }
     },
 
     createTodoCard(id) {
       this.createTodoItem({ _id: id, item: this.items })
         .then(() => {
-          this.deleteTodoInput(id);
+          this.closeItemInput(id);
           this.$toast.success("Yeni kart eklendi.", {
             position: "bottom",
             duration: 2000,
@@ -302,7 +304,7 @@ export default {
     updateListTitle(id) {
       this.updateTodo({ title: this.newTitle, _id: id })
         .then(() => {
-          this.deleteTodoTitle(id);
+          this.closeNewTitle(id);
           this.$toast.success("Liste başlığı güncellendi.", {
             position: "bottom",
             duration: 2000,
@@ -316,12 +318,12 @@ export default {
         });
     },
 
-    deleteTodoInput(id) {
+    closeItemInput(id) {
       this.showTodoAddItem = this.showTodoAddItem.filter((item) => item != id);
       this.items = "";
     },
 
-    deleteTodoTitle(_id) {
+    closeNewTitle(_id) {
       this.showTodoAddTitle = this.showTodoAddTitle.filter(
         (item) => item != _id
       );

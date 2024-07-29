@@ -188,7 +188,7 @@ const actions = {
   async titleChangeOrder(context, payload) {
     try {
       const result = await instance.put(
-        `/drag-drop/title/change/order/${payload.dragId}/${payload.dropId}`,
+        `/drag-drop/title/change/order/${payload.dragId}`,
         { dragOrder: payload.dragOrder, dropOrder: payload.dropOrder }
       );
 
@@ -206,7 +206,7 @@ const actions = {
   async itemChange(context, payload) {
     try {
       const result = await instance.put(
-        `/drag-drop/item/change/${payload.dragTodoId}/${payload.dropTodoId}/${payload.dragId}/${payload.dropId}`,
+        `/drag-drop/item/change/${payload.dragTodoId}/${payload.dropTodoId}`,
         payload
       );
 

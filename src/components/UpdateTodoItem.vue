@@ -1,6 +1,6 @@
 <template>
-  <drag @dragstart="onDragStart(item)">
-    <drop @drop="onDrop(item)">
+  <drag @dragstart="onDragStart" @dragend="onDragEnd">
+    <drop @drop="onDrop">
       <div>
         <b-input-group
           class="mx-3 my-2"
@@ -52,7 +52,7 @@ import { mapActions } from "vuex";
 import { Drag, Drop } from "vue-drag-drop";
 
 export default {
-  props: ["item", "_id", "todo_id"],
+  props: ["item", "_id", "todo_id", "order"],
 
   components: {
     Drag,
@@ -65,9 +65,44 @@ export default {
       newItem: "",
       dragItem: "",
       dragTodoId: "",
-      dragId: "",
+      dragOrder: "",
+      dropTodoId: "",
+      dropOrder: "",
     };
   },
+
+  /*   watch: {
+    dropTodoId() {
+      console.log(
+        "dropTodoId:",
+        "dragTodoId:",
+        this.dragTodoId,
+        "dropTodoId:",
+        this.dropTodoId,
+        "dragOrder:",
+        this.dragOrder,
+        "dropOrder:",
+        this.dropOrder,
+        "dragItem:",
+        this.dragItem
+      );
+    },
+    dragTodoId() {
+      console.log(
+        "dragTodoId:",
+        "dragTodoId:",
+        this.dragTodoId,
+        "dropTodoId:",
+        this.dropTodoId,
+        "dragOrder:",
+        this.dragOrder,
+        "dropOrder:",
+        this.dropOrder,
+        "dragItem:",
+        this.dragItem
+      );
+    },
+  }, */
 
   methods: {
     ...mapActions(["updateTodoItem", "deleteTodoItem", "itemChange"]),
@@ -117,37 +152,45 @@ export default {
       this.newItem = this.item;
     },
 
-    onDragStart(item) {
-      console.log(
-        "dragItem",
-        item,
-        "dragTodoId",
-        this.todo_id,
-        "dragId",
-        this._id
-      );
-      this.dragItem = item;
-      this.dragTodoId = this.todo_id;
-      this.dragId = this._id;
+    onDragStart(_data, event) {
+      if (event) {
+        event.stopPropagation();
+      } else {
+        console.error("Event is undefined");
+      }
     },
 
-    onDrop(item) {
+    onDragEnd() {
       console.log(
-        "dropItem",
-        item,
-        "dropTodoId",
+        "ondragend",
+        "this.dragItem =",
+        this.item,
+        "this.dragTodoId =",
         this.todo_id,
-        "dropId",
-        this._id
+        "this.dropTodoId =",
+        this.dropTodoId,
+        "this.dragOrder =",
+        this.order,
+        "this.dropOrder =",
+        this.dropOrder
       );
-      this.itemChange({
-        dragTodoId: this.dragTodoId,
-        dropTodoId: this.todo_id,
-        dragId: this.dragId,
-        dropId: this._id,
-        dragItem: this.dragItem,
-        dropItem: item,
-      });
+      this.dragItem = this.item;
+      this.dragTodoId = this.todo_id;
+      this.dragOrder = this.order;
+    },
+
+    onDrop() {
+      console.log(
+        "ondrop",
+        "this.dropItem =",
+        this.item,
+        "this.dropTodoId =",
+        this.todo_id,
+        "this.dropOrder =",
+        this.order
+      );
+      this.dropTodoId = this.todo_id;
+      this.dropOrder = this.order;
     },
   },
 };

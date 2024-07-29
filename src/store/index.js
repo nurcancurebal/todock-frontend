@@ -37,8 +37,6 @@ const actions = {
     try {
       const result = await instance.get("/todo");
 
-      console.log("getTodo", result.data);
-
       context.commit("TODO", result.data);
 
       return result;
@@ -50,8 +48,6 @@ const actions = {
   async createTodo(context, payload) {
     try {
       const result = await instance.post("/todo", payload);
-
-      console.log("createTodo", result.data);
 
       context.dispatch("getTodo");
 
@@ -65,8 +61,6 @@ const actions = {
     try {
       const result = await instance.put(`/todo/${payload._id}`, payload);
 
-      console.log("updateTodo", result.data);
-
       context.dispatch("getTodo");
 
       return result;
@@ -79,8 +73,6 @@ const actions = {
     try {
       const result = await instance.delete(`/todo/${payload}`);
 
-      console.log("deleteTodo", result.status);
-
       context.dispatch("getTodo");
 
       return result;
@@ -92,8 +84,6 @@ const actions = {
   async createTodoItem(context, payload) {
     try {
       const result = await instance.post(`/todo-item/${payload._id}`, payload);
-
-      console.log("createTodoItem", result.data);
 
       context.dispatch("getTodo");
 
@@ -110,8 +100,6 @@ const actions = {
         { item: payload.item }
       );
 
-      console.log("updateTodoItem", result.status);
-
       context.dispatch("getTodo");
 
       return result;
@@ -126,8 +114,6 @@ const actions = {
       const result = await instance.delete(
         `/todo-item/${payload.todoId}/${payload.itemId}`
       );
-
-      console.log("deleteTodoItem", result.status);
 
       context.dispatch("getTodo");
 
@@ -161,8 +147,6 @@ const actions = {
     try {
       const result = await instance.put(`/user`, payload);
 
-      console.log("updateUser", result.data);
-
       context.dispatch("getUser");
 
       return result;
@@ -175,8 +159,6 @@ const actions = {
     try {
       const result = await instance.get("/user");
 
-      console.log("getUser", result.data);
-
       context.commit("USER", result.data);
 
       return result;
@@ -185,40 +167,26 @@ const actions = {
     }
   },
 
-  async titleChangeOrder(context, payload) {
-    try {
-      const result = await instance.put(
-        `/drag-drop/title/change/order/${payload.dragId}`,
-        { dragOrder: payload.dragOrder, dropOrder: payload.dropOrder }
-      );
+  async parrentMove(context, payload) {
+    const result = await instance.put(
+      `/drag-drop/title/change/order/${payload.dragId}`,
+      { dragOrder: payload.dragOrder, dropOrder: payload.dropOrder }
+    );
 
-      console.log("titleChangeOrder", result.data);
+    context.dispatch("getTodo");
 
-      context.dispatch("getTodo");
-
-      return result;
-    } catch (error) {
-      console.log("titleChangeOrder", error);
-      return error;
-    }
+    return result;
   },
 
-  async itemChange(context, payload) {
-    try {
-      const result = await instance.put(
-        `/drag-drop/item/change/${payload.dragTodoId}/${payload.dropTodoId}`,
-        payload
-      );
+  async chieldMove(context, payload) {
+    const result = await instance.put(
+      `/drag-drop/item/change/${payload.dragParrentId}/${payload.dropParrentId}`,
+      payload
+    );
 
-      console.log("itemChange", result.data);
+    context.dispatch("getTodo");
 
-      context.dispatch("getTodo");
-
-      return result;
-    } catch (error) {
-      console.log("itemChange", error);
-      return error;
-    }
+    return result;
   },
 };
 

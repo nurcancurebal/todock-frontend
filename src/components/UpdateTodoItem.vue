@@ -1,6 +1,6 @@
 <template>
-  <drag @dragstart="onDragStart" @dragend="onDragEnd">
-    <drop @drop="onDrop">
+  <drop @drop="onDrop(item)">
+    <drag @dragstart="onDragStart(item)">
       <div>
         <b-input-group
           class="mx-3 my-2"
@@ -39,12 +39,12 @@
           v-show="!todoItemShow"
         >
           <div id="overflowEllipsis" @click="setItem">
-            {{ item }}
+            {{ item.item }}
           </div>
         </div>
       </div>
-    </drop>
-  </drag>
+    </drag>
+  </drop>
 </template>
 
 <script>
@@ -52,7 +52,13 @@ import { mapActions } from "vuex";
 import { Drag, Drop } from "vue-drag-drop";
 
 export default {
-  props: ["item", "_id", "todo_id", "order"],
+  props: [
+    "item",
+    "parent_id",
+    "parent_drag_and_drop_stop",
+    "cache_chield",
+    "set_cache_chiled",
+  ],
 
   components: {
     Drag,
@@ -68,44 +74,12 @@ export default {
       dragOrder: "",
       dropTodoId: "",
       dropOrder: "",
+      dropItem: "",
     };
   },
 
-  /*   watch: {
-    dropTodoId() {
-      console.log(
-        "dropTodoId:",
-        "dragTodoId:",
-        this.dragTodoId,
-        "dropTodoId:",
-        this.dropTodoId,
-        "dragOrder:",
-        this.dragOrder,
-        "dropOrder:",
-        this.dropOrder,
-        "dragItem:",
-        this.dragItem
-      );
-    },
-    dragTodoId() {
-      console.log(
-        "dragTodoId:",
-        "dragTodoId:",
-        this.dragTodoId,
-        "dropTodoId:",
-        this.dropTodoId,
-        "dragOrder:",
-        this.dragOrder,
-        "dropOrder:",
-        this.dropOrder,
-        "dragItem:",
-        this.dragItem
-      );
-    },
-  }, */
-
   methods: {
-    ...mapActions(["updateTodoItem", "deleteTodoItem", "itemChange"]),
+    ...mapActions(["updateTodoItem", "deleteTodoItem", "chieldMove"]),
 
     updateCard() {
       this.updateTodoItem({
@@ -152,45 +126,35 @@ export default {
       this.newItem = this.item;
     },
 
-    onDragStart(_data, event) {
-      if (event) {
-        event.stopPropagation();
-      } else {
-        console.error("Event is undefined");
+    onDragStart(item) {
+      this.parent_drag_and_drop_stop(true);
+      this.set_cache_chiled({
+        dragItemText: item.item,
+        dragItemOrder: item.order,
+        dragItemParrentId: this.parent_id,
+        dradItemId: item._id,
+      });
+    },
+
+    async onDrop(item) {
+      try {
+        await this.chieldMove({
+          dragParrentId: this.cache_chield.dragItemParrentId,
+          dragItem: this.cache_chield.dragItemText,
+          dragOrder: this.cache_chield.dragItemOrder,
+          dragId: this.cache_chield.dradItemId,
+          dropParrentId: item.todoId,
+          dropOrder: item.order,
+        });
+
+        this.parent_drag_and_drop_stop(false);
+        this.set_cache_chiled({});
+      } catch (error) {
+        this.$toast.error(error.message, {
+          position: "bottom",
+          duration: 2000,
+        });
       }
-    },
-
-    onDragEnd() {
-      console.log(
-        "ondragend",
-        "this.dragItem =",
-        this.item,
-        "this.dragTodoId =",
-        this.todo_id,
-        "this.dropTodoId =",
-        this.dropTodoId,
-        "this.dragOrder =",
-        this.order,
-        "this.dropOrder =",
-        this.dropOrder
-      );
-      this.dragItem = this.item;
-      this.dragTodoId = this.todo_id;
-      this.dragOrder = this.order;
-    },
-
-    onDrop() {
-      console.log(
-        "ondrop",
-        "this.dropItem =",
-        this.item,
-        "this.dropTodoId =",
-        this.todo_id,
-        "this.dropOrder =",
-        this.order
-      );
-      this.dropTodoId = this.todo_id;
-      this.dropOrder = this.order;
     },
   },
 };

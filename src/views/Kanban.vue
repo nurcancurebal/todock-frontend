@@ -6,140 +6,139 @@
       style="display: flex; flex-wrap: nowrap; position: absolute; top: 75px"
       class="mt-4"
     >
-      <div v-for="todo in todo" :key="todo.id">
-        <drop @drop="onDrop(todo)">
-          <drag @dragstart="onDragStart(todo)">
-            <div
-              style="
-                display: flex;
-                flex-direction: column;
-                width: 225px;
-                border: 2px #dcdcdc solid;
+      <drop :key="todo.id" v-for="todo in todo" @drop="onDrop(todo)">
+        <drag
+          @dragstart="onDragStart(todo)"
+          style="
+            display: flex;
+            flex-direction: column;
+            width: 225px;
+            border: 2px #dcdcdc solid;
+          "
+          class="rounded m-4 shadow"
+        >
+          <b-input-group
+            class="mx-3 my-2"
+            style="width: auto"
+            v-show="showTodoAddTitle.includes(todo._id)"
+          >
+            <b-form-input
+              type="text"
+              v-model="newTitle"
+              class="focus-input rounded"
+              @keydown.enter="updateListTitle(todo._id)"
+              @blur="
+                () => {
+                  closeNewTitle(todo._id);
+                  newTitle = '';
+                }
               "
-              class="rounded m-4 shadow"
-            >
-              <b-input-group
-                class="mx-3 my-2"
-                style="width: auto"
-                v-show="showTodoAddTitle.includes(todo._id)"
-              >
-                <b-form-input
-                  type="text"
-                  v-model="newTitle"
-                  class="focus-input rounded"
-                  @keydown.enter="updateListTitle(todo._id)"
-                  @blur="
-                    () => {
-                      closeNewTitle(todo._id);
-                      newTitle = '';
-                    }
-                  "
-                />
+            />
 
-                <b-input-group-append>
-                  <b-icon-check-lg
-                    class="m-2 text-secondary hover-color"
-                    @click="updateListTitle(todo._id)"
-                  />
-
-                  <b-icon-x-lg
-                    class="m-2 text-secondary hover-color"
-                    @click="closeNewTitle(todo._id)"
-                  />
-                </b-input-group-append>
-              </b-input-group>
-
-              <div
-                class="justify-content-between"
-                v-show="!showTodoAddTitle.includes(todo._id)"
-                style="display: flex"
-              >
-                <span
-                  class="p-2 m-2 h6"
-                  @click="
-                    () => {
-                      showTodoAddTitle.push(todo._id);
-                      newTitle = todo.title;
-                    }
-                  "
-                >
-                  {{ todo.title }}
-                </span>
-                <b-button
-                  variant="none"
-                  class="text-secondary hover-color"
-                  @click="
-                    deleteTodo(todo._id)
-                      .then(() =>
-                        $toast.success('Liste silindi.', {
-                          position: 'bottom',
-                          duration: 2000,
-                        })
-                      )
-                      .catch(() =>
-                        $toast.error('Liste silinemedi.', {
-                          position: 'bottom',
-                          duration: 2000,
-                        })
-                      )
-                  "
-                >
-                  <b-icon-x font-scale="2" />
-                </b-button>
-              </div>
-
-              <UpdateTodoItem
-                v-for="todoItem in todo.items"
-                :key="todoItem._id"
-                :item="todoItem.item"
-                :_id="todoItem._id"
-                :todo_id="todoItem.todoId"
-                :order="todoItem.order"
+            <b-input-group-append>
+              <b-icon-check-lg
+                class="m-2 text-secondary hover-color"
+                @click="updateListTitle(todo._id)"
               />
-              <b-input-group
-                class="mx-3 my-2"
-                style="width: auto"
-                v-show="showTodoAddItem.includes(todo._id)"
-              >
-                <b-form-input
-                  type="text"
-                  v-model="items"
-                  class="focus-input rounded"
-                  @keyup.enter="createTodoCard(todo._id)"
-                  @blur="
-                    () => {
-                      closeItemInput(todo._id);
-                      items = '';
-                    }
-                  "
-                />
 
-                <b-input-group-append>
-                  <b-icon-check-lg
-                    class="m-2 text-secondary hover-color"
-                    @click="createTodoCard(todo._id)"
-                  />
+              <b-icon-x-lg
+                class="m-2 text-secondary hover-color"
+                @click="closeNewTitle(todo._id)"
+              />
+            </b-input-group-append>
+          </b-input-group>
 
-                  <b-icon-x-lg
-                    class="m-2 text-secondary hover-color"
-                    @click="closeItemInput(todo._id)"
-                  />
-                </b-input-group-append>
-              </b-input-group>
+          <div
+            class="justify-content-between"
+            v-show="!showTodoAddTitle.includes(todo._id)"
+            style="display: flex"
+          >
+            <span
+              class="p-2 m-2 h6"
+              @click="
+                () => {
+                  showTodoAddTitle.push(todo._id);
+                  newTitle = todo.title;
+                }
+              "
+            >
+              {{ todo.title }}
+            </span>
+            <b-button
+              variant="none"
+              class="text-secondary hover-color"
+              @click="
+                deleteTodo(todo._id)
+                  .then(() =>
+                    $toast.success('Liste silindi.', {
+                      position: 'bottom',
+                      duration: 2000,
+                    })
+                  )
+                  .catch(() =>
+                    $toast.error('Liste silinemedi.', {
+                      position: 'bottom',
+                      duration: 2000,
+                    })
+                  )
+              "
+            >
+              <b-icon-x font-scale="2" />
+            </b-button>
+          </div>
 
-              <b-button
-                variant="light"
-                class="mx-3 my-2 text-secondary hover-color justify-content-center align-items-center"
-                style="display: flex"
-                @click="showTodoAddItem.push(todo._id)"
-                v-show="!showTodoAddItem.includes(todo._id)"
-              >
-                <b-icon-plus font-scale="2" /> Bir kart ekle
-              </b-button>
-            </div>
-          </drag>
-        </drop>
-      </div>
+          <UpdateTodoItem
+            v-for="todoItem in todo.items"
+            :key="todoItem._id"
+            :item="todoItem"
+            :parent_id="todo._id"
+            :parent_drag_and_drop_stop="parentDragAndDropStop"
+            :cache_chield="cacheChield"
+            :set_cache_chiled="setCacheChiled"
+            class="todo-item"
+          />
+          <b-input-group
+            class="mx-3 my-2"
+            style="width: auto"
+            v-show="showTodoAddItem.includes(todo._id)"
+          >
+            <b-form-input
+              type="text"
+              v-model="items"
+              class="focus-input rounded"
+              @keyup.enter="createTodoCard(todo._id)"
+              @blur="
+                () => {
+                  closeItemInput(todo._id);
+                  items = '';
+                }
+              "
+            />
+
+            <b-input-group-append>
+              <b-icon-check-lg
+                class="m-2 text-secondary hover-color"
+                @click="createTodoCard(todo._id)"
+              />
+
+              <b-icon-x-lg
+                class="m-2 text-secondary hover-color"
+                @click="closeItemInput(todo._id)"
+              />
+            </b-input-group-append>
+          </b-input-group>
+
+          <b-button
+            variant="light"
+            class="mx-3 my-2 text-secondary hover-color justify-content-center align-items-center"
+            style="display: flex"
+            @click="showTodoAddItem.push(todo._id)"
+            v-show="!showTodoAddItem.includes(todo._id)"
+          >
+            <b-icon-plus font-scale="2" /> Bir kart ekle
+          </b-button>
+        </drag>
+      </drop>
 
       <div>
         <div v-show="!newColumnStatus">
@@ -230,7 +229,10 @@ export default {
       showTodoAddItem: [],
       showTodoAddTitle: [],
       newTitle: "",
-      dragTodo: "",
+      dragTodoId: null,
+      dragTodoOrder: null,
+      dragAndDropStop: false,
+      cacheChield: {},
     };
   },
 
@@ -249,21 +251,65 @@ export default {
       "updateTodo",
       "deleteTodo",
       "createTodoItem",
-      "titleChangeOrder",
+      "parrentMove",
     ]),
 
     onDragStart(todo) {
-      this.dragTodo = todo;
-    },
+      try {
+        if (this.dragAndDropStop) return;
+        console.log("Parrent", "onDragStart");
 
-    onDrop(todo) {
-      if (this.dragTodo._id) {
-        this.titleChangeOrder({
-          dragId: this.dragTodo._id,
-          dragOrder: this.dragTodo.order,
-          dropOrder: todo.order,
+        this.dragTodoId = todo._id;
+        this.dragTodoOrder = todo.order;
+      } catch (error) {
+        this.$toast.error(error.message, {
+          position: "bottom",
+          duration: 2000,
         });
       }
+    },
+
+    async onDrop(todo) {
+      if (this.dragAndDropStop) return;
+      console.log("Parrent", "onDrop");
+
+      try {
+        if (!this.dragTodoId) throw new Error("Not found drag todo ID!");
+
+        if (typeof this.dragTodoOrder != "number")
+          throw new Error("Drag todo order has not number!");
+
+        if ([null, "", undefined].includes(this.dragTodoOrder))
+          throw new Error("Drag todo order type not!");
+
+        if (typeof todo.order != "number")
+          throw new Error("Drop todo order has not number!");
+
+        if ([null, "", undefined].includes(todo.order))
+          throw new Error("Drop todo order type not!");
+
+        await this.parrentMove({
+          dragId: this.dragTodoId,
+          dragOrder: this.dragTodoOrder,
+          dropOrder: todo.order,
+        });
+
+        this.dragTodoOrder = null;
+        this.dragTodoId = null;
+      } catch (error) {
+        this.$toast.error(error.message, {
+          position: "bottom",
+          duration: 2000,
+        });
+      }
+    },
+
+    parentDragAndDropStop(value) {
+      this.dragAndDropStop = value;
+    },
+
+    setCacheChiled(data) {
+      this.cacheChield = data;
     },
 
     createTodoCard(id) {
@@ -341,5 +387,9 @@ export default {
 .focus-input:focus {
   border-color: rgba(32, 31, 31, 0.425) !important;
   box-shadow: 0 0 0 0.25rem rgba(10, 0, 0, 0.045) !important;
+}
+
+.todo-item {
+  z-index: 999999;
 }
 </style>

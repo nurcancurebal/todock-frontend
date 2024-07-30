@@ -52,7 +52,8 @@ export default {
     "parent_id",
     "parent_drag_and_drop_stop",
     "cache_chield",
-    "set_cache_chiled",
+    "set_cache_chield",
+    "chield_drop_stop",
   ],
 
   components: {
@@ -123,7 +124,8 @@ export default {
 
     onDragStart(item) {
       this.parent_drag_and_drop_stop(true);
-      this.set_cache_chiled({
+      this.chield_drop_stop(true);
+      this.set_cache_chield({
         dragItemText: item.item,
         dragItemOrder: item.order,
         dragItemParrentId: this.parent_id,
@@ -133,19 +135,18 @@ export default {
 
     async onDrop(item) {
       try {
-        console.log("chieldMove");
+        this.chield_drop_stop(false);
         await this.chieldMove({
           dragParrentId: this.cache_chield.dragItemParrentId,
-          dragItem: this.cache_chield.dragItemText,
+          dropParrentId: item.todoId,
           dragOrder: this.cache_chield.dragItemOrder,
+          dropOrder: item.order,
+          dragItem: this.cache_chield.dragItemText,
           dragId: this.cache_chield.dradItemId,
           dropId: item._id,
-          dropParrentId: item.todoId,
-          dropOrder: item.order,
         });
-
+        this.set_cache_chield({});
         this.parent_drag_and_drop_stop(false);
-        this.set_cache_chiled({});
       } catch (error) {
         this.$toast.error(error.message, {
           position: "bottom",

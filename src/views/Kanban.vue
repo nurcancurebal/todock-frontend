@@ -88,8 +88,9 @@
             :item="todoItem"
             :parent_id="todo._id"
             :parent_drag_and_drop_stop="parentDragAndDropStop"
+            :chield_drop_stop="chieldDropStop"
             :cache_chield="cacheChield"
-            :set_cache_chiled="setCacheChiled"
+            :set_cache_chield="setCacheChield"
             class="todo-item"
           />
 
@@ -218,6 +219,7 @@ export default {
       dragTodoId: null,
       dragTodoOrder: null,
       dragAndDropStop: false,
+      dropStop: false,
       cacheChield: {},
     };
   },
@@ -238,12 +240,12 @@ export default {
       "deleteTodo",
       "createTodoItem",
       "parrentMove",
+      "chieldMove",
     ]),
 
     onDragStart(todo) {
       try {
         if (this.dragAndDropStop) return;
-
         this.dragTodoId = todo._id;
         this.dragTodoOrder = todo.order;
       } catch (error) {
@@ -255,46 +257,68 @@ export default {
     },
 
     async onDrop(todo) {
-      if (this.dragAndDropStop) return;
+      if (!this.dragAndDropStop) {
+        try {
+          if (!this.dragTodoId) throw new Error("Not found drag todo ID!");
 
-      try {
-        if (!this.dragTodoId) throw new Error("Not found drag todo ID!");
+          if (!todo._id) throw new Error("Not found drop todo ID!");
 
-        if (!todo._id) throw new Error("Not found drop todo ID!");
+          if (typeof this.dragTodoOrder != "number")
+            throw new Error("Drag todo order has not number!");
 
-        if (typeof this.dragTodoOrder != "number")
-          throw new Error("Drag todo order has not number!");
+          if ([null, "", undefined].includes(this.dragTodoOrder))
+            throw new Error("Drag todo order type not!");
 
-        if ([null, "", undefined].includes(this.dragTodoOrder))
-          throw new Error("Drag todo order type not!");
+          if (typeof todo.order != "number")
+            throw new Error("Drop todo order has not number!");
 
-        if (typeof todo.order != "number")
-          throw new Error("Drop todo order has not number!");
+          if ([null, "", undefined].includes(todo.order))
+            throw new Error("Drop todo order type not!");
+          await this.parrentMove({
+            dragId: this.dragTodoId,
+            dragOrder: this.dragTodoOrder,
+            dropId: todo._id,
+            dropOrder: todo.order,
+          });
 
-        if ([null, "", undefined].includes(todo.order))
-          throw new Error("Drop todo order type not!");
-        await this.parrentMove({
-          dragId: this.dragTodoId,
-          dragOrder: this.dragTodoOrder,
-          dropId: todo._id,
-          dropOrder: todo.order,
-        });
-
-        this.dragTodoOrder = null;
-        this.dragTodoId = null;
-      } catch (error) {
-        this.$toast.error(error.message, {
-          position: "bottom",
-          duration: 2000,
-        });
+          this.dragTodoOrder = null;
+          this.dragTodoId = null;
+        } catch (error) {
+          this.$toast.error(error.message, {
+            position: "bottom",
+            duration: 2000,
+          });
+        }
+      } else if (this.dragAndDropStop && this.dropStop) {
+        try {
+          const cacheChieldData = { ...this.cacheChield };
+          await this.chieldMove({
+            dragParrentId: cacheChieldData.dragItemParrentId,
+            dropParrentId: todo._id,
+            dragOrder: cacheChieldData.dragItemOrder,
+            dropOrder: todo.order,
+            dragItem: cacheChieldData.dragItemText,
+            dragId: cacheChieldData.dradItemId,
+          });
+          this.setCacheChield({});
+          this.parentDragAndDropStop(false);
+        } catch (error) {
+          this.$toast.error(error.message, {
+            position: "bottom",
+            duration: 50000,
+          });
+        }
       }
     },
 
     parentDragAndDropStop(value) {
       this.dragAndDropStop = value;
     },
+    chieldDropStop(value) {
+      this.dropStop = value;
+    },
 
-    setCacheChiled(data) {
+    setCacheChield(data) {
       this.cacheChield = data;
     },
 
@@ -351,7 +375,6 @@ export default {
     },
 
     closeItemInput(id) {
-      console.log("aaaa");
       this.showTodoAddItem = this.showTodoAddItem.filter((item) => item != id);
       this.items = "";
     },

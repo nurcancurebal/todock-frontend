@@ -12,12 +12,7 @@
             class="focus-input rounded"
             v-model="newItem"
             @keyup.enter="updateCard"
-            @blur="
-              () => {
-                newItem = '';
-                todoItemShow = false;
-              }
-            "
+            @blur="handleBlur"
           />
 
           <b-input-group-append>
@@ -84,8 +79,8 @@ export default {
     updateCard() {
       this.updateTodoItem({
         item: this.newItem,
-        itemId: this._id,
-        todoId: this.todo_id,
+        itemId: this.item._id,
+        todoId: this.item.todoId,
       })
         .then(() => {
           this.todoItemShow = false;
@@ -104,7 +99,7 @@ export default {
     },
 
     deleteCard() {
-      this.deleteTodoItem({ itemId: this._id, todoId: this.todo_id })
+      this.deleteTodoItem({ itemId: this.item._id, todoId: this.item.todoId })
         .then(() => {
           this.$toast.success("Kart silindi.", {
             position: "bottom",
@@ -123,7 +118,7 @@ export default {
 
     setItem() {
       this.todoItemShow = true;
-      this.newItem = this.item;
+      this.newItem = this.item.item;
     },
 
     onDragStart(item) {
@@ -138,11 +133,13 @@ export default {
 
     async onDrop(item) {
       try {
+        console.log("chieldMove");
         await this.chieldMove({
           dragParrentId: this.cache_chield.dragItemParrentId,
           dragItem: this.cache_chield.dragItemText,
           dragOrder: this.cache_chield.dragItemOrder,
           dragId: this.cache_chield.dradItemId,
+          dropId: item._id,
           dropParrentId: item.todoId,
           dropOrder: item.order,
         });
@@ -155,6 +152,12 @@ export default {
           duration: 2000,
         });
       }
+    },
+    handleBlur() {
+      setTimeout(() => {
+        this.newItem = "";
+        this.todoItemShow = false;
+      }, 1000);
     },
   },
 };

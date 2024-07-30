@@ -27,12 +27,7 @@
               v-model="newTitle"
               class="focus-input rounded"
               @keydown.enter="updateListTitle(todo._id)"
-              @blur="
-                () => {
-                  closeNewTitle(todo._id);
-                  newTitle = '';
-                }
-              "
+              @blur="handleTitleBlur(todo._id)"
             />
 
             <b-input-group-append>
@@ -97,6 +92,7 @@
             :set_cache_chiled="setCacheChiled"
             class="todo-item"
           />
+
           <b-input-group
             class="mx-3 my-2"
             style="width: auto"
@@ -107,12 +103,7 @@
               v-model="items"
               class="focus-input rounded"
               @keyup.enter="createTodoCard(todo._id)"
-              @blur="
-                () => {
-                  closeItemInput(todo._id);
-                  items = '';
-                }
-              "
+              @blur="handleItemBlur(todo._id)"
             />
 
             <b-input-group-append>
@@ -171,12 +162,7 @@
               style="border: 2px #dcdcdc solid; outline: none; width: 100%"
               v-model="title"
               @keydown.enter="addNewList"
-              @blur="
-                () => {
-                  newColumnStatus = false;
-                  title = '';
-                }
-              "
+              @blur="handleListBlur"
             />
 
             <div class="mt-2">
@@ -257,7 +243,6 @@ export default {
     onDragStart(todo) {
       try {
         if (this.dragAndDropStop) return;
-        console.log("Parrent", "onDragStart");
 
         this.dragTodoId = todo._id;
         this.dragTodoOrder = todo.order;
@@ -271,10 +256,11 @@ export default {
 
     async onDrop(todo) {
       if (this.dragAndDropStop) return;
-      console.log("Parrent", "onDrop");
 
       try {
         if (!this.dragTodoId) throw new Error("Not found drag todo ID!");
+
+        if (!todo._id) throw new Error("Not found drop todo ID!");
 
         if (typeof this.dragTodoOrder != "number")
           throw new Error("Drag todo order has not number!");
@@ -287,10 +273,10 @@ export default {
 
         if ([null, "", undefined].includes(todo.order))
           throw new Error("Drop todo order type not!");
-
         await this.parrentMove({
           dragId: this.dragTodoId,
           dragOrder: this.dragTodoOrder,
+          dropId: todo._id,
           dropOrder: todo.order,
         });
 
@@ -365,6 +351,7 @@ export default {
     },
 
     closeItemInput(id) {
+      console.log("aaaa");
       this.showTodoAddItem = this.showTodoAddItem.filter((item) => item != id);
       this.items = "";
     },
@@ -374,6 +361,22 @@ export default {
         (item) => item != _id
       );
       this.newTitle = this.title;
+    },
+    handleItemBlur(id) {
+      setTimeout(() => {
+        this.closeItemInput(id);
+      }, 1000);
+    },
+    handleTitleBlur(id) {
+      setTimeout(() => {
+        this.closeNewTitle(id);
+      }, 1000);
+    },
+    handleListBlur() {
+      setTimeout(() => {
+        this.newColumnStatus = false;
+        this.title = "";
+      }, 1000);
     },
   },
 };

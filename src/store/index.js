@@ -169,7 +169,7 @@ const actions = {
 
   async parrentMove(context, payload) {
     const result = await instance.put(
-      `/drag-drop/title/change/order/${payload.dragId}`,
+      `/drag-drop/title/change/order/${payload.dragId}/${payload.dropId}`,
       { dragOrder: payload.dragOrder, dropOrder: payload.dropOrder }
     );
 

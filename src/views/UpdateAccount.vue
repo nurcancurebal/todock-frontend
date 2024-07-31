@@ -157,15 +157,26 @@ export default {
   },
 
   created() {
-    this.getUser().then(() => {
-      Object.keys(this.user).forEach((key) => {
-        this.cacheForm[key] = this.user[key];
-      });
-    });
+    this.userInformation();
   },
 
   methods: {
     ...mapActions(["updateUser", "getUser"]),
+
+    async userInformation() {
+      try {
+        await this.getUser();
+
+        Object.keys(this.user).forEach((key) => {
+          this.cacheForm[key] = this.user[key];
+        });
+      } catch (error) {
+        this.$toast.error(error.message, {
+          position: "bottom",
+          duration: 50000,
+        });
+      }
+    },
 
     redirectToHome() {
       this.$toast.info("Ana sayfaya yönlendiriliyorsunuz...", {
@@ -178,25 +189,25 @@ export default {
       }, 2000);
     },
 
-    patternVerification() {
-      if (this.formError === false) {
-        this.cacheForm.birthdate = new Date(
-          this.cacheForm.birthdate
-        ).toISOString();
-        this.updateUser(this.cacheForm)
-          .then(() => {
-            this.$toast.success("Kullanıcı bilgileri güncellendi.", {
-              position: "bottom",
-              duration: 2000,
-            });
-            this.$router.push("/");
-          })
-          .catch(() => {
-            this.$toast.error("Kullanıcı bilgileri güncellenemedi.", {
-              position: "bottom",
-              duration: 2000,
-            });
+    async patternVerification() {
+      try {
+        if (this.formError === false) {
+          this.cacheForm.birthdate = new Date(
+            this.cacheForm.birthdate
+          ).toISOString();
+          await this.updateUser(this.cacheForm);
+
+          this.$toast.success("Kullanıcı bilgileri güncellendi.", {
+            position: "bottom",
+            duration: 2000,
           });
+          this.$router.push("/");
+        }
+      } catch (error) {
+        this.$toast.error("Kullanıcı bilgileri güncellenemedi.", {
+          position: "bottom",
+          duration: 2000,
+        });
       }
     },
 

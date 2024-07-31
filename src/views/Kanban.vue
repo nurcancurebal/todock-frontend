@@ -62,21 +62,7 @@
             <b-button
               variant="none"
               class="text-secondary hover-color"
-              @click="
-                deleteTodo(todo._id)
-                  .then(() =>
-                    $toast.success('Liste silindi.', {
-                      position: 'bottom',
-                      duration: 2000,
-                    })
-                  )
-                  .catch(() =>
-                    $toast.error('Liste silinemedi.', {
-                      position: 'bottom',
-                      duration: 2000,
-                    })
-                  )
-              "
+              @click="deleteList(todo._id)"
             >
               <b-icon-x font-scale="2" />
             </b-button>
@@ -101,7 +87,7 @@
           >
             <b-form-input
               type="text"
-              v-model="items"
+              v-model="name"
               class="focus-input rounded"
               @keyup.enter="createTodoCard(todo._id)"
               @blur="handleItemBlur(todo._id)"
@@ -212,7 +198,7 @@ export default {
     return {
       newColumnStatus: false,
       title: "",
-      items: "",
+      name: "",
       showTodoAddItem: [],
       showTodoAddTitle: [],
       newTitle: "",
@@ -229,7 +215,7 @@ export default {
   },
 
   created() {
-    this.getTodo();
+    this.getListTodo();
   },
 
   methods: {
@@ -243,6 +229,17 @@ export default {
       "chieldMove",
     ]),
 
+    async getListTodo() {
+      try {
+        await this.getTodo();
+      } catch (error) {
+        this.$toast.error("Listeler getirilemedi.", {
+          position: "bottom",
+          duration: 2000,
+        });
+      }
+    },
+
     onDragStart(todo) {
       try {
         if (this.dragAndDropStop) return;
@@ -250,6 +247,22 @@ export default {
         this.dragTodoOrder = todo.order;
       } catch (error) {
         this.$toast.error(error.message, {
+          position: "bottom",
+          duration: 2000,
+        });
+      }
+    },
+
+    async deleteList(id) {
+      try {
+        await this.deleteTodo(id);
+
+        this.$toast.success("Liste silindi.", {
+          position: "bottom",
+          duration: 2000,
+        });
+      } catch (error) {
+        this.$toast.error("Liste silinemedi.", {
           position: "bottom",
           duration: 2000,
         });
@@ -297,7 +310,7 @@ export default {
             dropParrentId: todo._id,
             dragOrder: cacheChieldData.dragItemOrder,
             dropOrder: todo.order,
-            dragItem: cacheChieldData.dragItemText,
+            dragName: cacheChieldData.dragItemName,
             dragId: cacheChieldData.dradItemId,
           });
           this.setCacheChield({});
@@ -322,61 +335,61 @@ export default {
       this.cacheChield = data;
     },
 
-    createTodoCard(id) {
-      this.createTodoItem({ _id: id, item: this.items })
-        .then(() => {
-          this.closeItemInput(id);
-          this.$toast.success("Yeni kart eklendi.", {
-            position: "bottom",
-            duration: 2000,
-          });
-        })
-        .catch(() => {
-          this.$toast.error("Yeni kart eklenemedi.", {
-            position: "bottom",
-            duration: 2000,
-          });
+    async createTodoCard(id) {
+      try {
+        await this.createTodoItem({ _id: id, name: this.name });
+
+        this.closeItemInput(id);
+        this.$toast.success("Yeni kart eklendi.", {
+          position: "bottom",
+          duration: 2000,
         });
+      } catch (error) {
+        this.$toast.error("Yeni kart eklenemedi.", {
+          position: "bottom",
+          duration: 2000,
+        });
+      }
     },
 
-    addNewList() {
-      this.createTodo({ title: this.title })
-        .then(() => {
-          this.$toast.success("Yeni liste eklendi.", {
-            position: "bottom",
-            duration: 2000,
-          });
-          this.title = "";
-          this.newColumnStatus = false;
-        })
-        .catch(() => {
-          this.$toast.error("Yeni liste eklenemedi.", {
-            position: "bottom",
-            duration: 2000,
-          });
+    async addNewList() {
+      try {
+        await this.createTodo({ title: this.title });
+
+        this.$toast.success("Yeni liste eklendi.", {
+          position: "bottom",
+          duration: 2000,
         });
+        this.title = "";
+        this.newColumnStatus = false;
+      } catch (error) {
+        this.$toast.error("Yeni liste eklenemedi.", {
+          position: "bottom",
+          duration: 2000,
+        });
+      }
     },
 
-    updateListTitle(id) {
-      this.updateTodo({ title: this.newTitle, _id: id })
-        .then(() => {
-          this.closeNewTitle(id);
-          this.$toast.success("Liste başlığı güncellendi.", {
-            position: "bottom",
-            duration: 2000,
-          });
-        })
-        .catch(() => {
-          this.$toast.error("Liste başlığı güncellenemedi.", {
-            position: "bottom",
-            duration: 2000,
-          });
+    async updateListTitle(id) {
+      try {
+        await this.updateTodo({ title: this.newTitle, _id: id });
+
+        this.closeNewTitle(id);
+        this.$toast.success("Liste başlığı güncellendi.", {
+          position: "bottom",
+          duration: 2000,
         });
+      } catch (error) {
+        this.$toast.error("Liste başlığı güncellenemedi.", {
+          position: "bottom",
+          duration: 2000,
+        });
+      }
     },
 
     closeItemInput(id) {
       this.showTodoAddItem = this.showTodoAddItem.filter((item) => item != id);
-      this.items = "";
+      this.name = "";
     },
 
     closeNewTitle(_id) {

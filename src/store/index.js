@@ -9,7 +9,6 @@ Vue.use(Vuex);
 const state = {
   user: {},
   todo: [],
-  todoItem: [],
 };
 
 const getters = {
@@ -34,137 +33,99 @@ const mutations = {
 
 const actions = {
   async getTodo(context) {
-    try {
-      const result = await instance.get("/todo");
+    const result = await instance.get("/todo");
 
-      context.commit("TODO", result.data);
+    const sortedData = result.data.sort((a, b) => a.order - b.order);
 
-      return result;
-    } catch (error) {
-      console.error("getTodo", error);
-    }
+    sortedData.forEach((item) => {
+      if (Array.isArray(item.items)) {
+        item.items.sort((a, b) => a.order - b.order);
+      }
+    });
+
+    context.commit("TODO", sortedData);
+
+    return result;
   },
 
   async createTodo(context, payload) {
-    try {
-      const result = await instance.post("/todo", payload);
+    const result = await instance.post("/todo", payload);
 
-      context.dispatch("getTodo");
+    context.dispatch("getTodo");
 
-      return result;
-    } catch (error) {
-      throw error;
-    }
+    return result;
   },
 
   async updateTodo(context, payload) {
-    try {
-      const result = await instance.put(`/todo/${payload._id}`, payload);
+    const result = await instance.put(`/todo/${payload._id}`, payload);
 
-      context.dispatch("getTodo");
+    context.dispatch("getTodo");
 
-      return result;
-    } catch (error) {
-      throw error;
-    }
+    return result;
   },
 
   async deleteTodo(context, payload) {
-    try {
-      const result = await instance.delete(`/todo/${payload}`);
+    const result = await instance.delete(`/todo/${payload}`);
 
-      context.dispatch("getTodo");
-
-      return result;
-    } catch (error) {
-      throw error;
-    }
+    context.dispatch("getTodo");
+    return result;
   },
 
   async createTodoItem(context, payload) {
-    try {
-      const result = await instance.post(`/todo-item/${payload._id}`, payload);
+    const result = await instance.post(`/todo-item/${payload._id}`, payload);
 
-      context.dispatch("getTodo");
-
-      return result;
-    } catch (error) {
-      throw error;
-    }
+    context.dispatch("getTodo");
+    return result;
   },
 
   async updateTodoItem(context, payload) {
-    try {
-      const result = await instance.put(
-        `/todo-item/${payload.todoId}/${payload.itemId}`,
-        { item: payload.item }
-      );
+    const result = await instance.put(
+      `/todo-item/${payload.todoId}/${payload.itemId}`,
+      { name: payload.name }
+    );
 
-      context.dispatch("getTodo");
+    context.dispatch("getTodo");
 
-      return result;
-    } catch (error) {
-      console.error("updateTodoItem", error);
-      throw error;
-    }
+    return result;
   },
 
   async deleteTodoItem(context, payload) {
-    try {
-      const result = await instance.delete(
-        `/todo-item/${payload.todoId}/${payload.itemId}`
-      );
+    const result = await instance.delete(
+      `/todo-item/${payload.todoId}/${payload.itemId}`
+    );
 
-      context.dispatch("getTodo");
+    context.dispatch("getTodo");
 
-      return result;
-    } catch (error) {
-      console.error("deleteTodoItem", error);
-      throw error;
-    }
+    return result;
   },
 
   async signUp(_context, payload) {
-    try {
-      return await instance.post("/auth/signup", payload);
-    } catch (error) {
-      throw error;
-    }
+    const result = await instance.post("/auth/signup", payload);
+
+    return result;
   },
 
   async signIn(_context, payload) {
-    try {
-      const result = await instance.post("/auth/signin", payload);
-      localStorage.setItem("token", result.data.token);
+    const result = await instance.post("/auth/signin", payload);
+    localStorage.setItem("token", result.data.token);
 
-      return result;
-    } catch (error) {
-      throw error;
-    }
+    return result;
   },
 
   async updateUser(context, payload) {
-    try {
-      const result = await instance.put(`/user`, payload);
+    const result = await instance.put(`/user`, payload);
 
-      context.dispatch("getUser");
+    context.dispatch("getUser");
 
-      return result;
-    } catch (error) {
-      throw error;
-    }
+    return result;
   },
 
   async getUser(context) {
-    try {
-      const result = await instance.get("/user");
+    const result = await instance.get("/user");
 
-      context.commit("USER", result.data);
+    context.commit("USER", result.data);
 
-      return result;
-    } catch (error) {
-      console.error("getUser", error);
-    }
+    return result;
   },
 
   async parrentMove(context, payload) {

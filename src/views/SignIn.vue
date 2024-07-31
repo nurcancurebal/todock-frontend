@@ -90,34 +90,34 @@ export default {
   methods: {
     ...mapActions(["signIn"]),
 
-    logIn() {
+    async logIn() {
       const username = this.form.username;
       const password = this.form.password;
 
       if (username && password) {
-        this.signIn({ username, password })
-          .then(async () => {
-            this.userError = false;
-            this.$toast.success(
-              "Giriş başarılı ana sayfaya yönlendiriliyorsunuz.",
-              {
-                position: "bottom",
-                duration: 2000,
-              }
-            );
-            await new Promise(() =>
-              setTimeout(() => {
-                this.$router.push("/");
-              }, 2000)
-            );
-          })
-          .catch(() => {
-            this.userError = true;
-            this.$toast.error("Kullanıcı bilgileri bulunamadı.", {
+        try {
+          await this.signIn({ username, password });
+
+          this.userError = false;
+          this.$toast.success(
+            "Giriş başarılı ana sayfaya yönlendiriliyorsunuz.",
+            {
               position: "bottom",
               duration: 2000,
-            });
+            }
+          );
+          await new Promise(() =>
+            setTimeout(() => {
+              this.$router.push("/");
+            }, 2000)
+          );
+        } catch (error) {
+          this.userError = true;
+          this.$toast.error("Kullanıcı bilgileri bulunamadı.", {
+            position: "bottom",
+            duration: 2000,
           });
+        }
       } else {
         this.$toast.error("Lütfen tüm alanları doldurunuz.", {
           position: "bottom",

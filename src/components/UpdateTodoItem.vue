@@ -10,7 +10,7 @@
           <b-form-input
             type="text"
             class="focus-input rounded"
-            v-model="newItem"
+            v-model="newName"
             @keyup.enter="updateCard"
             @blur="handleBlur"
           />
@@ -33,8 +33,8 @@
           style="border: 2px #dcdcdc solid; display: flex"
           v-show="!todoItemShow"
         >
-          <div id="overflowEllipsis" @click="setItem">
-            {{ item.item }}
+          <div id="overflowEllipsis" @click="setName">
+            {{ item.name }}
           </div>
         </div>
       </div>
@@ -64,69 +64,72 @@ export default {
   data() {
     return {
       todoItemShow: false,
-      newItem: "",
-      dragItem: "",
+      newName: "",
+      dragName: "",
       dragTodoId: "",
       dragOrder: "",
       dropTodoId: "",
       dropOrder: "",
-      dropItem: "",
+      dropName: "",
     };
   },
 
   methods: {
     ...mapActions(["updateTodoItem", "deleteTodoItem", "chieldMove"]),
 
-    updateCard() {
-      this.updateTodoItem({
-        item: this.newItem,
-        itemId: this.item._id,
-        todoId: this.item.todoId,
-      })
-        .then(() => {
-          this.todoItemShow = false;
-          this.newItem = "";
-          this.$toast.success("Kart güncellendi.", {
-            position: "bottom",
-            duration: 2000,
-          });
-        })
-        .catch(() => {
-          this.$toast.error("Kart güncellenemedi.", {
-            position: "bottom",
-            duration: 2000,
-          });
+    async updateCard() {
+      try {
+        await this.updateTodoItem({
+          name: this.newName,
+          itemId: this.item._id,
+          todoId: this.item.todoId,
         });
+
+        this.todoItemShow = false;
+        this.newName = "";
+        this.$toast.success("Kart güncellendi.", {
+          position: "bottom",
+          duration: 2000,
+        });
+      } catch (error) {
+        this.$toast.error("Kart güncellenemedi.", {
+          position: "bottom",
+          duration: 2000,
+        });
+      }
     },
 
-    deleteCard() {
-      this.deleteTodoItem({ itemId: this.item._id, todoId: this.item.todoId })
-        .then(() => {
-          this.$toast.success("Kart silindi.", {
-            position: "bottom",
-            duration: 2000,
-          });
-          this.todoItemShow = false;
-          this.newItem = "";
-        })
-        .catch(() => {
-          this.$toast.error("Kart silinemedi.", {
-            position: "bottom",
-            duration: 2000,
-          });
+    async deleteCard() {
+      try {
+        await this.deleteTodoItem({
+          itemId: this.item._id,
+          todoId: this.item.todoId,
         });
+
+        this.$toast.success("Kart silindi.", {
+          position: "bottom",
+          duration: 2000,
+        });
+        this.todoItemShow = false;
+        this.newName = "";
+      } catch (error) {
+        this.$toast.error("Kart silinemedi.", {
+          position: "bottom",
+          duration: 2000,
+        });
+      }
     },
 
-    setItem() {
+    setName() {
       this.todoItemShow = true;
-      this.newItem = this.item.item;
+      this.newName = this.item.name;
     },
 
     onDragStart(item) {
       this.parent_drag_and_drop_stop(true);
       this.chield_drop_stop(true);
       this.set_cache_chield({
-        dragItemText: item.item,
+        dragItemName: item.name,
         dragItemOrder: item.order,
         dragItemParrentId: this.parent_id,
         dradItemId: item._id,
@@ -141,7 +144,7 @@ export default {
           dropParrentId: item.todoId,
           dragOrder: this.cache_chield.dragItemOrder,
           dropOrder: item.order,
-          dragItem: this.cache_chield.dragItemText,
+          dragName: this.cache_chield.dragItemName,
           dragId: this.cache_chield.dradItemId,
           dropId: item._id,
         });
@@ -156,7 +159,7 @@ export default {
     },
     handleBlur() {
       setTimeout(() => {
-        this.newItem = "";
+        this.newName = "";
         this.todoItemShow = false;
       }, 1000);
     },

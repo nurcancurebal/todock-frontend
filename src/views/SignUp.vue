@@ -187,40 +187,37 @@ export default {
   methods: {
     ...mapActions(["signUp"]),
 
-    patternVerification() {
+    async patternVerification() {
       if (this.infoError === false) {
-        this.info.birthdate = new Date(this.info.birthdate).toISOString();
-        this.signUp(this.info)
-          .then(async () => {
-            this.$toast.success(
-              "Kayıt işlemi başarılı. Giriş yapabilirsiniz.",
-              {
-                position: "bottom",
-                duration: 2000,
-              }
-            );
+        try {
+          this.info.birthdate = new Date(this.info.birthdate).toISOString();
+          await this.signUp(this.info);
 
-            await new Promise(() =>
-              setTimeout(() => {
-                this.info.firstname = "";
-                this.info.lastname = "";
-                this.info.username = "";
-                this.info.birthdate = "";
-                this.info.password = "";
-
-                this.$router.push("/signin");
-              }, 2000)
-            );
-          })
-          .catch(() => {
-            this.$toast.error(
-              "Kayıt işlemi başarısız. Lütfen tekrar deneyiniz.",
-              {
-                position: "bottom",
-                duration: 2000,
-              }
-            );
+          this.$toast.success("Kayıt işlemi başarılı. Giriş yapabilirsiniz.", {
+            position: "bottom",
+            duration: 2000,
           });
+
+          await new Promise(() =>
+            setTimeout(() => {
+              this.info.firstname = "";
+              this.info.lastname = "";
+              this.info.username = "";
+              this.info.birthdate = "";
+              this.info.password = "";
+
+              this.$router.push("/signin");
+            }, 2000)
+          );
+        } catch (error) {
+          this.$toast.error(
+            "Kayıt işlemi başarısız. Lütfen tekrar deneyiniz.",
+            {
+              position: "bottom",
+              duration: 2000,
+            }
+          );
+        }
       } else {
         this.$toast.error("Lütfen tüm alanları doğru bir şekilde doldurunuz.", {
           position: "bottom",

@@ -16,7 +16,13 @@
         <b-navbar-nav>
           <b-navbar-brand>
             <router-link to="/" v-slot="{ navigate }" custom>
-              <h2 class="mx-5 my-1 text-white" @click="navigate">ToDock</h2>
+              <h2
+                class="mx-5 my-1 text-white"
+                style="cursor: pointer"
+                @click="navigate"
+              >
+                ToDock
+              </h2>
             </router-link>
           </b-navbar-brand>
         </b-navbar-nav>

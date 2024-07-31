@@ -15,13 +15,15 @@
       <b-navbar>
         <b-navbar-nav>
           <b-navbar-brand>
-            <h2
-              class="mx-5 my-1 text-white"
-              style="cursor: pointer"
-              @click="redirectToHome"
-            >
-              ToDock
-            </h2>
+            <router-link to="/" v-slot="{ navigate }" custom>
+              <h2
+                class="mx-5 my-1 text-white"
+                style="cursor: pointer"
+                @click="navigate"
+              >
+                ToDock
+              </h2>
+            </router-link>
           </b-navbar-brand>
         </b-navbar-nav>
       </b-navbar>
@@ -62,16 +64,6 @@ export default {
       });
       setTimeout(() => {
         this.$router.push("/signin");
-      }, 2000);
-    },
-    redirectToHome() {
-      this.$toast.info("Ana sayfaya yönlendiriliyorsunuz...", {
-        duration: 2000,
-        position: "bottom",
-      });
-
-      setTimeout(() => {
-        this.$router.push("/");
       }, 2000);
     },
   },

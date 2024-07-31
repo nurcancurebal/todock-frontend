@@ -49,7 +49,7 @@
             style="display: flex"
           >
             <span
-              class="p-2 m-2 h6"
+              class="p-2 m-2 h6 text-overflow"
               @click="
                 () => {
                   showTodoAddTitle.push(todo._id);
@@ -77,7 +77,6 @@
             :chield_drop_stop="chieldDropStop"
             :cache_chield="cacheChield"
             :set_cache_chield="setCacheChield"
-            class="todo-item"
           />
 
           <b-input-group
@@ -428,7 +427,9 @@ export default {
   box-shadow: 0 0 0 0.25rem rgba(10, 0, 0, 0.045) !important;
 }
 
-.todo-item {
-  z-index: 999999;
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

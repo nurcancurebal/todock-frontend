@@ -245,7 +245,7 @@ export default {
         this.dragTodoId = todo._id;
         this.dragTodoOrder = todo.order;
       } catch (error) {
-        this.$toast.error(error.message, {
+        this.$toast.error(error.response.data.message, {
           position: "bottom",
           duration: 2000,
         });
@@ -296,7 +296,7 @@ export default {
           this.dragTodoOrder = null;
           this.dragTodoId = null;
         } catch (error) {
-          this.$toast.error(error.message, {
+          this.$toast.error(error.response.data.message, {
             position: "bottom",
             duration: 2000,
           });
@@ -315,7 +315,7 @@ export default {
           this.setCacheChield({});
           this.parentDragAndDropStop(false);
         } catch (error) {
-          this.$toast.error(error.message, {
+          this.$toast.error(error.response.data.message, {
             position: "bottom",
             duration: 50000,
           });
@@ -344,7 +344,7 @@ export default {
           duration: 2000,
         });
       } catch (error) {
-        this.$toast.error("Yeni kart eklenemedi.", {
+        this.$toast.error(error.response.data.message, {
           position: "bottom",
           duration: 2000,
         });
@@ -362,7 +362,7 @@ export default {
         this.title = "";
         this.newColumnStatus = false;
       } catch (error) {
-        this.$toast.error("Yeni liste eklenemedi.", {
+        this.$toast.error(error.response.data.message, {
           position: "bottom",
           duration: 2000,
         });
@@ -379,9 +379,9 @@ export default {
           duration: 2000,
         });
       } catch (error) {
-        this.$toast.error("Liste başlığı güncellenemedi.", {
+        this.$toast.error(error.response.data.message, {
           position: "bottom",
-          duration: 2000,
+          duration: 20000,
         });
       }
     },

@@ -171,7 +171,7 @@ export default {
           this.cacheForm[key] = this.user[key];
         });
       } catch (error) {
-        this.$toast.error(error.message, {
+        this.$toast.error(error.response.data.message, {
           position: "bottom",
           duration: 50000,
         });

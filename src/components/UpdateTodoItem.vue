@@ -151,7 +151,7 @@ export default {
         this.set_cache_chield({});
         this.parent_drag_and_drop_stop(false);
       } catch (error) {
-        this.$toast.error(error.message, {
+        this.$toast.error(error.response.data.message, {
           position: "bottom",
           duration: 2000,
         });

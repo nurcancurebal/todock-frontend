@@ -232,7 +232,7 @@ export default {
       try {
         await this.getTodo();
       } catch (error) {
-        this.$toast.error("Listeler getirilemedi.", {
+        this.$toast.error("Listeler getirilemedi!", {
           position: "bottom",
           duration: 2000,
         });
@@ -245,7 +245,7 @@ export default {
         this.dragTodoId = todo._id;
         this.dragTodoOrder = todo.order;
       } catch (error) {
-        this.$toast.error(error.response.data.message, {
+        this.$toast.error("Kartları sürüklerken bir hata oluştu!", {
           position: "bottom",
           duration: 2000,
         });
@@ -261,7 +261,7 @@ export default {
           duration: 2000,
         });
       } catch (error) {
-        this.$toast.error("Liste silinemedi.", {
+        this.$toast.error("Liste silinemedi!", {
           position: "bottom",
           duration: 2000,
         });
@@ -296,7 +296,7 @@ export default {
           this.dragTodoOrder = null;
           this.dragTodoId = null;
         } catch (error) {
-          this.$toast.error(error.response.data.message, {
+          this.$toast.error("Listeleri taşırken bir hata oluştu!", {
             position: "bottom",
             duration: 2000,
           });
@@ -315,7 +315,7 @@ export default {
           this.setCacheChield({});
           this.parentDragAndDropStop(false);
         } catch (error) {
-          this.$toast.error(error.response.data.message, {
+          this.$toast.error("Listeye kart taşırken bir hata oluştu!", {
             position: "bottom",
             duration: 50000,
           });
@@ -344,7 +344,7 @@ export default {
           duration: 2000,
         });
       } catch (error) {
-        this.$toast.error(error.response.data.message, {
+        this.$toast.error("Kart oluştururken bir hata oluştu!", {
           position: "bottom",
           duration: 2000,
         });
@@ -362,7 +362,7 @@ export default {
         this.title = "";
         this.newColumnStatus = false;
       } catch (error) {
-        this.$toast.error(error.response.data.message, {
+        this.$toast.error("Yeni liste oluştururken bir hata oluştu!", {
           position: "bottom",
           duration: 2000,
         });
@@ -379,7 +379,7 @@ export default {
           duration: 2000,
         });
       } catch (error) {
-        this.$toast.error(error.response.data.message, {
+        this.$toast.error("Liste başlığı değiştirilemedi!", {
           position: "bottom",
           duration: 20000,
         });

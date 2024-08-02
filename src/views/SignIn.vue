@@ -113,13 +113,13 @@ export default {
           );
         } catch (error) {
           this.userError = true;
-          this.$toast.error("Kullanıcı bilgileri bulunamadı.", {
+          this.$toast.error("Kullanıcı bilgileri bulunamadı!", {
             position: "bottom",
             duration: 2000,
           });
         }
       } else {
-        this.$toast.error("Lütfen tüm alanları doldurunuz.", {
+        this.$toast.error("Lütfen tüm alanları doldurunuz!", {
           position: "bottom",
           duration: 2000,
         });

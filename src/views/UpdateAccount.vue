@@ -171,7 +171,7 @@ export default {
           this.cacheForm[key] = this.user[key];
         });
       } catch (error) {
-        this.$toast.error(error.response.data.message, {
+        this.$toast.error("Kullanıcı bilgileri getirilirken bir hata oluştu!", {
           position: "bottom",
           duration: 50000,
         });
@@ -204,7 +204,7 @@ export default {
           this.$router.push("/");
         }
       } catch (error) {
-        this.$toast.error("Kullanıcı bilgileri güncellenemedi.", {
+        this.$toast.error("Kullanıcı bilgileri güncellenemedi!", {
           position: "bottom",
           duration: 2000,
         });

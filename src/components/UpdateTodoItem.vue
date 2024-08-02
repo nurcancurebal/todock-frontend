@@ -92,7 +92,7 @@ export default {
           duration: 2000,
         });
       } catch (error) {
-        this.$toast.error("Kart güncellenemedi.", {
+        this.$toast.error("Kart güncellenemedi!", {
           position: "bottom",
           duration: 2000,
         });
@@ -113,7 +113,7 @@ export default {
         this.todoItemShow = false;
         this.newName = "";
       } catch (error) {
-        this.$toast.error("Kart silinemedi.", {
+        this.$toast.error("Kart silinemedi!", {
           position: "bottom",
           duration: 2000,
         });
@@ -151,7 +151,7 @@ export default {
         this.set_cache_chield({});
         this.parent_drag_and_drop_stop(false);
       } catch (error) {
-        this.$toast.error(error.response.data.message, {
+        this.$toast.error("Kartları taşırken bir hata oluştu!", {
           position: "bottom",
           duration: 2000,
         });

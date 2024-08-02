@@ -211,7 +211,7 @@ export default {
           );
         } catch (error) {
           this.$toast.error(
-            "Kayıt işlemi başarısız. Lütfen tekrar deneyiniz.",
+            "Kayıt işlemi başarısız! Lütfen tekrar deneyiniz.",
             {
               position: "bottom",
               duration: 2000,
@@ -219,7 +219,7 @@ export default {
           );
         }
       } else {
-        this.$toast.error("Lütfen tüm alanları doğru bir şekilde doldurunuz.", {
+        this.$toast.error("Lütfen tüm alanları doğru bir şekilde doldurunuz!", {
           position: "bottom",
           duration: 2000,
         });

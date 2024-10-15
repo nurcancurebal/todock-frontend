@@ -1,6 +1,19 @@
 {
   "name": "todock-frontend",
   "version": "1.0.0",
+  "description": "A Vue.js project",
+  "private": true,
+  "keywords": [
+    "vue",
+    "todock",
+    "frontend",
+    "todo",
+    "list",
+    "task",
+    "management",
+    "app",
+    "application"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"

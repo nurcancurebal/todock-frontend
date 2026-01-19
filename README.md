@@ -13,5 +13,3 @@ Bu projenin frontend kısmı Vue.js ile geliştirilmiştir.
 - Bootstrap 5 & Bootstrap Vue 2 → Kullanıcı arayüzü için CSS ve bileşen desteği
 - Vue Drag & Drop → Sürükle & bırak özelliği
 - Vue Toast Notification → Bildirim yönetimi
-
-Demo frontend adres: https://todock.trial.town
